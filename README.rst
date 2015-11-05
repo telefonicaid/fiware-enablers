@@ -59,8 +59,6 @@ An overview of what each of these does:
 
 Last but not least, the repository is structured in branchs:
 
-- master, stable version, at the end of a Release n, we make a pull request from Release n-1 in develop to master
+- master, stable version, at the end of a Release n, we make a pull request from Release n-1 in develop to master.
 - develop, default work branch.
-- feature/<GEri/GEi-name>, branch used to the GEri/GEi owner to upload the content. When you consider that the scripts
-are correct you should launch a pull request to develop. FIWARE Lab team will check the scripts in order to secure
-that it is working and if all is correct we will accept the pull request to develop branch.
+- feature/<GEri/GEi-name>, branch used to the GEri/GEi owner to upload the content. When you consider that the scripts are correct you should launch a pull request to develop. FIWARE Lab team will check the scripts in order to secure that it is working and if all is correct we will accept the pull request to develop branch.
