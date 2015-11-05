@@ -7,32 +7,42 @@ The structure of the directory looks something like this:
 
  ::
 
-.
-├── README.rst
-├── chef-recipes
-|   ├── README.rst
-|   ├── <GEri/GEi-name1>
-|   |   ├── Release 4.4
-|   |   └── Release 5.1
-|   └── <GEri/GEi-name2>
-|       ├── Release 4.4
-|       └── Release 5.1
-├── images
-|   ├── README.rst
-|   ├── <GEri/GEi-name1>
-|   |   ├── Release 4.4
-|   |   └── Release 5.1
-|   └── <GEri/GEi-name2>
-|       ├── Release 4.4
-|       └── Release 5.1
-└── puppet-modules
-    ├── README.rst
-    ├── <GEri/GEi-name1>
-    |   ├── Release 4.4
-    |   └── Release 5.1
-    └── <GEri/GEi-name2>
-        ├── Release 4.4
-        └── Release 5.1
+    ├───README.rst
+    │   ├───chef-recipes
+    │   │   ├───README.rst
+    │   │   ├───<GEri/GEi-name1>
+    │   │   │   ├───Release4.4
+    │   │   │   ├───Release5.1
+    │   │   │   └───...
+    │   │   ├───<GEri/GEi-name2>
+    │   │   │   ├───Release4.4
+    │   │   │   ├───Release5.1
+    │   │   │   └───...
+    │   │   └───...
+    │   ├───images
+    │   │   ├───README.rst
+    │   │   ├───<GEri/GEi-name1>
+    │   │   │   ├───Release4.4
+    │   │   │   ├───Release5.1
+    │   │   │   └───...
+    │   │   ├───<GEri/GEi-name2>
+    │   │   │   ├───Release4.4
+    │   │   │   ├───Release5.1
+    │   │   │   └───...
+    │   │   └───...
+    │   ├───puppet-modules
+    │   │   ├───README.rst
+    │   │   ├───<GEri/GEi-name1>
+    │   │   │   ├───Release4.4
+    │   │   │   ├───Release5.1
+    │   │   │   └───...
+    │   │   ├───<GEri/GEi-name2>
+    │   │   │   ├───Release4.4
+    │   │   │   ├───Release5.1
+    │   │   │   └───...
+    │   │   └───...
+    │   │
+    │
 
 An overview of what each of these does:
 
