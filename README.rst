@@ -62,7 +62,23 @@ The structure of the directory looks something like this:
        |   ├───<GEri/GEi-name2>
        |   │   └───...
        |   └───...
+       ├───murano-apps
+       |   ├───README.rst
+       |   ├───Chef
+       |   │   ├───AppGEiName1Chef
+       |   |   |   ├───README.rst
+       |   |   |   ├───fiware_release
+       |   |   |   ├───package
+       |   |   |   |   ├───Classes
+       |   │   |   |   |   └───...
+       |   |   |   |   └───Resources
+       |   │   |   |       └───...
+       |   │   |   └───...
+       |   │   └───...
+       |   └───Puppet
+       |       └───...
        |
+
    
 
 An overview of what each of these does:
