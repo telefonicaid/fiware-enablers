@@ -105,20 +105,20 @@ Last but not least, the repository is structured in branchs:
 How to contribute to this repo
 ==============================
 
-Probably, you will not have access rights to create branches in this repo. If so, you must request them to FIWARE Lab team 
-or work in your own forked repository.
+Probably, you will not have access rights to create branches in this repo. 
+We do not give access to other developers except the FIWARE Lab support Team. This way, you should work 
+in your own forked repository and, when you have you code ready, make a pull request into our repository (_origin/develop_).
 
 To know what are 'Forks' and how you can use it for this repository, please take a look at the GitHub documentation: `Fork a Repo`_
 Once you have this repo forked, you will be able to create branches in your own *fork* to upload your content. 
-If you have requested access rights to this repo as developer, you will be able to create branches straight in the *fiware-enablers* repository.
 
 Branches used by the GEri/GEi owner for contributing to the origin repo should have the format `feature/<GEri/GEi-name>`. 
-When you consider that the scripts developed in your local branch are correct you should launch a pull request 
-to *develop*. FIWARE Lab team will check the scripts in order to secure that 
+When you consider that the scripts developed in your local branch are correct, you should launch a new pull request 
+to *origin/develop*. FIWARE Lab team will check the scripts in order to secure that 
 they are working and if all is correct we will accept the pull request into *develop* branch.
 
-If you are woking with *forks*, note that you must update your local repo with the latest changes when they are merged 
-into *origin/develop*.
+Note that you must update your local repo with the latest changes when they are merged 
+into *origin/develop*. Check that you are always working with an updated fork of telefonicaid/fiware-enablers repository. 
 
 
 .. _Fork a Repo: https://help.github.com/articles/fork-a-repo/
