@@ -21,28 +21,17 @@ import shutil
 from os.path import isfile, join, isdir
 
 
-class LanguageSupportTest(core.MuranoTestsCore):
+class DeployPackagesTest(core.MuranoTestsCore):
 
     @classmethod
     def setUpClass(cls):
-        super(LanguageSupportTest, cls).setUpClass()
+        super(DeployPackagesTest, cls).setUpClass()
         cls.linux = core.CONF.murano.linux_image
         cls.flavor = core.CONF.murano.standard_flavor
         cls.keyname = core.CONF.murano.keyname
         cls.instance_type = core.CONF.murano.instance_type
+        """Trying to overwrite the configuration file"""
         shutil.copy("config.conf", "./../../venv/lib/python2.7/site-packages/murano/tests/functional/engine")
-
-
-        try:
-            pass
-            # Upload the Murano test package.
-          #  cls.upload_app('io.murano.conflang.chef.ExampleChef',
-          #                 'ExampleChef', {"tags": ["tag"]})
-          #  cls.upload_app('io.murano.conflang.puppet.ExamplePuppet',
-          #                 'ExamplePuppet', {"tags": ["tag"]})
-        except Exception as e:
-            cls.tearDownClass()
-            raise e
 
     @classmethod
     def tearDownClass(cls):
@@ -53,11 +42,18 @@ class LanguageSupportTest(core.MuranoTestsCore):
             raise e
 
     def _test_deploy(self, environment_name, package_name, port):
+        """
+        It deploys an enviornment.
+        :param environment_name:  environment name
+        :param package_name:  package name
+        :param port: port to be opened
+        :return:
+        """
         post_body = {
             "instance": {
                 "flavor": self.flavor,
                 "image": self.linux,
-                "keyname": "otro",
+                "keyname": self.keyname,
                 "assignFloatingIp": True,
                 'name': environment_name,
                 "?": {
@@ -81,11 +77,10 @@ class LanguageSupportTest(core.MuranoTestsCore):
         self.wait_for_environment_deploy(environment)
         self.deployment_success_check(environment, port)
 
-
-
     def test_deploys(self):
-        onlyfiles = [f for f in listdir("./../../Packages") if isdir(join("./../../Packages", f))]
-        for folder in onlyfiles:
+        """It obtains the murano packages created and deploy then"""
+        files = [f for f in listdir("./../../Packages") if isdir(join("./../../Packages", f))]
+        for folder in files:
             print folder
             self.upload_app('./../../../../../../../../Packages/'+folder,
                           folder, {"tags": ["tag"]})

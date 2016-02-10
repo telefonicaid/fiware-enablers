@@ -136,6 +136,3 @@ class Cookbook:
                 cookbooks_in = cookbook_child._get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in if x not in cookbooks)
         return cookbooks
-
-
-

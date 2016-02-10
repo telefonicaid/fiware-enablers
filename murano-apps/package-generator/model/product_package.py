@@ -173,7 +173,3 @@ class ProductPackage():
         for cookbook in self.cookbooks:
             cookbooks_str = cookbooks_str + (" " * 8)+"- " + cookbook.name+ " : " + cookbook.url + "\n"
         return cookbooks_str
-
-
-
-

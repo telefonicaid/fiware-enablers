@@ -104,4 +104,3 @@ class TestProduct(unittest.TestCase):
         config_cookbooks = ConfigParser.RawConfigParser()
         config_cookbooks.read('settings/cookbooks_url')
         return config_cookbooks
-

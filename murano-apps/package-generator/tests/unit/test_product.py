@@ -83,5 +83,3 @@ class TestProduct(unittest.TestCase):
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
         self.assertEquals(len(product.get_tcp_ports()), 2)
         self.assertEquals(len(product.get_udp_ports()), 1)
-
-
