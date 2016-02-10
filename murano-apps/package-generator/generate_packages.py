@@ -30,12 +30,11 @@ from sdcclient.client import SDCClient
 from utils.logger_utils import get_logger
 from model.product_package import ProductPackage
 from model.product import Product
-import os
+
 
 
 logger = get_logger(__name__)
 
-#PRODUCTANRELEASE BODY ELEMENTS
 PRODUCTANDRELEASE_BODY_ROOT = "productAndReleaseDto";
 PRODUCTANDRELEASE_BODY_PRODUCT = "product";
 PRODUCTANDRELEASE_BODY_PRODUCTNAME = "name";
@@ -90,7 +89,6 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name):
         p = get_product(i)
         image = p.get_image_metadata()
         if image is not None and p.get_nid() is not '':
-            print p.product_name
             package_murano = ProductPackage(p, config_cookbooks)
             package_murano.generate_manifest()
             package_murano.generate_class()
