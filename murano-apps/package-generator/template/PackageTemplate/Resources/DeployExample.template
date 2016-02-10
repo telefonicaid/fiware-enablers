@@ -1,0 +1,20 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy {GE_name}
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: {GE_installator}
+    Version: 1.0.0
+    EntryPoint: {GE_name}::{GE_recipe}
+    Files:
+{GE_cookbooks}
+    Options:
+      captureStdout: true
+      captureStderr: true

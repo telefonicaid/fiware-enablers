@@ -1,0 +1,4 @@
+[main]
+product: http://product.git
+child: http://child.git
+child2: http://child2.git

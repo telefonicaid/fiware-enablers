@@ -1,0 +1,26 @@
+[main]
+java: https://github.com/cookbooks/java.git
+openssl: https://github.com/chef-cookbooks/openssl.git
+build-essential: https://github.com/chef-cookbooks/build-essential.git
+apt: https://github.com/chef-cookbooks/apt.git
+git: https://github.com/chef-cookbooks/git.git
+yum-mysql-community:
+yum-epel: https://github.com/chef-cookbooks/yum-epel.git
+apache2: https://github.com/chef-cookbooks/httpd.git
+php: https://github.com/chef-cookbooks/php.git
+mysql: https://github.com/chef-cookbooks/mysql
+iptables:
+logrotate:
+pacman:
+python: https://github.com/poise/python.git
+yum: https://github.com/chef-cookbooks/yum.git
+mongodb: https://github.com/edelight/chef-mongodb.git
+poise-python: https://github.com/poise/poise-python.git
+xml:
+tomcat: https://github.com/chef-cookbooks/tomcat
+nodejs:
+mediawiki:
+django:
+redis:
+compat_resource: https://github.com/chef-cookbooks/compat_resource.git
+
