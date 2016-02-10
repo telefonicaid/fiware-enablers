@@ -1,3 +1,4 @@
+git+https://github.com/telefonicaid/fiware-sdc.git@master#egg=python-sdcclient&subdirectory=python-sdcclient
 GitPython>=1.0.1 # BSD License (3 clause)
 pbr<2.0,>=1.6
 testresources
