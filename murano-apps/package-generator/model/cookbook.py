@@ -24,8 +24,10 @@
 #
 
 from util import utils
-URL_FORGE = "https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/"
+URL_FORGE = "https://forge.fiware.org/scmrepos/svn/testbed/trunk/" \
+            "cookbooks/GESoftware/"
 KEY_CHILD_PRODUCT = "depends"
+
 
 class Cookbook:
     """This class represents the cookbook object.
@@ -71,11 +73,11 @@ class Cookbook:
         in the configuration file
         :return: cookbook url
         """
-        url =''
+        url = ''
         if self.enabler:
             url = URL_FORGE + self.name
         else:
-            url =  self.cookbook_config.get( "main", self.name)
+            url = self.cookbook_config.get("main", self.name)
         return url
 
     def _get_cookbook_children_from_metadata(self):
@@ -85,7 +87,7 @@ class Cookbook:
         """
         cookbooks = []
         if self._has_child_cookbooks_metadata():
-            cookbooks_str =  self._get_cookbooks_metadata()
+            cookbooks_str = self._get_cookbooks_metadata()
             for cookbook_str in cookbooks_str:
                 cookbook = Cookbook(cookbook_str, self.cookbook_config)
                 cookbooks.append(cookbook)
@@ -109,20 +111,20 @@ class Cookbook:
         """
         metadata_str = utils.read_metadata(self.url)
         cookbooks = []
-        lines = metadata_str.splitlines( )
+        lines = metadata_str.splitlines()
         for line in lines:
             if KEY_CHILD_PRODUCT in line:
                 dep = line.find(KEY_CHILD_PRODUCT)
                 if line.find("\'", dep) != -1:
                     beg = line.find("\'")
-                    end = line.find("\'", beg +1)
+                    end = line.find("\'", beg + 1)
                 else:
                     beg = line.find("\"", dep)
-                    end = line.find("\"", beg +1)
-                cookbooks.append(line[beg+1: end])
+                    end = line.find("\"", beg + 1)
+                cookbooks.append(line[beg + 1: end])
         return cookbooks
 
-    def _get_all_cookbooks_child(self):
+    def get_all_cookbooks_child(self):
         """
         It obtains a Cookbook array with all cookbooks, the cookbook
         itself plus all cookbooks of their cookbook children and
@@ -133,6 +135,6 @@ class Cookbook:
         for cookbook_child in self.cookbook_childs:
             cookbooks.append(cookbook_child)
             if len(cookbook_child.get_cookbooks_child()) != 0:
-                cookbooks_in = cookbook_child._get_all_cookbooks_child()
+                cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in if x not in cookbooks)
         return cookbooks

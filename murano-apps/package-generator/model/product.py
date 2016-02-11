@@ -22,8 +22,8 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-PRODUCT_IMAGE = "image";
-PRODUCT_INSTALLATOR = "installator";
+PRODUCT_IMAGE = "image"
+PRODUCT_INSTALLATOR = "installator"
 PUPPET_INSTALLATOR = "Puppet"
 TCP_PORTS = "open_ports"
 UDP_PORTS = "udp_open_ports"
@@ -31,10 +31,11 @@ SSH_PORT = "22"
 NID = "nid"
 FILTER_IMAGE = "hi"
 
+
 class Product():
     """This class represents the product.
     """
-    def __init__(self, product_name, product_version, metadatas = {}):
+    def __init__(self, product_name, product_version, metadatas={}):
         """
         :param product_name: the product name
         :param product_version: the release version
@@ -74,9 +75,9 @@ class Product():
         """
         image = None
         if PRODUCT_IMAGE in self.metadatas.keys():
-           value = self.metadatas.get(PRODUCT_IMAGE)
-           if value is not None and FILTER_IMAGE not in value:
-               image = value
+            value = self.metadatas.get(PRODUCT_IMAGE)
+            if value is not None and FILTER_IMAGE not in value:
+                image = value
         return image
 
     def get_tcp_ports(self):
@@ -86,10 +87,10 @@ class Product():
         """
         ports = []
         if TCP_PORTS in self.metadatas.keys():
-           value = self.metadatas.get(TCP_PORTS)
-           ports = value.split()
+            value = self.metadatas.get(TCP_PORTS)
+            ports = value.split()
         if SSH_PORT not in ports:
-           ports.append(SSH_PORT)
+            ports.append(SSH_PORT)
         return ports
 
     def get_udp_ports(self):
@@ -99,8 +100,8 @@ class Product():
         """
         ports = []
         if UDP_PORTS in self.metadatas.keys():
-           value = self.metadatas.get(UDP_PORTS)
-           ports = value.split()
+            value = self.metadatas.get(UDP_PORTS)
+            ports = value.split()
         return ports
 
     def get_nid(self):
@@ -117,8 +118,8 @@ class Product():
         """
         nid = ''
         if NID in self.metadatas.keys():
-           value = self.metadatas.get(NID)
-           nid = value
+            value = self.metadatas.get(NID)
+            nid = value
         return nid
 
     def set_nid(self, nid):
@@ -131,7 +132,7 @@ class Product():
         """
         nid = self.get_nid()
         if nid is not None:
-           return True
+            return True
         return False
 
     def is_puppet_installator(self):
@@ -151,6 +152,6 @@ class Product():
         """
         installator = None
         if PRODUCT_INSTALLATOR in self.metadatas.keys():
-           value = self.metadatas.get(PRODUCT_INSTALLATOR)
-           installator =  value[0].upper() + value[1:]
+            value = self.metadatas.get(PRODUCT_INSTALLATOR)
+            installator = value[0].upper() + value[1:]
         return installator

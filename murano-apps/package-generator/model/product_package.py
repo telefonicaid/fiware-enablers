@@ -31,27 +31,34 @@ from model.cookbook import Cookbook
 PACKAGES_FOLDER = "Packages"
 PACKAGE_TEMPLATE_CLASS = "template/PackageTemplate/Classes/GE_name.yaml"
 PACKAGE_TEMPLATE_MANIFEST = "template/PackageTemplate/manifest.yaml"
-PACKAGE_TEMPLATE_PLAN = "template/PackageTemplate/Resources/DeployExample.template"
+PACKAGE_TEMPLATE_PLAN = "template/PackageTemplate/Resources/" \
+                        "DeployExample.template"
 TCP = "tcp"
 UDP = "udp"
 
+
 class ProductPackage():
-    """This class represents the product package to be converted into murano package.
+    """This class represents the product package to be converted
+    into murano package.
     """
     def __init__(self, product, config_cookbooks):
         """
-        It is the contructor.
+        It is the constructor.
         :param product:  The product.
         :param config_cookbooks:  configuration for cookbooks
         :return:
         """
         self.product = product
         self.config_cookbooks = config_cookbooks
-        self.package_folder = PACKAGES_FOLDER + "/" + product.product_name + "/"
+        self.package_folder = (PACKAGES_FOLDER + "/" +
+                               product.product_name + "/")
         self.package_classes = self.package_folder + "Classes/"
+        self.package_classes_file = (self.package_classes +
+                                     self.product.product_name + ".yaml")
         self.package_manifest = self.package_folder + "manifest.yaml"
-        self.package_resources= self.package_folder + "Resources/"
-        self.package_template= self.package_resources + "Deploy"+product.product_name+".template"
+        self.package_resources = self.package_folder + "Resources/"
+        self.package_template = (self.package_resources + "Deploy" +
+                                 product.product_name + ".template")
         self.cookbooks = self.get_all_cookbooks()
         self._generate_package_folder()
 
@@ -89,44 +96,49 @@ class ProductPackage():
         It copies based files from the Template folder.
         """
         try:
-            shutil.copy(PACKAGE_TEMPLATE_CLASS, self.package_classes + self.product.product_name+".yaml")
+            shutil.copy(PACKAGE_TEMPLATE_CLASS, self.package_classes_file)
             shutil.copy(PACKAGE_TEMPLATE_MANIFEST, self.package_manifest)
             shutil.copy(PACKAGE_TEMPLATE_PLAN, self.package_template)
-        except OSError as exc: #
+        except OSError as exc:
             if exc.errno == errno.ENOTDIR:
                 shutil.copy("PackageTemplate", self.product.product_name)
-            else: raise
+            else:
+                raise
 
     def generate_manifest(self):
         """
         It generates the package manifest.
         """
-        utils.replace_word(self.package_manifest, "{GE_name}", self.product.product_name)
+        utils.replace_word(self.package_manifest, "{GE_name}",
+                           self.product.product_name)
 
     def generate_class(self):
         """
         It generates the package class file.
-        :return:
         """
-        utils.replace_word(self.package_classes+self.product.product_name+".yaml",
+        utils.replace_word(self.package_classes_file,
                            "{GE_name}", self.product.product_name)
-        utils.replace_word(self.package_classes+self.product.product_name+".yaml", "{GE_ports}", self._get_ports_str())
-        utils.replace_word(self.package_classes+self.product.product_name+".yaml", "{GE_nid}", self.product.get_nid())
-
+        utils.replace_word(self.package_classes_file,
+                           "{GE_ports}", self._get_ports_str())
+        utils.replace_word(self.package_classes_file,
+                           "{GE_nid}", self.product.get_nid())
 
     def generate_template(self):
         """
         It generates the package Excecution Plan.
         :return:
         """
-        utils.replace_word(self.package_template, "{GE_name}", self.product.product_name)
+        utils.replace_word(self.package_template, "{GE_name}",
+                           self.product.product_name)
         if self.product.is_puppet_installator():
             utils.replace_word(self.package_template, "{GE_recipe}", "install")
         else:
-            utils.replace_word(self.package_template, "{GE_recipe}", self.product.product_version+"_install")
-        utils.replace_word(self.package_template, "{GE_installator}", self.product.get_installator())
-        utils.replace_word(self.package_template, "{GE_cookbooks}", self.get_cookbooks_str())
-
+            utils.replace_word(self.package_template, "{GE_recipe}",
+                               self.product.product_version+"_install")
+        utils.replace_word(self.package_template, "{GE_installator}",
+                           self.product.get_installator())
+        utils.replace_word(self.package_template, "{GE_cookbooks}",
+                           self.get_cookbooks_str())
 
     def _get_ports(self, protocol):
         """
@@ -140,8 +152,10 @@ class ProductPackage():
         else:
             ports = self.product.get_udp_ports()
         for port in ports:
-            ports_str = ports_str + (" " * 12)+ "- ToPort: " + port +"\n" + (" " * 14)+ "FromPort: "+ \
-                        port + "\n" + (" " * 14)+"IpProtocol: "+ protocol + "\n"+ (" " * 14)+ "External: true\n"
+            ports_str = (ports_str + (" " * 12) + "- ToPort: " + port + "\n" +
+                         (" " * 14) + "FromPort: " + port + "\n" + (" " * 14) +
+                         "IpProtocol: " + protocol + "\n" + (" " * 14) +
+                         "External: true\n")
         return ports_str
 
     def _get_ports_str(self):
@@ -166,16 +180,17 @@ class ProductPackage():
         for cookbook_child in cookbook.get_cookbooks_child():
             cookbooks.append(cookbook_child)
             if len(cookbook_child.get_cookbooks_child()) != 0:
-                cookbooks_in = cookbook_child._get_all_cookbooks_child()
+                cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in if x not in cookbooks)
         return cookbooks
 
     def get_cookbooks_str(self):
         """
         It returns the string representation for the cookbooks.
-        :return: string represernation
+        :return: string representation
         """
         cookbooks_str = ''
         for cookbook in self.cookbooks:
-            cookbooks_str = cookbooks_str + (" " * 8)+"- " + cookbook.name+ " : " + cookbook.url + "\n"
+            cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
+                             " : " + cookbook.url + "\n")
         return cookbooks_str

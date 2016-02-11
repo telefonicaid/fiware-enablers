@@ -1,13 +1,13 @@
-git+https://github.com/telefonicaid/fiware-glancesync
+-e git://github.com/telefonicaid/fiware-glancesync#egg=fiware-glancesync
 python-sdcclient
 
 GitPython>=1.0.1 # BSD License (3 clause)
 pbr<2.0,>=1.6
 
-python-keystoneclient==1.8.0
+python-keystoneclient
 python-muranoclient>=0.8.1
 python-heatclient>=0.9.0
-git+https://github.com/openstack/murano
+-e git://github.com/openstack/murano#egg=murano
 
 oslo.config>=2.3.0
 oslo.serialization>=1.6.0

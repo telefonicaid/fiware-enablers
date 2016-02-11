@@ -18,7 +18,7 @@ import murano.tests.functional.engine.manager as core
 from os import listdir
 import shutil
 
-from os.path import isfile, join, isdir
+from os.path import join, isdir
 
 
 class DeployPackagesTest(core.MuranoTestsCore):
@@ -31,7 +31,9 @@ class DeployPackagesTest(core.MuranoTestsCore):
         cls.keyname = core.CONF.murano.keyname
         cls.instance_type = core.CONF.murano.instance_type
         """Trying to overwrite the configuration file"""
-        shutil.copy("config.conf", "./../../venv/lib/python2.7/site-packages/murano/tests/functional/engine")
+        shutil.copy("config.conf",
+                    "./../../venv/lib/python2.7/site-packages/"
+                    "murano/tests/functional/engine")
 
     @classmethod
     def tearDownClass(cls):
@@ -79,12 +81,12 @@ class DeployPackagesTest(core.MuranoTestsCore):
 
     def test_deploys(self):
         """It obtains the murano packages created and deploy then"""
-        files = [f for f in listdir("./../../Packages") if isdir(join("./../../Packages", f))]
+        files = [f for f in listdir("./../../Packages") if
+                 isdir(join("./../../Packages", f))]
         for folder in files:
-            print folder
-            self.upload_app('./../../../../../../../../Packages/'+folder,
-                          folder, {"tags": ["tag"]})
+            self.upload_app('./../../../../../../../../Packages/' + folder,
+                            folder, {"tags": ["tag"]})
             self._test_deploy(folder,
-                          'io.murano.conflang.chef.'+folder, 22)
+                              'io.murano.conflang.chef.' + folder, 22)
             self.purge_environments()
             self.purge_uploaded_packages()

@@ -27,8 +27,10 @@ import sys
 import git
 import urllib
 
-COOKBOOK_FOLDER ="cookbooks/"
-def replace_word(infile,old_word,new_word):
+COOKBOOK_FOLDER = "cookbooks/"
+
+
+def replace_word(infile, old_word, new_word):
     """
     It replace a word in a file.
     :param infile: the file
@@ -39,13 +41,14 @@ def replace_word(infile,old_word,new_word):
         print ("Error on replace_word, not a regular file: "+infile)
         sys.exit(1)
 
-    f1=open(infile,'r').read()
-    f2=open(infile,'w')
-    m=f1.replace(old_word,new_word)
+    f1 = open(infile, 'r').read()
+    f2 = open(infile, 'w')
+    m = f1.replace(old_word, new_word)
     f2.write(m)
     f2.close()
 
-def is_git_repository( url):
+
+def is_git_repository(url):
     """
     It returns if the url is a git repository.
     :param url:
@@ -54,6 +57,7 @@ def is_git_repository( url):
     return (url.startswith(("git://",
                             "git+http://", "git+https:/"))
             or url.endswith('.git'))
+
 
 def get_name_folder(url):
     """
@@ -65,6 +69,7 @@ def get_name_folder(url):
     if ".git" in end:
         return end[0:end.find(".git")]
     return end
+
 
 def read_metadata(url_file):
     """
@@ -83,8 +88,7 @@ def read_metadata(url_file):
         if os.path.exists(folder + "/metadata.rb"):
             infile = open(folder + "/metadata.rb", 'r')
             metadata_str = infile.read()
-
     else:
-        f = urllib.urlopen(url_file+"/metadata.rb")
+        f = urllib.urlopen(url_file + "/metadata.rb")
         metadata_str = f.read()
     return metadata_str

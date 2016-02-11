@@ -35,16 +35,13 @@ from scripts.getnids import getnid
 
 logger = get_logger(__name__)
 
-PRODUCTANDRELEASE_BODY_ROOT = "productAndReleaseDto";
-PRODUCTANDRELEASE_BODY_PRODUCT = "product";
-PRODUCTANDRELEASE_BODY_PRODUCTNAME = "name";
-PRODUCTANDRELEASE_BODY_PRODUCTVERSION = "version";
-PRODUCTANDRELEASE_BODY_METADATAS = "metadatas";
-PRODUCTANDRELEASE_BODY_METADATA_KEY = "key";
-PRODUCTANDRELEASE_BODY_METADATA_VALUE = "value";
-PRODUCTANDRELEASE_BODY_METADATA_INSTALLATOR = "installator";
-PRODUCTANDRELEASE_BODY_METADATA_INSTALLATOR_CHEF_VALUE = "chef";
-
+PRODUCTANDRELEASE_BODY = "productAndReleaseDto"
+BODY_PRODUCT = "product"
+BODY_PRODUCTNAME = "name"
+BODY_PRODUCTVERSION = "version"
+BODY_METADATAS = "metadatas"
+BODY_METADATA_KEY = "key"
+BODY_METADATA_VALUE = "value"
 
 
 def main(argv=None):
@@ -52,50 +49,58 @@ def main(argv=None):
     Getting parameters
     :param argv:
     """
-    parser = argparse.ArgumentParser(description='Testing product installation using paasmanager')
-    parser.add_argument("-u", "--os-username", dest='user', help='valid username', required=True)
-    parser.add_argument("-p", "--os-password", dest='password', help='valid password', required=True)
-    parser.add_argument("-t", "--os-tenant-id", dest='tenant_id', help="user tenant_id", required=True)
-    parser.add_argument("-r", "--os-region-name", dest='region_name', default='Spain2', help='the name of region')
-    parser.add_argument("-k", "--os-auth-url", dest="auth_url", default='http://cloud.lab.fiware.org:4731/v2.0',
+    parser = argparse.ArgumentParser(description=
+                                     ('Testing product '
+                                      'installation using paasmanager'))
+    parser.add_argument("-u", "--os-username", dest='user',
+                        help='valid username', required=True)
+    parser.add_argument("-p", "--os-password", dest='password',
+                        help='valid password', required=True)
+    parser.add_argument("-t", "--os-tenant-id", dest='tenant_id',
+                        help="user tenant_id", required=True)
+    parser.add_argument("-r", "--os-region-name", dest='region_name',
+                        default='Spain2', help='the name of region')
+    parser.add_argument("-k", "--os-auth-url", dest="auth_url",
+                        default='http://cloud.lab.fiware.org:4731/v2.0',
                         help='url to keystone <host or ip>:<port>/v2.0')
 
     args = parser.parse_args()
     logger.info(args)
 
-    create_murano_packages (
-                     auth_url=args.auth_url,
-                     tenant_id=args.tenant_id,
-                     user=args.user,
-                     password=args.password,
-                     region_name=args.region_name)
+    create_murano_packages(auth_url=args.auth_url,
+                           tenant_id=args.tenant_id,
+                           user=args.user,
+                           password=args.password,
+                           region_name=args.region_name)
+
 
 def create_murano_packages(auth_url, tenant_id, user, password, region_name):
 
-    logger.info("========================================================================================\n")
-    logger.info("Platform: " +  auth_url + ". Region: " + region_name + ". Username: " + user
-                      + " Tenant-ID: " + tenant_id + "\n")
-    logger.info("========================================================================================\n")
+    logger.info("==========================================================\n")
+    logger.info("Platform: " + auth_url + ". Region: " + region_name +
+                ". Username: " + user + " Tenant-ID: " + tenant_id + "\n")
+    logger.info("==========================================================\n")
 
     logger.info("SDC call to get the list of products available in catalog")
 
     sdc_client = SDCClient(user, password, tenant_id, auth_url, region_name)
     productandrelease_client = sdc_client.getProductAndReleaseResourceClient()
-    allproductreleases,_ = productandrelease_client.get_allproductandrelease()
+    allproductreleases, _ = productandrelease_client.get_allproductandrelease()
 
     config_products = load_config_products()
     nids = get_all_nids()
     config_cookbooks = load_config_cookbooks()
-    for i in allproductreleases[PRODUCTANDRELEASE_BODY_ROOT]:
-        p = get_product(i)
-        nid = get_nid(p, nids, config_products)
-        p.set_nid(nid)
-        image = p.get_image_metadata()
-        if image is not None and p.is_enabler():
-            package_murano = ProductPackage(p, config_cookbooks)
+    for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
+        product = get_product(product_xml)
+        nid = get_nid(product, nids, config_products)
+        product.set_nid(nid)
+        image = product.get_image_metadata()
+        if image is not None and product.is_enabler():
+            package_murano = ProductPackage(product, config_cookbooks)
             package_murano.generate_manifest()
             package_murano.generate_class()
             package_murano.generate_template()
+
 
 def get_nid(product, nids, config_products):
     try:
@@ -103,6 +108,7 @@ def get_nid(product, nids, config_products):
         return nids.get(nid_aux)
     except:
         return None
+
 
 def load_config_products():
 
@@ -116,24 +122,29 @@ def load_config_cookbooks():
     config_cookbooks.read('settings/cookbooks_urls')
     return config_cookbooks
 
-def get_product(i):
-    product_name = i[PRODUCTANDRELEASE_BODY_PRODUCT][PRODUCTANDRELEASE_BODY_PRODUCTNAME]
-    product_version = i[PRODUCTANDRELEASE_BODY_PRODUCTVERSION]
+
+def get_product(product_json):
+    product_name = product_json[BODY_PRODUCT][BODY_PRODUCTNAME]
+    product_version = product_json[BODY_PRODUCTVERSION]
     metadatas = {}
-    if i[PRODUCTANDRELEASE_BODY_PRODUCT].get(PRODUCTANDRELEASE_BODY_METADATAS): # Checks if there are metadatas in the product
-        for j in i[PRODUCTANDRELEASE_BODY_PRODUCT][PRODUCTANDRELEASE_BODY_METADATAS]:
-            try :
-               metadata_key = j[PRODUCTANDRELEASE_BODY_METADATA_KEY]
-               metadata_value = j[PRODUCTANDRELEASE_BODY_METADATA_VALUE]
+    if product_json[BODY_PRODUCT].get(BODY_METADATAS):
+    # Checks if there are metadatas in the product
+        for metadata_json in product_json[BODY_PRODUCT][BODY_METADATAS]:
+            try:
+                metadata_key = metadata_json[BODY_METADATA_KEY]
+                metadata_value = metadata_json[BODY_METADATA_VALUE]
             except TypeError:
-                metadata_key = i[PRODUCTANDRELEASE_BODY_PRODUCT][PRODUCTANDRELEASE_BODY_METADATAS][PRODUCTANDRELEASE_BODY_METADATA_KEY]
-                metadata_value = i[PRODUCTANDRELEASE_BODY_PRODUCT][PRODUCTANDRELEASE_BODY_METADATAS][PRODUCTANDRELEASE_BODY_METADATA_VALUE]
+                metadata_key = product_json[BODY_PRODUCT][BODY_METADATAS]
+                [BODY_METADATA_KEY]
+                metadata_value = product_json[BODY_PRODUCT][BODY_METADATAS]
+                [BODY_METADATA_VALUE]
             metadatas[metadata_key] = metadata_value
     return Product(product_name, product_version, metadatas)
 
+
 def get_all_nids():
     all_nids = {}
-    nid = NID ()
+    nid = NID()
     params = {}
     params['--wikitext'] = False
 
@@ -144,6 +155,7 @@ def get_all_nids():
         all_nids.update(nids)
         params[chapter] = False
     return all_nids
+
 
 if __name__ == "__main__":
     main()

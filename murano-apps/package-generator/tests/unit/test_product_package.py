@@ -38,16 +38,16 @@ COOKBOOK_CHILD = "child"
 COOKBOOK_CHILD2 = "child2"
 COOKBOOK_CHILD_URL = "http://child.git"
 PRODUCT_VERSION = "productVersion"
-metadata_product_child = "depends \'" + COOKBOOK_CHILD+ "\'"
-metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2+ "\'"
+metadata_product_child = "depends \'" + COOKBOOK_CHILD + "\'"
+metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2 + "\'"
 metadata_product_no_child = "other"
 
 PRODUCT_NAME = "product"
 PRODUCT_VERSION = "productVersion"
 
+
 class TestProduct(unittest.TestCase):
     """Class to test basic operations for the Product class"""
-
     @mock.patch('os.path.isdir')
     @mock.patch('os.mkdir')
     @mock.patch('os.makedirs')
@@ -76,7 +76,8 @@ class TestProduct(unittest.TestCase):
         ]
         product = Product(PRODUCT_NAME, PRODUCT_VERSION)
         product_package = ProductPackage(product, self.config)
-        self.assertEquals(product_package.get_product().get_product_name(), PRODUCT_NAME)
+        self.assertEquals(product_package.get_product().get_product_name(),
+                          PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 1)
         self.mock_open.reset_mock()
 
@@ -96,7 +97,8 @@ class TestProduct(unittest.TestCase):
         ]
         product = Product(PRODUCT_NAME, PRODUCT_VERSION)
         product_package = ProductPackage(product, self.config)
-        self.assertEquals(product_package.get_product().get_product_name(), PRODUCT_NAME)
+        self.assertEquals(product_package.get_product().get_product_name(),
+                          PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 2)
         self.mock_open.reset_mock()
 

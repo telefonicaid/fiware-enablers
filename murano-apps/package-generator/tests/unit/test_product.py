@@ -28,6 +28,7 @@ from model.product import Product
 PRODUCT_NAME = "product"
 PRODUCT_VERSION = "productVersion"
 
+
 class TestProduct(unittest.TestCase):
     """Class to test basic operations for the Product class"""
 

@@ -26,8 +26,6 @@ import unittest
 from model.cookbook import Cookbook
 import mock
 import ConfigParser
-from sys import version_info
-
 
 COOKBOOK_NAME = "product"
 COOKBOOK_URL = "http://product.git"
@@ -35,9 +33,10 @@ COOKBOOK_CHILD = "child"
 COOKBOOK_CHILD2 = "child2"
 COOKBOOK_CHILD_URL = "http://child.git"
 PRODUCT_VERSION = "productVersion"
-metadata_product_child = "depends \'" + COOKBOOK_CHILD+ "\'"
-metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2+ "\'"
+metadata_product_child = "depends \'" + COOKBOOK_CHILD + "\'"
+metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2 + "\'"
 metadata_product_no_child = "other"
+
 
 class TestProduct(unittest.TestCase):
 
@@ -90,14 +89,15 @@ class TestProduct(unittest.TestCase):
         self.assertEquals(len(cookbook._get_all_cookbooks_child()), 1)
         self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
         for cookbook_child in cookbook.get_cookbooks_child():
-            self.assertEquals(cookbook_child.get_cookbook_name(), COOKBOOK_CHILD)
+            self.assertEquals(cookbook_child.get_cookbook_name(),
+                              COOKBOOK_CHILD)
             self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL)
             self.assertEqual(len(cookbook_child.get_cookbooks_child()), 0)
         self.mock_open.reset_mock()
 
     @mock.patch('os.path.exists')
     @mock.patch('__builtin__.open', create=True)
-    def test_cookbook_one_child_child(self, mock_open,  mock_exists):
+    def test_cookbook_one_child_child(self, mock_open, mock_exists):
         """test the object is correctly built"""
         mock_exists.return_value = True
         self.mock_open = mock_open
@@ -114,7 +114,8 @@ class TestProduct(unittest.TestCase):
         self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
         self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
         for cookbook_child in cookbook.get_cookbooks_child():
-            self.assertEquals(cookbook_child.get_cookbook_name(), COOKBOOK_CHILD)
+            self.assertEquals(cookbook_child.get_cookbook_name(),
+                              COOKBOOK_CHILD)
             self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL)
             self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
         self.assertEquals(len(cookbook._get_all_cookbooks_child()), 2)
