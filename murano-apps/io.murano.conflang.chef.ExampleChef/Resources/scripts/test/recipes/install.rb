@@ -8,3 +8,4 @@ script "install" do
 end
 
 node.normal['test']['action_test'] = "install"
+
