@@ -44,6 +44,7 @@ class Product():
         self.product_name = product_name
         self.product_version = product_version
         self.metadatas = metadatas
+        self.nid = None
 
     def get_product_name(self):
         """
