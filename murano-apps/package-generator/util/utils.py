@@ -88,4 +88,3 @@ def read_metadata(url_file):
         f = urllib.urlopen(url_file+"/metadata.rb")
         metadata_str = f.read()
     return metadata_str
-

@@ -107,11 +107,21 @@ class Product():
         It obtains the product nid.
         :return: nid
         """
+        return self.nid
+
+    def get_nid_metadata(self):
+        """
+        It obtains the metadata image
+        :return: the image name
+        """
         nid = ''
         if NID in self.metadatas.keys():
            value = self.metadatas.get(NID)
            nid = value
         return nid
+
+    def set_nid(self, nid):
+        self.nid = nid
 
     def is_enabler(self):
         """
@@ -119,7 +129,7 @@ class Product():
         :return: True/False
         """
         nid = self.get_nid()
-        if nid is not '':
+        if nid is not None:
            return True
         return False
 

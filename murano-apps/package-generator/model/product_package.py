@@ -32,6 +32,8 @@ PACKAGES_FOLDER = "Packages"
 PACKAGE_TEMPLATE_CLASS = "template/PackageTemplate/Classes/GE_name.yaml"
 PACKAGE_TEMPLATE_MANIFEST = "template/PackageTemplate/manifest.yaml"
 PACKAGE_TEMPLATE_PLAN = "template/PackageTemplate/Resources/DeployExample.template"
+TCP = "tcp"
+UDP = "udp"
 
 class ProductPackage():
     """This class represents the product package to be converted into murano package.
@@ -132,11 +134,15 @@ class ProductPackage():
         :param protocol:
         :return:
         """
-        ports = ''
-        for port in self.product.get_tcp_ports():
-            ports = ports + (" " * 12)+ "- ToPort: " + port +"\n" + (" " * 14)+ "FromPort: "+ port + "\n"
-            (" " * 14)+"IpProtocol: "+ protocol + "\n"+ (" " * 14)+ "External: true\n"
-        return ports
+        ports_str = ''
+        if protocol is TCP:
+            ports = self.product.get_tcp_ports()
+        else:
+            ports = self.product.get_udp_ports()
+        for port in ports:
+            ports_str = ports_str + (" " * 12)+ "- ToPort: " + port +"\n" + (" " * 14)+ "FromPort: "+ \
+                        port + "\n" + (" " * 14)+"IpProtocol: "+ protocol + "\n"+ (" " * 14)+ "External: true\n"
+        return ports_str
 
     def _get_ports_str(self):
         """

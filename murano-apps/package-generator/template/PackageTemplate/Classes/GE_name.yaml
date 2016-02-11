@@ -41,4 +41,3 @@ Methods:
               - $host: $.instance.ipAddresses[0]
           - $._environment.reporter.report($this, format('{GE_name} is installed at {0}', $host))
           - $.setAttr(deployed, true)
-

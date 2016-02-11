@@ -30,8 +30,8 @@ from sdcclient.client import SDCClient
 from utils.logger_utils import get_logger
 from model.product_package import ProductPackage
 from model.product import Product
-
-
+from scripts.getnids.getnid import NID
+from scripts.getnids import getnid
 
 logger = get_logger(__name__)
 
@@ -84,15 +84,25 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name):
     allproductreleases,_ = productandrelease_client.get_allproductandrelease()
 
     config_products = load_config_products()
+    nids = get_all_nids()
     config_cookbooks = load_config_cookbooks()
     for i in allproductreleases[PRODUCTANDRELEASE_BODY_ROOT]:
         p = get_product(i)
+        nid = get_nid(p, nids, config_products)
+        p.set_nid(nid)
         image = p.get_image_metadata()
-        if image is not None and p.get_nid() is not '':
+        if image is not None and p.is_enabler():
             package_murano = ProductPackage(p, config_cookbooks)
             package_murano.generate_manifest()
             package_murano.generate_class()
             package_murano.generate_template()
+
+def get_nid(product, nids, config_products):
+    try:
+        nid_aux = config_products.get("main", product.get_product_name())
+        return nids.get(nid_aux)
+    except:
+        return None
 
 def load_config_products():
 
@@ -120,6 +130,20 @@ def get_product(i):
                 metadata_value = i[PRODUCTANDRELEASE_BODY_PRODUCT][PRODUCTANDRELEASE_BODY_METADATAS][PRODUCTANDRELEASE_BODY_METADATA_VALUE]
             metadatas[metadata_key] = metadata_value
     return Product(product_name, product_version, metadatas)
+
+def get_all_nids():
+    all_nids = {}
+    nid = NID ()
+    params = {}
+    params['--wikitext'] = False
+
+    for chapter in nid.TYPE.keys():
+        params['--type'] = chapter
+        params[chapter] = True
+        nids = getnid.processingnid(params).values()[0]
+        all_nids.update(nids)
+        params[chapter] = False
+    return all_nids
 
 if __name__ == "__main__":
     main()
