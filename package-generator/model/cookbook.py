@@ -141,13 +141,3 @@ class Cookbook:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in if x not in cookbooks)
         return cookbooks
-
-
-    @staticmethod
-    def load_config_cookbooks():
-        config_cookbooks = ConfigParser.RawConfigParser()
-        print os.path.abspath("./../settings/cookbooks_urls'")
-        print os.path.isdir('./settings')
-        print os.path.isfile('./settings/cookbooks_urls')
-        config_cookbooks.read('./settings/cookbooks_urls')
-        return config_cookbooks

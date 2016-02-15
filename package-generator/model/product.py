@@ -33,6 +33,7 @@ FILTER_IMAGE = "hi"
 
 from util.configuration import Config
 
+
 class Product():
     """This class represents the product.
     """
@@ -83,7 +84,8 @@ class Product():
 
     def _get_nid_from_catalogue(self):
         try:
-            nid_aux = Config.CONFIG_PRODUCT.get("main", self.get_product_name())
+            nid_aux = Config.CONFIG_PRODUCT.get("main",
+                                                self.get_product_name())
             return Config.NID.get(nid_aux)
         except:
             return None

@@ -171,7 +171,8 @@ class ProductPackage():
         :return: Cookbook array
         """
         cookbooks = []
-        cookbook = Cookbook(self.product.get_product_name(), self.product.is_enabler())
+        cookbook = Cookbook(self.product.get_product_name(),
+                            self.product.is_enabler())
         cookbooks.append(cookbook)
 
         for cookbook_child in cookbook.get_cookbooks_child():

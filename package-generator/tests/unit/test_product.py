@@ -38,6 +38,7 @@ NID = "NID"
 
 PRODUCT_NAME_OTHER = "other"
 
+
 class TestProduct(unittest.TestCase):
     """Class to test basic operations for the Product class"""
 
@@ -51,7 +52,6 @@ class TestProduct(unittest.TestCase):
         config_product.set("main", PRODUCT_NAME, PRODUCT_NAME_NID)
         Config.CONFIG_PRODUCT = config_product
         Config.NID = {PRODUCT_NAME_NID: NID}
-
 
     def test_constructor(self):
         """test the object is correctly built"""

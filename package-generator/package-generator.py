@@ -92,7 +92,19 @@ def main(argv=None):
                            password_github=args.password_github)
 
 
-def create_murano_packages(auth_url, tenant_id, user, password, region_name, user_github, password_github):
+def create_murano_packages(auth_url, tenant_id, user, password, region_name,
+                           user_github, password_github):
+    """
+    It creates the murano package and uploades it into github.
+    :param auth_url:
+    :param tenant_id:
+    :param user:
+    :param password:
+    :param region_name:
+    :param user_github:
+    :param password_github:
+    :return:
+    """
 
     logger.info("==========================================================\n")
     logger.info("Platform: " + auth_url + ". Region: " + region_name +
@@ -120,9 +132,18 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name, use
 
 
 def load_config():
+    """
+    Loading configuration
+    """
     Config(".")
 
+
 def get_product(product_json):
+    """
+    It obtains the product object from a JSON
+    :param product_json:
+    :return:
+    """
     product_name = product_json[BODY_PRODUCT][BODY_PRODUCTNAME]
     product_version = product_json[BODY_PRODUCTVERSION]
     metadatas = {}
@@ -133,17 +154,24 @@ def get_product(product_json):
                 metadata_key = metadata_json[BODY_METADATA_KEY]
                 metadata_value = metadata_json[BODY_METADATA_VALUE]
             except TypeError:
-                metadata_key = \
-                    product_json[BODY_PRODUCT][BODY_METADATAS][BODY_METADATA_KEY]
-                metadata_value = \
-                    product_json[BODY_PRODUCT][BODY_METADATAS][BODY_METADATA_VALUE]
+                metadatas_json = product_json[BODY_PRODUCT][BODY_METADATAS]
+                metadata_key = metadatas_json[BODY_METADATA_KEY]
+                metadata_value = metadatas_json[BODY_METADATA_VALUE]
             metadatas[metadata_key] = metadata_value
     return Product(product_name, product_version, metadatas)
 
+
 def update_into_github(user_github, password_github):
+    """
+    It update the packages into github.
+    :param user_github:
+    :param password_github:
+    :return:
+    """
     branch_str = utils.create_brach()
     URL_REPO = "https://api.github.com/repos/telefonicaid/fiware-enablers"
-    utils.create_github_pull_request(URL_REPO, user_github, password_github, branch_str)
+    utils.create_github_pull_request(URL_REPO, user_github,
+                                     password_github, branch_str)
     utils.delete_branch(branch_str)
 
 

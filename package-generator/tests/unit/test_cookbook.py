@@ -128,4 +128,3 @@ class TestCookbook(unittest.TestCase):
             self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 2)
         self.mock_open.reset_mock()
-
