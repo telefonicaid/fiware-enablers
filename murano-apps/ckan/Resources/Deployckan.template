@@ -23,19 +23,10 @@ Scripts:
         - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
         - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
         - python : https://github.com/poise/python.git
-        - build-essential : https://github.com/chef-cookbooks/build-essential.git
-        - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
         - postgresql : https://github.com/hw-cookbooks/postgresql.git
-        - apt : https://github.com/chef-cookbooks/apt.git
-        - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - openssl : https://github.com/chef-cookbooks/openssl.git
         - chef-sugar : https://github.com/sethvargo/chef-sugar
         - database : https://github.com/chef-cookbooks/database.git
-        - postgresql : https://github.com/hw-cookbooks/postgresql.git
-        - apt : https://github.com/chef-cookbooks/apt.git
-        - build-essential : https://github.com/chef-cookbooks/build-essential.git
-        - openssl : https://github.com/chef-cookbooks/openssl.git
-        - chef-sugar : https://github.com/sethvargo/chef-sugar
         - java : https://github.com/cookbooks/java.git
 
     Options:
