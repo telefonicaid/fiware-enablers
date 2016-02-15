@@ -21,7 +21,6 @@ Scripts:
         - python : https://github.com/poise/python.git
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
-        - yum : https://github.com/chef-cookbooks/yum.git
 
     Options:
       captureStdout: true
