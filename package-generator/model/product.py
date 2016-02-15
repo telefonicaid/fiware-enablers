@@ -31,6 +31,7 @@ SSH_PORT = "22"
 NID = "nid"
 FILTER_IMAGE = "hi"
 
+from util.configuration import Config
 
 class Product():
     """This class represents the product.
@@ -45,7 +46,7 @@ class Product():
         self.product_name = product_name
         self.product_version = product_version
         self.metadatas = metadatas
-        self.nid = None
+        self.nid = self._get_nid_from_catalogue()
 
     def get_product_name(self):
         """
@@ -79,6 +80,13 @@ class Product():
             if value is not None and FILTER_IMAGE not in value:
                 image = value
         return image
+
+    def _get_nid_from_catalogue(self):
+        try:
+            nid_aux = Config.CONFIG_PRODUCT.get("main", self.get_product_name())
+            return Config.NID.get(nid_aux)
+        except:
+            return None
 
     def get_tcp_ports(self):
         """
@@ -121,9 +129,6 @@ class Product():
             value = self.metadatas.get(NID)
             nid = value
         return nid
-
-    def set_nid(self, nid):
-        self.nid = nid
 
     def is_enabler(self):
         """

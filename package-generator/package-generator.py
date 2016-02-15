@@ -24,14 +24,11 @@
 #
 
 import argparse
-import ConfigParser
-
 from sdcclient.client import SDCClient
 from utils.logger_utils import get_logger
 from model.product_package import ProductPackage
 from model.product import Product
-from scripts.getnids.getnid import NID
-from scripts.getnids import getnid
+from util.configuration import Config
 
 logger = get_logger(__name__)
 
@@ -87,41 +84,19 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name):
     productandrelease_client = sdc_client.getProductAndReleaseResourceClient()
     allproductreleases, _ = productandrelease_client.get_allproductandrelease()
 
-    config_products = load_config_products()
-    nids = get_all_nids()
-    config_cookbooks = load_config_cookbooks()
+    load_config()
+
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
         product = get_product(product_xml)
-        nid = get_nid(product, nids, config_products)
-        product.set_nid(nid)
         image = product.get_image_metadata()
         if image is not None and product.is_enabler():
-            package_murano = ProductPackage(product, config_cookbooks)
+            package_murano = ProductPackage(product)
             package_murano.generate_manifest()
             package_murano.generate_class()
             package_murano.generate_template()
 
-
-def get_nid(product, nids, config_products):
-    try:
-        nid_aux = config_products.get("main", product.get_product_name())
-        return nids.get(nid_aux)
-    except:
-        return None
-
-
-def load_config_products():
-
-    config_product = ConfigParser.RawConfigParser()
-    config_product.read('settings/product_names')
-    return config_product
-
-
-def load_config_cookbooks():
-    config_cookbooks = ConfigParser.RawConfigParser()
-    config_cookbooks.read('settings/cookbooks_urls')
-    return config_cookbooks
-
+def load_config():
+    Config(".")
 
 def get_product(product_json):
     product_name = product_json[BODY_PRODUCT][BODY_PRODUCTNAME]
@@ -134,28 +109,12 @@ def get_product(product_json):
                 metadata_key = metadata_json[BODY_METADATA_KEY]
                 metadata_value = metadata_json[BODY_METADATA_VALUE]
             except TypeError:
-                metadata_key = product_json[BODY_PRODUCT][BODY_METADATAS]
-                [BODY_METADATA_KEY]
-                metadata_value = product_json[BODY_PRODUCT][BODY_METADATAS]
-                [BODY_METADATA_VALUE]
+                metadata_key = \
+                    product_json[BODY_PRODUCT][BODY_METADATAS][BODY_METADATA_KEY]
+                metadata_value = \
+                    product_json[BODY_PRODUCT][BODY_METADATAS][BODY_METADATA_VALUE]
             metadatas[metadata_key] = metadata_value
     return Product(product_name, product_version, metadatas)
-
-
-def get_all_nids():
-    all_nids = {}
-    nid = NID()
-    params = {}
-    params['--wikitext'] = False
-
-    for chapter in nid.TYPE.keys():
-        params['--type'] = chapter
-        params[chapter] = True
-        nids = getnid.processingnid(params).values()[0]
-        all_nids.update(nids)
-        params[chapter] = False
-    return all_nids
-
 
 if __name__ == "__main__":
     main()

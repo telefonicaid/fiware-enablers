@@ -28,7 +28,7 @@ import os
 from util import utils
 from model.cookbook import Cookbook
 
-PACKAGES_FOLDER = "Packages"
+PACKAGES_FOLDER = "./../murano-apps"
 PACKAGE_TEMPLATE_CLASS = "template/PackageTemplate/Classes/GE_name.yaml"
 PACKAGE_TEMPLATE_MANIFEST = "template/PackageTemplate/manifest.yaml"
 PACKAGE_TEMPLATE_PLAN = "template/PackageTemplate/Resources/" \
@@ -41,7 +41,7 @@ class ProductPackage():
     """This class represents the product package to be converted
     into murano package.
     """
-    def __init__(self, product, config_cookbooks):
+    def __init__(self, product):
         """
         It is the constructor.
         :param product:  The product.
@@ -49,7 +49,6 @@ class ProductPackage():
         :return:
         """
         self.product = product
-        self.config_cookbooks = config_cookbooks
         self.package_folder = (PACKAGES_FOLDER + "/" +
                                product.product_name + "/")
         self.package_classes = self.package_folder + "Classes/"
@@ -172,9 +171,7 @@ class ProductPackage():
         :return: Cookbook array
         """
         cookbooks = []
-        cookbook = Cookbook(self.product.get_product_name(),
-                            self.config_cookbooks,
-                            self.product.is_enabler())
+        cookbook = Cookbook(self.product.get_product_name(), self.product.is_enabler())
         cookbooks.append(cookbook)
 
         for cookbook_child in cookbook.get_cookbooks_child():

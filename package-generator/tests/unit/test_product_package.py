@@ -25,6 +25,7 @@
 import unittest
 from model.product_package import ProductPackage
 from model.product import Product
+from util.configuration import Config
 import six
 import io
 from mock import patch
@@ -41,12 +42,10 @@ PRODUCT_VERSION = "productVersion"
 metadata_product_child = "depends \'" + COOKBOOK_CHILD + "\'"
 metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2 + "\'"
 metadata_product_no_child = "other"
-
 PRODUCT_NAME = "product"
-PRODUCT_VERSION = "productVersion"
 
 
-class TestProduct(unittest.TestCase):
+class TestProductPackage(unittest.TestCase):
     """Class to test basic operations for the Product class"""
     @mock.patch('os.path.isdir')
     @mock.patch('os.mkdir')
@@ -55,8 +54,12 @@ class TestProduct(unittest.TestCase):
         mock_path.return_value = True
         mock_mkdir.return_value = None
         mock_makedir.return_value = None
-        self.config = self.load_config_cookbooks()
-        pass
+        config_product = ConfigParser.RawConfigParser()
+        config_product.add_section("main")
+        config_product.set("main", COOKBOOK_NAME, COOKBOOK_URL)
+        config_product.set("main", COOKBOOK_CHILD, COOKBOOK_CHILD_URL)
+        Config.CONFIG_COOKBOOK = config_product
+        Config.NID = {}
 
     def tearDown(self):
         self.mock_open.reset_mock()
@@ -75,7 +78,7 @@ class TestProduct(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
         product = Product(PRODUCT_NAME, PRODUCT_VERSION)
-        product_package = ProductPackage(product, self.config)
+        product_package = ProductPackage(product)
         self.assertEquals(product_package.get_product().get_product_name(),
                           PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 1)
@@ -84,7 +87,7 @@ class TestProduct(unittest.TestCase):
     @mock.patch('shutil.copy')
     @mock.patch('os.path.exists')
     @mock.patch('__builtin__.open', create=True)
-    def test_product_package_child(self, mock_open,  mock_exists, mock_copy):
+    def test_product_package_child(self, mock_open, mock_exists, mock_copy):
         """test the object is correctly built"""
         mock_exists.return_value = True
         mock_copy.return_value = None
@@ -96,13 +99,8 @@ class TestProduct(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
         product = Product(PRODUCT_NAME, PRODUCT_VERSION)
-        product_package = ProductPackage(product, self.config)
+        product_package = ProductPackage(product)
         self.assertEquals(product_package.get_product().get_product_name(),
                           PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 2)
         self.mock_open.reset_mock()
-
-    def load_config_cookbooks(self):
-        config_cookbooks = ConfigParser.RawConfigParser()
-        config_cookbooks.read('settings/cookbooks_url')
-        return config_cookbooks

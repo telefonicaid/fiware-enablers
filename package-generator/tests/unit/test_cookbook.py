@@ -24,7 +24,9 @@
 #
 import unittest
 from model.cookbook import Cookbook
+import ConfigParser
 import mock
+from util.configuration import Config
 import ConfigParser
 
 COOKBOOK_NAME = "product"
@@ -32,23 +34,29 @@ COOKBOOK_URL = "http://product.git"
 COOKBOOK_CHILD = "child"
 COOKBOOK_CHILD2 = "child2"
 COOKBOOK_CHILD_URL = "http://child.git"
+COOKBOOK_CHILD_URL2 = "http://child2.git"
 PRODUCT_VERSION = "productVersion"
 metadata_product_child = "depends \'" + COOKBOOK_CHILD + "\'"
 metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2 + "\'"
 metadata_product_no_child = "other"
 
 
-class TestProduct(unittest.TestCase):
+class TestCookbook(unittest.TestCase):
 
     @mock.patch('os.path.isdir')
     @mock.patch('os.mkdir')
     @mock.patch('os.makedirs')
-    def setUp(self, mock_path, mock_mkdir, mock_makedir):
+    @mock.patch('util.configuration.Config')
+    def setUp(self, mock_conf, mock_path, mock_mkdir, mock_makedir):
+        config_product = ConfigParser.RawConfigParser()
+        config_product.add_section("main")
+        config_product.set("main", COOKBOOK_NAME, COOKBOOK_URL)
+        config_product.set("main", COOKBOOK_CHILD, COOKBOOK_CHILD_URL)
+        config_product.set("main", COOKBOOK_CHILD2, COOKBOOK_CHILD_URL2)
+        Config.CONFIG_COOKBOOK = config_product
         mock_path.return_value = True
         mock_mkdir.return_value = None
         mock_makedir.return_value = None
-        self.config = self._load_config_cookbooks()
-        pass
 
     def tearDown(self):
         self.mock_open.reset_mock()
@@ -64,10 +72,10 @@ class TestProduct(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
-        cookbook = Cookbook(COOKBOOK_NAME, self.config)
+        cookbook = Cookbook(COOKBOOK_NAME)
         self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
         self.assertEquals(len(cookbook.get_cookbooks_child()), 0)
-        self.assertEquals(len(cookbook._get_all_cookbooks_child()), 0)
+        self.assertEquals(len(cookbook.get_all_cookbooks_child()), 0)
         self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
         self.mock_open.reset_mock()
 
@@ -83,10 +91,10 @@ class TestProduct(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
-        cookbook = Cookbook(COOKBOOK_NAME, self.config)
+        cookbook = Cookbook(COOKBOOK_NAME)
         self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
         self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
-        self.assertEquals(len(cookbook._get_all_cookbooks_child()), 1)
+        self.assertEquals(len(cookbook.get_all_cookbooks_child()), 1)
         self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
         for cookbook_child in cookbook.get_cookbooks_child():
             self.assertEquals(cookbook_child.get_cookbook_name(),
@@ -109,7 +117,7 @@ class TestProduct(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
-        cookbook = Cookbook(COOKBOOK_NAME, self.config)
+        cookbook = Cookbook(COOKBOOK_NAME)
         self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
         self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
         self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
@@ -118,10 +126,6 @@ class TestProduct(unittest.TestCase):
                               COOKBOOK_CHILD)
             self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL)
             self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
-        self.assertEquals(len(cookbook._get_all_cookbooks_child()), 2)
+        self.assertEquals(len(cookbook.get_all_cookbooks_child()), 2)
         self.mock_open.reset_mock()
 
-    def _load_config_cookbooks(self):
-        config_cookbooks = ConfigParser.RawConfigParser()
-        config_cookbooks.read('settings/cookbooks_url')
-        return config_cookbooks

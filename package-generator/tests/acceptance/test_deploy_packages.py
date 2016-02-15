@@ -15,8 +15,12 @@
 import uuid
 
 import murano.tests.functional.engine.manager as core
+import murano.tests.functional.engine.config as config
+import mock
+import os
 from os import listdir
 import shutil
+from oslo_config import cfg
 
 from os.path import join, isdir
 
@@ -30,10 +34,6 @@ class DeployPackagesTest(core.MuranoTestsCore):
         cls.flavor = core.CONF.murano.standard_flavor
         cls.keyname = core.CONF.murano.keyname
         cls.instance_type = core.CONF.murano.instance_type
-        """Trying to overwrite the configuration file"""
-        shutil.copy("config.conf",
-                    "./../../venv/lib/python2.7/site-packages/"
-                    "murano/tests/functional/engine")
 
     @classmethod
     def tearDownClass(cls):
@@ -79,10 +79,12 @@ class DeployPackagesTest(core.MuranoTestsCore):
         self.wait_for_environment_deploy(environment)
         self.deployment_success_check(environment, port)
 
-    def test_deploys(self):
+    @mock.patch('murano.tests.functional.engine.config')
+    def test_deploys(self, mock_config):
         """It obtains the murano packages created and deploy then"""
-        files = [f for f in listdir("./../../Packages") if
-                 isdir(join("./../../Packages", f))]
+        mock_config.load_config = self.load_config()
+        files = [f for f in listdir("Packages") if
+                 isdir(join("Packages", f))]
         for folder in files:
             self.upload_app('./../../../../../../../../Packages/' + folder,
                             folder, {"tags": ["tag"]})
@@ -90,3 +92,62 @@ class DeployPackagesTest(core.MuranoTestsCore):
                               'io.murano.conflang.chef.' + folder, 22)
             self.purge_environments()
             self.purge_uploaded_packages()
+
+    def load_config(self):
+        __location = os.path.realpath(os.path.join(os.getcwd(),
+                                      os.path.dirname(__file__)))
+        path = os.path.join(__location, "config.conf")
+        if os.path.exists(path):
+            CONF([], project='muranointegration', default_config_files=[path])
+
+        config.register_config(CONF, murano_group, MuranoGroup)
+
+murano_group = cfg.OptGroup(name='murano', title="murano")
+
+MuranoGroup = [
+    cfg.StrOpt('auth_url',
+               default='http://127.0.0.1:5000/v2.0/',
+               help="keystone url"),
+    cfg.StrOpt('user',
+               default='admin',
+               help="keystone user"),
+    cfg.StrOpt('password',
+               default='pass',
+               help="password for keystone user"),
+    cfg.StrOpt('tenant',
+               default='admin',
+               help='keystone tenant'),
+    cfg.StrOpt('keyname',
+               default='',
+               help='name of keypair for debugging'),
+    cfg.StrOpt('murano_url',
+               default='http://127.0.0.1:8082/v1/',
+               help="murano url"),
+    cfg.StrOpt('standard_flavor',
+               default='m1.medium',
+               help="flavor for sanity tests"),
+    cfg.StrOpt('advanced_flavor',
+               default='m1.large',
+               help="flavor for advanced tests"),
+    cfg.StrOpt('linux_image',
+               default='default_linux',
+               help="image for linux services"),
+    cfg.StrOpt('instance_type',
+               default='io.murano.resources.LinuxMuranoInstance',
+               help="murano instance type"),
+    cfg.StrOpt('docker_image',
+               default='ubuntu14.04-x64-docker',
+               help="image for docker applications"),
+    cfg.StrOpt('windows_image',
+               default='default_windows',
+               help="image for windows services"),
+    cfg.StrOpt('hdp_image',
+               default="hdp-sandbox",
+               help="image for hdp-sandbox"),
+    cfg.StrOpt('kubernetes_image',
+               default="ubuntu14.04-x64-kubernetes",
+               help="image for kubernetes"),
+    cfg.StrOpt('region_name', help="region name for services")
+]
+
+CONF = cfg.CONF

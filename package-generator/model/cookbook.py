@@ -24,6 +24,9 @@
 #
 
 from util import utils
+import os
+import ConfigParser
+from util.configuration import Config
 URL_FORGE = "https://forge.fiware.org/scmrepos/svn/testbed/trunk/" \
             "cookbooks/GESoftware/"
 KEY_CHILD_PRODUCT = "depends"
@@ -32,7 +35,7 @@ KEY_CHILD_PRODUCT = "depends"
 class Cookbook:
     """This class represents the cookbook object.
     """
-    def __init__(self, name, cookbook_config, enabler=False):
+    def __init__(self, name, enabler=False):
         """
         The constructor
         :param name: cookbook name
@@ -42,7 +45,6 @@ class Cookbook:
         """
         self.name = name
         self.enabler = enabler
-        self.cookbook_config = cookbook_config
         self.url = self._get_url()
         self.cookbook_childs = self._get_cookbook_children_from_metadata()
 
@@ -77,7 +79,8 @@ class Cookbook:
         if self.enabler:
             url = URL_FORGE + self.name
         else:
-            url = self.cookbook_config.get("main", self.name)
+            url = Config.CONFIG_COOKBOOK.get("main", self.name)
+
         return url
 
     def _get_cookbook_children_from_metadata(self):
@@ -89,7 +92,7 @@ class Cookbook:
         if self._has_child_cookbooks_metadata():
             cookbooks_str = self._get_cookbooks_metadata()
             for cookbook_str in cookbooks_str:
-                cookbook = Cookbook(cookbook_str, self.cookbook_config)
+                cookbook = Cookbook(cookbook_str)
                 cookbooks.append(cookbook)
         return cookbooks
 
@@ -138,3 +141,13 @@ class Cookbook:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in if x not in cookbooks)
         return cookbooks
+
+
+    @staticmethod
+    def load_config_cookbooks():
+        config_cookbooks = ConfigParser.RawConfigParser()
+        print os.path.abspath("./../settings/cookbooks_urls'")
+        print os.path.isdir('./settings')
+        print os.path.isfile('./settings/cookbooks_urls')
+        config_cookbooks.read('./settings/cookbooks_urls')
+        return config_cookbooks
