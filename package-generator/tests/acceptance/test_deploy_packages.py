@@ -19,7 +19,6 @@ import murano.tests.functional.engine.config as config
 import mock
 import os
 from os import listdir
-import shutil
 from oslo_config import cfg
 
 from os.path import join, isdir
@@ -83,10 +82,14 @@ class DeployPackagesTest(core.MuranoTestsCore):
     def test_deploys(self, mock_config):
         """It obtains the murano packages created and deploy then"""
         mock_config.load_config = self.load_config()
-        files = [f for f in listdir("Packages") if
-                 isdir(join("Packages", f))]
+        self.linux = core.CONF.murano.linux_image
+        self.flavor = core.CONF.murano.standard_flavor
+        self.keyname = core.CONF.murano.keyname
+        self.instance_type = core.CONF.murano.instance_type
+        files = [f for f in listdir("./../../murano-apps") if
+                 isdir(join("./../../murano-apps", f))]
         for folder in files:
-            self.upload_app('./../../../../../../../../Packages/' + folder,
+            self.upload_app('./../../../../../../../../../murano-apps/' + folder,
                             folder, {"tags": ["tag"]})
             self._test_deploy(folder,
                               'io.murano.conflang.chef.' + folder, 22)

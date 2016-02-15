@@ -109,8 +109,9 @@ def create_github_pull_request(repo_url, user_github, password_github, branch):
     g = Github(user_github, password_github)
     for repo in g.get_user().get_repos():
         if repo.url == repo_url:
-            repo.create_pull("New update in Murano-packages",
+            pull = repo.create_pull("New update in Murano-packages",
                              "Created by package-generator", branch, "develop")
+            pull
 
 
 def create_branch():

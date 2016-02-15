@@ -128,3 +128,29 @@ class TestCookbook(unittest.TestCase):
             self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 2)
         self.mock_open.reset_mock()
+
+    @mock.patch('os.path.exists')
+    @mock.patch('__builtin__.open', create=True)
+    def test_cookbook_repite_child_child(self, mock_open, mock_exists):
+        """test the object is correctly built"""
+        mock_exists.return_value = True
+        self.mock_open = mock_open
+        self.mock_open.side_effect = [
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value
+        ]
+        cookbook = Cookbook(COOKBOOK_NAME)
+        self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
+        self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
+        self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
+        for cookbook_child in cookbook.get_cookbooks_child():
+            self.assertEquals(cookbook_child.get_cookbook_name(),
+                              COOKBOOK_CHILD)
+            self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL)
+            self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
+        self.assertEquals(len(cookbook.get_all_cookbooks_child()), 1)
+        self.mock_open.reset_mock()

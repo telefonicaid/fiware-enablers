@@ -168,7 +168,7 @@ def update_into_github(user_github, password_github):
     :param password_github:
     :return:
     """
-    branch_str = utils.create_brach()
+    branch_str = utils.create_branch()
     URL_REPO = "https://api.github.com/repos/telefonicaid/fiware-enablers"
     utils.create_github_pull_request(URL_REPO, user_github,
                                      password_github, branch_str)
