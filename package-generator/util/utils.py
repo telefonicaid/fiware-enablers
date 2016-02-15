@@ -26,6 +26,14 @@ import os
 import sys
 import git
 import urllib
+from github import Github
+from os import listdir
+from os.path import join, isdir
+import shutil
+import time
+from oslo_config import cfg
+from git import Repo
+import git
 from git import Repo
 
 COOKBOOK_FOLDER = "cookbooks/"
@@ -93,6 +101,34 @@ def read_metadata(url_file):
         f = urllib.urlopen(url_file + "/metadata.rb")
         metadata_str = f.read()
     return metadata_str
+
+def create_github_pull_request(repo_url, user_github, password_github, branch):
+    g = Github(user_github, password_github)
+    for repo in g.get_user().get_repos():
+        if repo.url == repo_url:
+            repo.create_pull("New update in Murano-packages",
+                             "Created by package-generator", branch, "develop")
+
+def create_brach():
+    repo = git.repo.Repo("./../")
+    str_branch = "update_packages"+str(time.time())
+
+    # Create branch in repo
+    new = repo.create_head(str_branch)
+    files = [f for f in listdir("./../murano-apps") if
+                 isdir(join("./../murano-apps", f))]
+
+    for folder in files:
+        repo.index.add(["murano-apps/"+folder]) # add it to the index
+        # Commit the changes to deviate masters history
+        repo.index.commit("Added a new file in the past - for later merege")
+    repo.commit()
+    repo.remotes.origin.push(new)
+    return str_branch
+
+def delete_branch(branch):
+    repo = git.repo.Repo("./../")
+    repo.delete_head(branch)
 
 
 

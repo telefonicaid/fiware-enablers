@@ -26,9 +26,22 @@
 import argparse
 from sdcclient.client import SDCClient
 from utils.logger_utils import get_logger
+from github import Github
+from os import listdir
+import shutil
+import time
+from oslo_config import cfg
+from git import Repo
+import git
+
+
+from os.path import join, isdir
+
 from model.product_package import ProductPackage
 from model.product import Product
 from util.configuration import Config
+from util import utils
+
 
 logger = get_logger(__name__)
 
@@ -60,6 +73,12 @@ def main(argv=None):
     parser.add_argument("-k", "--os-auth-url", dest="auth_url",
                         default='http://cloud.lab.fiware.org:4731/v2.0',
                         help='url to keystone <host or ip>:<port>/v2.0')
+    parser.add_argument("-ug", "--os-user_github", dest="user_github",
+                        default='None',
+                        help='user github')
+    parser.add_argument("-pg", "--os-password_github", dest="password_github",
+                        default='None',
+                        help='password github')
 
     args = parser.parse_args()
     logger.info(args)
@@ -68,10 +87,12 @@ def main(argv=None):
                            tenant_id=args.tenant_id,
                            user=args.user,
                            password=args.password,
-                           region_name=args.region_name)
+                           region_name=args.region_name,
+                           user_github=args.user_github,
+                           password_github=args.password_github)
 
 
-def create_murano_packages(auth_url, tenant_id, user, password, region_name):
+def create_murano_packages(auth_url, tenant_id, user, password, region_name, user_github, password_github):
 
     logger.info("==========================================================\n")
     logger.info("Platform: " + auth_url + ". Region: " + region_name +
@@ -95,6 +116,9 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name):
             package_murano.generate_class()
             package_murano.generate_template()
 
+    update_into_github(user_github, password_github)
+
+
 def load_config():
     Config(".")
 
@@ -115,6 +139,13 @@ def get_product(product_json):
                     product_json[BODY_PRODUCT][BODY_METADATAS][BODY_METADATA_VALUE]
             metadatas[metadata_key] = metadata_value
     return Product(product_name, product_version, metadatas)
+
+def update_into_github(user_github, password_github):
+    branch_str = utils.create_brach()
+    URL_REPO = "https://api.github.com/repos/telefonicaid/fiware-enablers"
+    utils.create_github_pull_request(URL_REPO, user_github, password_github, branch_str)
+    utils.delete_branch(branch_str)
+
 
 if __name__ == "__main__":
     main()
