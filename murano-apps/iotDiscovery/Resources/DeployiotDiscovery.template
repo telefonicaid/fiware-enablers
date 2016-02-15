@@ -15,6 +15,9 @@ Scripts:
     EntryPoint: iotDiscovery::4.1.1_install
     Files:
         - iotDiscovery : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/iotDiscovery
+        - java : https://github.com/cookbooks/java.git
+        - mysql : https://github.com/chef-cookbooks/mysql
+        - tomcat : https://github.com/chef-cookbooks/tomcat
 
     Options:
       captureStdout: true
