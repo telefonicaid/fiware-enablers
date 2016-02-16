@@ -24,18 +24,23 @@
 #
 
 from util import utils
-import os
-import ConfigParser
 from util.configuration import Config
+import json
+
 URL_FORGE = "https://forge.fiware.org/scmrepos/svn/testbed/trunk/" \
             "cookbooks/GESoftware/"
-KEY_CHILD_PRODUCT = "depends"
+KEY_CHILD_PRODUCT_CHEF = "depends"
+KEY_CHILD_PRODUCT_PUPPET = "dependencies"
+CHEF = "Chef"
+PUPPET = "Puppet"
+METADATA_CHEF = "metadata.rb"
+METADATA_PUPPET = "metadata.json"
 
 
 class Cookbook:
     """This class represents the cookbook object.
     """
-    def __init__(self, name, enabler=False):
+    def __init__(self, name, installator, enabler=False):
         """
         The constructor
         :param name: cookbook name
@@ -45,6 +50,7 @@ class Cookbook:
         """
         self.name = name
         self.enabler = enabler
+        self.installator = installator
         self.url = self._get_url()
         self.cookbook_childs = self._get_cookbook_children_from_metadata()
 
@@ -92,7 +98,7 @@ class Cookbook:
         if self._has_child_cookbooks_metadata():
             cookbooks_str = self._get_cookbooks_metadata()
             for cookbook_str in cookbooks_str:
-                cookbook = Cookbook(cookbook_str)
+                cookbook = Cookbook(cookbook_str, self.installator)
                 cookbooks.append(cookbook)
         return cookbooks
 
@@ -102,8 +108,13 @@ class Cookbook:
         the metadata file
         :return: True/False
         """
-        metadata_str = utils.read_metadata(self.url)
-        if KEY_CHILD_PRODUCT in metadata_str:
+        if self.installator == CHEF:
+            metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
+        else:
+            metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
+
+        if (KEY_CHILD_PRODUCT_CHEF in metadata_str or
+            KEY_CHILD_PRODUCT_PUPPET in metadata_str):
             return True
         return False
 
@@ -112,12 +123,21 @@ class Cookbook:
         It obtains a cookbook string array from the metadata file
         :return: A string array with the cookbook children
         """
-        metadata_str = utils.read_metadata(self.url)
+        if self.installator == CHEF:
+            metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
+        else:
+            metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
+        if self.installator == CHEF:
+            return self._get_cookbooks_metadata_chef(metadata_str)
+        else:
+            return self._get_cookbooks_metadata_puppet(metadata_str)
+
+    def _get_cookbooks_metadata_chef(self, metadata_str):
         cookbooks = []
         lines = metadata_str.splitlines()
         for line in lines:
-            if KEY_CHILD_PRODUCT in line:
-                dep = line.find(KEY_CHILD_PRODUCT)
+            if KEY_CHILD_PRODUCT_CHEF in line:
+                dep = line.find(KEY_CHILD_PRODUCT_CHEF)
                 if line.find("\'", dep) != -1:
                     beg = line.find("\'")
                     end = line.find("\'", beg + 1)
@@ -125,6 +145,15 @@ class Cookbook:
                     beg = line.find("\"", dep)
                     end = line.find("\"", beg + 1)
                 cookbooks.append(line[beg + 1: end])
+        return cookbooks
+
+    def _get_cookbooks_metadata_puppet(self, metadata_str):
+        cookbooks = []
+        metadata = json.loads(metadata_str)
+        dependences = metadata.get(KEY_CHILD_PRODUCT_PUPPET)
+        if dependences:
+            for dependence in dependences:
+                cookbooks.append(dependence["name"])
         return cookbooks
 
     def get_all_cookbooks_child(self):
@@ -139,7 +168,8 @@ class Cookbook:
             cookbooks.append(cookbook_child)
             if len(cookbook_child.get_cookbooks_child()) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
-                cookbooks.extend(x for x in cookbooks_in if not self._exists(x.name, cookbooks))
+                cookbooks.extend(x for x in cookbooks_in
+                                 if not self._exists(x.name, cookbooks))
         return cookbooks
 
     def _exists(self, cookbook_name, cookbooks):

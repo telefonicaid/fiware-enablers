@@ -89,8 +89,8 @@ class DeployPackagesTest(core.MuranoTestsCore):
         files = [f for f in listdir("./../../murano-apps") if
                  isdir(join("./../../murano-apps", f))]
         for folder in files:
-            self.upload_app('./../../../../../../../../../murano-apps/' + folder,
-                            folder, {"tags": ["tag"]})
+            self.upload_app('./../../../../../../../../../murano-apps/'
+                            + folder, folder, {"tags": ["tag"]})
             self._test_deploy(folder,
                               'io.murano.conflang.chef.' + folder, 22)
             self.purge_environments()

@@ -172,6 +172,7 @@ class ProductPackage():
         """
         cookbooks = []
         cookbook = Cookbook(self.product.get_product_name(),
+                            self.product.get_installator(),
                             self.product.is_enabler())
         cookbooks.append(cookbook)
 
@@ -179,7 +180,8 @@ class ProductPackage():
             cookbooks.append(cookbook_child)
             if len(cookbook_child.get_cookbooks_child()) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
-                cookbooks.extend(x for x in cookbooks_in if not self._exists(x.name, cookbooks))
+                cookbooks.extend(x for x in cookbooks_in
+                                 if not self._exists(x.name, cookbooks))
         return cookbooks
 
     def _exists(self, cookbook_name, cookbooks):

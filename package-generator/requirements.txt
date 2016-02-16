@@ -4,7 +4,7 @@ python-sdcclient
 GitPython>=1.0.1 # BSD License (3 clause)
 PyGithub
 pbr<2.0,>=1.6
-git+https://github.com/openstack/murano
+-e git+https://github.com/openstack/murano
 python-keystoneclient==1.8.0
 python-glanceclient==1.1.0
 python-muranoclient==0.7.1

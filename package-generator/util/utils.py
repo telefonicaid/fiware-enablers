@@ -30,6 +30,9 @@ from os import listdir
 from os.path import join, isdir
 import time
 import git
+from urllib import urlopen
+
+import re
 
 COOKBOOK_FOLDER = "cookbooks/"
 
@@ -75,7 +78,25 @@ def get_name_folder(url):
     return end
 
 
-def read_metadata(url_file):
+def read_metadata_puppet(url_file):
+    """
+    It reads the metadata.json from a git or svn repository .
+    :param url_file:
+    :return: the metadata in string
+    """
+    read_metadata(url_file, "metadata.json")
+
+
+def read_metadata_chef(url_file):
+    """
+    It reads the metadata.rb from a git or svn repository .
+    :param url_file:
+    :return: the metadata in string
+    """
+    read_metadata(url_file, "metadata.rb")
+
+
+def read_metadata(url_file, metadata_file):
     """
     It reads the metadata.rb from a git or svn repository .
     :param url_file:
@@ -87,13 +108,12 @@ def read_metadata(url_file):
         os.makedirs(COOKBOOK_FOLDER)
     folder = COOKBOOK_FOLDER + get_name_folder(url_file)
     if is_git_repository(url_file):
-        if not os.path.exists(folder):
-            git.Git().clone(url_file, folder)
-        if os.path.exists(folder + "/metadata.rb"):
-            infile = open(folder + "/metadata.rb", 'r')
+        download_files_git(url_file)
+        if os.path.exists(folder + "/" + metadata_file):
+            infile = open(folder + "/" + metadata_file, 'r')
             metadata_str = infile.read()
     else:
-        f = urllib.urlopen(url_file + "/metadata.rb")
+        f = urllib.urlopen(url_file + "/" + metadata_file)
         metadata_str = f.read()
     return metadata_str
 
@@ -109,9 +129,15 @@ def create_github_pull_request(repo_url, user_github, password_github, branch):
     g = Github(user_github, password_github)
     for repo in g.get_user().get_repos():
         if repo.url == repo_url:
-            pull = repo.create_pull("New update in Murano-packages",
+            repo.create_pull("New update in Murano-packages",
                              "Created by package-generator", branch, "develop")
-            pull
+
+
+def download_files_git(url_file):
+    folder = COOKBOOK_FOLDER + get_name_folder(url_file)
+    if is_git_repository(url_file):
+        if not os.path.exists(folder):
+            git.Git().clone(url_file, folder)
 
 
 def create_branch():

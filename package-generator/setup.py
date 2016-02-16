@@ -37,6 +37,6 @@ requirements_list = [str(ir.req) for ir in install_reqs]
 setup(name='package-generator',
       version='0.0.1',
       description='Package Generator',
-      url='https://github.com/telefonicaid/fiware-enablers/murano-apps/package-generator',
+      url='https://github.com/telefonicaid/fiware-enablers/package-generator',
       packages=find_packages(),
       install_requires=requirements_list)
