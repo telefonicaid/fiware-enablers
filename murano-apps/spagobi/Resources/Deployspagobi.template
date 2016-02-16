@@ -18,7 +18,7 @@ Scripts:
         - mysql : https://github.com/chef-cookbooks/mysql
         - database : https://github.com/chef-cookbooks/database.git
         - postgresql : https://github.com/hw-cookbooks/postgresql.git
-        - apt : https://github.com/chef-cookbooks/apt.git
+        - apt : https://github.com/puppetlabs/puppetlabs-apt.git
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - openssl : https://github.com/chef-cookbooks/openssl.git
         - chef-sugar : https://github.com/sethvargo/chef-sugar
