@@ -15,7 +15,7 @@ Scripts:
     EntryPoint: cepheus::0.1.3_install
     Files:
         - cepheus : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cepheus
-        - apt : https://github.com/puppetlabs/puppetlabs-apt.git
+        - apt : https://github.com/chef-cookbooks/apt.git
 
     Options:
       captureStdout: true
