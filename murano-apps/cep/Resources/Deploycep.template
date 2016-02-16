@@ -15,6 +15,8 @@ Scripts:
     EntryPoint: cep::install
     Files:
         - cep : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cep
+        - puppetlabs/apt : https://github.com/puppetlabs/puppetlabs-apt
+        - puppetlabs/stdlib : https://github.com/puppetlabs/puppetlabs-stdlib
 
     Options:
       captureStdout: true
