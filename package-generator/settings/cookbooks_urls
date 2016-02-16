@@ -29,5 +29,3 @@ windows: https://github.com/chef-cookbooks/windows.git
 postgresql: https://github.com/hw-cookbooks/postgresql.git
 chef_handler: https://github.com/chef-cookbooks/chef_handler.git
 chef-sugar: https://github.com/sethvargo/chef-sugar
-puppetlabs/apt: https://github.com/puppetlabs/puppetlabs-apt
-puppetlabs/stdlib: https://github.com/puppetlabs/puppetlabs-stdlib

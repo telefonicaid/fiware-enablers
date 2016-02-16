@@ -29,7 +29,7 @@ Methods:
           - $.instance.addNid({GE_nid})
           - $.instance.deploy()
           - $resources: new(sys:Resources)
-          # Deploy Chef example
+          # Deploy {GE_name}
           - $template: $resources.yaml('Deploy{GE_name}.template')
 
           - $._environment.reporter.report($this, 'Instance is created. Deploying {GE_name}')

@@ -72,6 +72,7 @@ class TestProductPackage(unittest.TestCase):
         config_product.set("main", COOKBOOK_CHILD1, COOKBOOK_CHILD_URL1)
         config_product.set("main", COOKBOOK_CHILD2, COOKBOOK_CHILD_URL2)
         Config.CONFIG_COOKBOOK = config_product
+        Config.CONFIG_MODULES = config_product
         Config.NID = {}
 
     def tearDown(self):

@@ -43,8 +43,8 @@ metadata_product_no_child = "other"
 METADATA_JSON = {
     "name": "product",
     "dependencies": [
-        {"name": COOKBOOK_CHILD1},
-        {"name": COOKBOOK_CHILD2}]}
+        {"name": "puppetlab/" + COOKBOOK_CHILD1},
+        {"name": "puppetlab/" + COOKBOOK_CHILD2}]}
 METADATA_JSON_STR_NO_CHILD = "{ \"name\": \"child\" }"
 METADATA_JSON_STR = "{ \"name\": \"product\",  \"dependencies\": [" \
                     "  {\"name\": " + COOKBOOK_CHILD1 + "}," \
@@ -60,12 +60,13 @@ class TestCookbook(unittest.TestCase):
     @mock.patch('os.makedirs')
     @mock.patch('util.configuration.Config')
     def setUp(self, mock_conf, mock_path, mock_mkdir, mock_makedir):
-        config_product = ConfigParser.RawConfigParser()
-        config_product.add_section("main")
-        config_product.set("main", COOKBOOK_NAME, COOKBOOK_URL)
-        config_product.set("main", COOKBOOK_CHILD1, COOKBOOK_CHILD_URL1)
-        config_product.set("main", COOKBOOK_CHILD2, COOKBOOK_CHILD_URL2)
-        Config.CONFIG_COOKBOOK = config_product
+        config_cookbook = ConfigParser.RawConfigParser()
+        config_cookbook.add_section("main")
+        config_cookbook.set("main", COOKBOOK_NAME, COOKBOOK_URL)
+        config_cookbook.set("main", COOKBOOK_CHILD1, COOKBOOK_CHILD_URL1)
+        config_cookbook.set("main", COOKBOOK_CHILD2, COOKBOOK_CHILD_URL2)
+        Config.CONFIG_COOKBOOK = config_cookbook
+        Config.CONFIG_MODULES = config_cookbook
         mock_path.return_value = True
         mock_mkdir.return_value = None
         mock_makedir.return_value = None

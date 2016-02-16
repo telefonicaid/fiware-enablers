@@ -31,6 +31,7 @@ from scripts.getnids import getnid
 class Config():
 
     CONFIG_COOKBOOK = {}
+    CONFIG_MODULES = {}
     CONFIG_PRODUCT = {}
     NID = {}
 
@@ -42,6 +43,8 @@ class Config():
         """
         Config.CONFIG_COOKBOOK = self.load_config(setting_path +
                                                   '/settings/cookbooks_urls')
+        Config.CONFIG_MODULES = self.load_config(setting_path +
+                                                  '/settings/modules_urls')
         Config.CONFIG_PRODUCT = self.load_config(setting_path +
                                                  '/settings/product_names')
         Config.NID = self.get_all_nids()

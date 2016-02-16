@@ -45,8 +45,6 @@ class ProductPackage():
         """
         It is the constructor.
         :param product:  The product.
-        :param config_cookbooks:  configuration for cookbooks
-        :return:
         """
         self.product = product
         self.package_folder = (PACKAGES_FOLDER + "/" +
@@ -177,7 +175,8 @@ class ProductPackage():
         cookbooks.append(cookbook)
 
         for cookbook_child in cookbook.get_cookbooks_child():
-            cookbooks.append(cookbook_child)
+            if not self._exists(cookbook_child.name, cookbooks):
+                cookbooks.append(cookbook_child)
             if len(cookbook_child.get_cookbooks_child()) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in

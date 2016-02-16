@@ -77,6 +77,7 @@ class DeployPackagesTest(core.MuranoTestsCore):
         self.deploy_environment(environment, session)
         self.wait_for_environment_deploy(environment)
         self.deployment_success_check(environment, port)
+        self
 
     @mock.patch('murano.tests.functional.engine.config')
     def test_deploys(self, mock_config):

@@ -43,10 +43,9 @@ class Cookbook:
     def __init__(self, name, installator, enabler=False):
         """
         The constructor
-        :param name: cookbook name
-        :param cookbook_config:  configuration file for cookbook
-        :param enabler: is a FIWARE enabler or not
-        :return:
+        :param name:  cookbook name
+        :param installator:  cookbook installator
+        :param enabler: is a FIWARE enabler
         """
         self.name = name
         self.enabler = enabler
@@ -84,9 +83,10 @@ class Cookbook:
         url = ''
         if self.enabler:
             url = URL_FORGE + self.name
-        else:
+        elif self.installator == CHEF:
             url = Config.CONFIG_COOKBOOK.get("main", self.name)
-
+        else:
+            url = Config.CONFIG_MODULES.get("main", self.name)
         return url
 
     def _get_cookbook_children_from_metadata(self):
@@ -153,7 +153,7 @@ class Cookbook:
         dependences = metadata.get(KEY_CHILD_PRODUCT_PUPPET)
         if dependences:
             for dependence in dependences:
-                cookbooks.append(dependence["name"])
+                cookbooks.append(utils.get_name_folder(dependence["name"]))
         return cookbooks
 
     def get_all_cookbooks_child(self):
