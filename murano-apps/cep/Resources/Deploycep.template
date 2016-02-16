@@ -1,0 +1,23 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy cep
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Puppet
+    Version: 1.0.0
+    EntryPoint: cep::install
+    Files:
+        - cep : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cep
+        - puppetlabs/apt : https://github.com/puppetlabs/puppetlabs-apt
+        - puppetlabs/stdlib : https://github.com/puppetlabs/puppetlabs-stdlib
+
+    Options:
+      captureStdout: true
+      captureStderr: true
