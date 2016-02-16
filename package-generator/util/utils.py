@@ -72,7 +72,10 @@ def get_name_folder(url):
     :param url:
     :return:
     """
-    end = url.rsplit('/', 1)[1]
+    splits = url.rsplit('/', 1)
+    if len(splits) == 1:
+        return url
+    end = splits[1]
     if ".git" in end:
         return end[0:end.find(".git")]
     return end
