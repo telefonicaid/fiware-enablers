@@ -90,6 +90,10 @@ class DeployPackagesTest(core.MuranoTestsCore):
         files = [f for f in listdir("./../../murano-apps") if
                  isdir(join("./../../murano-apps", f))]
         for folder in files:
+            if folder == "2D3DCapture" or folder == "2d_ui" or folder == "augmentedreality" or folder == "cep":
+                continue
+            print folder
+
             self.upload_app('./../../../../../../../../../murano-apps/'
                             + folder, folder, {"tags": ["tag"]})
             self._test_deploy(folder,
