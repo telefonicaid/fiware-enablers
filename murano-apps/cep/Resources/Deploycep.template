@@ -17,7 +17,6 @@ Scripts:
         - cep : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cep
         - apt : https://github.com/puppetlabs/puppetlabs-apt.git
         - stdlib : https://github.com/puppetlabs/puppetlabs-stdlib.git
-        - stdlib : https://github.com/puppetlabs/puppetlabs-stdlib.git
 
     Options:
       captureStdout: true
