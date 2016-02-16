@@ -15,7 +15,7 @@ Scripts:
     EntryPoint: ckan::2.3_install
     Files:
         - ckan : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/ckan
-        - apt : https://github.com/puppetlabs/puppetlabs-apt.git
+        - apt : https://github.com/chef-cookbooks/apt.git
         - git : https://github.com/chef-cookbooks/git.git
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - dmg : https://github.com/chef-cookbooks/dmg.git
