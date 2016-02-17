@@ -1,0 +1,21 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy RealVirtualInteractionGE
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: RealVirtualInteractionGE::3.3.3_install
+    Files:
+        - RealVirtualInteractionGE : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/RealVirtualInteractionGE
+
+    Options:
+      captureStdout: true
+      captureStderr: true
