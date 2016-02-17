@@ -18,6 +18,7 @@ Scripts:
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - python : https://github.com/poise/python.git
         - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
+        - yum : https://github.com/chef-cookbooks/yum.git
         - mongodb : https://github.com/edelight/chef-mongodb.git
         - apt : https://github.com/chef-cookbooks/apt.git
         - apache2 : https://github.com/chef-cookbooks/httpd.git
