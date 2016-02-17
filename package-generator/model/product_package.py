@@ -185,7 +185,7 @@ class ProductPackage():
 
     def _exists(self, cookbook_name, cookbooks):
         for cookbook in cookbooks:
-            if cookbook_name in cookbook.name:
+            if cookbook_name == cookbook.name:
                 return True
         return False
 

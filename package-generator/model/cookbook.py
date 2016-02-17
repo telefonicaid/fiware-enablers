@@ -165,7 +165,8 @@ class Cookbook:
         """
         cookbooks = []
         for cookbook_child in self.cookbook_childs:
-            cookbooks.append(cookbook_child)
+            if not self._exists(cookbook_child.name, cookbooks):
+                cookbooks.append(cookbook_child)
             if len(cookbook_child.get_cookbooks_child()) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in
@@ -174,6 +175,6 @@ class Cookbook:
 
     def _exists(self, cookbook_name, cookbooks):
         for cookbook in cookbooks:
-            if cookbook_name in cookbook.name:
+            if cookbook_name == cookbook.name:
                 return True
         return False

@@ -74,9 +74,15 @@ class DeployPackagesTest(core.MuranoTestsCore):
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
         self.add_service(environment, post_body, session)
-        self.deploy_environment(environment, session)
-        self.wait_for_environment_deploy(environment)
-        self.deployment_success_check(environment, port)
+        try:
+            self.deploy_environment(environment, session)
+            self.wait_for_environment_deploy(environment)
+            self.deployment_success_check(environment, port)
+            print "Deployment OK"
+        except Exception as e:
+            print "Error " + e.message + ": " +\
+                  self.murano_client().deployments.list(environment.id)[-1].result['result']['message']
+
 
 
     @mock.patch('murano.tests.functional.engine.config')
@@ -90,10 +96,6 @@ class DeployPackagesTest(core.MuranoTestsCore):
         files = [f for f in listdir("./../../murano-apps") if
                  isdir(join("./../../murano-apps", f))]
         for folder in files:
-            if folder == "2D3DCapture" or folder == "2d_ui" or folder == "augmentedreality" or folder == "cep":
-                continue
-            print folder
-
             self.upload_app('./../../../../../../../../../murano-apps/'
                             + folder, folder, {"tags": ["tag"]})
             self._test_deploy(folder,
