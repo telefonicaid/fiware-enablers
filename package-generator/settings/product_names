@@ -1,0 +1,48 @@
+[main]
+docker:
+wirecloud : application-mashup-wirecloud
+kiara : kiara-advanced-middleware
+spagobi : data-visualization-spagobi
+cep : complex-event-processing-cep-proactive-technology-online
+xml3d : 3d-ui-xml3d
+murano: application-management-murano
+sdc: software-deployment-configuration-sagitta
+cybercaptor: cyber-security-ge-cybercaptor
+bosun: policy-manager-bosun
+ckan: ckan
+2d_ui: 2d-ui
+MRCoAP: protocol-adapter-mr-coap
+keyrock: identity-management-keyrock
+sec: security-monitoring
+orion: publishsubscribe-context-broker-orion-context-broker
+repository: epository-repository-ri
+iotbroker: iot-broker
+cosmos: bigdata-analysis-cosmos
+t: trustworthy-factory
+cepheus: iot-data-edge-consolidation-ge-cepheus
+mon: monitoring-ge-sextant
+virtualcharacters: virtual-characters
+marketplace: marketplace-wmarket
+webtundra: 3dui-webtundra
+RealVirtualInteractionGE:real-virtual-interaction
+o: object-storage-ge-fiware-implementation
+c: self-service-interfaces-cloud-portal
+paas: paas-manager-pegasus
+synchronization: synchronization
+iaas: iaas-ge-fiware-reference-implementation
+wilma: pep-proxy-wilma
+augmentedreality: augmented-reality
+interface_designer: interface-designer
+authzforce: authorization-pdp-authzforce
+wstore: store-wstore
+idas: backend-device-management-idas
+poi_dp: poi-data-provider
+Stream_oriented_kurento: stream-oriented-kurento
+ofnic: network-information-and-control-ofnic
+aeon: cloud-messaging-aeon
+cloud_rendering: cloud-rendering
+synchronization: synchronization-fives
+gis: gis-data-provider-geoserver3d
+iotDiscovery: iot-discovery
+rss: revenue-settlement-and-sharing-system-rss-ri
+2D3DCapture: 2d3d-capture

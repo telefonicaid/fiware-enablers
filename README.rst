@@ -24,7 +24,7 @@ The structure of the directory looks something like this:
        │   ├───README.rst
        │   ├───<GEri/GEi-name1>
        │   │   ├───recipe_name1
-       |   |   |   ├───README.rst
+       |   |   |   ├───README.rst
        |   |   |   ├───fiware_release
        |   |   |   ├───metadata.rb
        |   |   |   ├───attributes
@@ -46,7 +46,7 @@ The structure of the directory looks something like this:
        |   ├───README.rst
        |   ├───<GEri/GEi-name1>
        |   │   ├───module_name1
-       |   |   |   ├───README.rst
+       |   |   |   ├───README.rst
        |   |   |   ├───fiware_release
        |   │   |   ├───files
        |   │   |   ├───templates
@@ -56,7 +56,7 @@ The structure of the directory looks something like this:
        |   │   |   |   ├───uninstall.pp
        |   │   |   |   └───...
        |   │   |   └───...
-       |   |   ├───module_name2 
+       |   |   ├───module_name2 
        |   │   |   └───...
        |   │   └───...
        |   ├───<GEri/GEi-name2>
