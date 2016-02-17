@@ -96,6 +96,7 @@ class DeployPackagesTest(core.MuranoTestsCore):
         files = [f for f in listdir("./../../murano-apps") if
                  isdir(join("./../../murano-apps", f))]
         for folder in files:
+            print folder
             self.upload_app('./../../../../../../../../../murano-apps/'
                             + folder, folder, {"tags": ["tag"]})
             self._test_deploy(folder,
