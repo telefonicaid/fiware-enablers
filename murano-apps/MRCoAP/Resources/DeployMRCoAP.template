@@ -1,0 +1,21 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy MRCoAP
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: MRCoAP::3.2.3_install
+    Files:
+        - MRCoAP : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/MRCoAP
+
+    Options:
+      captureStdout: true
+      captureStderr: true
