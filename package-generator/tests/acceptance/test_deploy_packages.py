@@ -93,9 +93,11 @@ class DeployPackagesTest(core.MuranoTestsCore):
         self.flavor = core.CONF.murano.standard_flavor
         self.keyname = core.CONF.murano.keyname
         self.instance_type = core.CONF.murano.instance_type
-        files = [f for f in listdir("./../../murano-apps") if
-                 isdir(join("./../../murano-apps", f))]
+        self.murano_apps_folder = core.CONF.murano.murano_apps_folder
+        files = [f for f in listdir(self.murano_apps_folder) if
+                 isdir(join(self.murano_apps_folder, f))]
         for folder in files:
+            print folder
             package = self.upload_app('./../../../../../../../../../murano-apps/'
                             + folder, folder, {"tags": ["tag"]})
             tag_images = package.tags[len(package.tags)-1]
@@ -123,6 +125,9 @@ class DeployPackagesTest(core.MuranoTestsCore):
 murano_group = cfg.OptGroup(name='murano', title="murano")
 
 MuranoGroup = [
+    cfg.StrOpt('murano_apps_folder',
+               default='.',
+               help="Murano apps folder"),
     cfg.StrOpt('auth_url',
                default='http://127.0.0.1:5000/v2.0/',
                help="keystone url"),
