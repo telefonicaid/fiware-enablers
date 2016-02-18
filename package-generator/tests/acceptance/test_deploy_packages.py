@@ -98,7 +98,7 @@ class DeployPackagesTest(core.MuranoTestsCore):
                  isdir(join(self.murano_apps_folder, f))]
         for folder in files:
             print folder
-            package = self.upload_app('./../../../../../../../../../murano-apps/'
+            package = self.upload_app(self..murano_apps_folder
                             + folder, folder, {"tags": ["tag"]})
             tag_images = package.tags[len(package.tags)-1]
             if ';' in tag_images:
