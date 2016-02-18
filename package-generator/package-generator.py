@@ -127,7 +127,6 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
             package_murano.generate_manifest()
             package_murano.generate_class()
             package_murano.generate_template()
-            print product.get_installator()
 
     update_into_github(user_github, password_github)
 
