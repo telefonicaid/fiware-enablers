@@ -192,7 +192,7 @@ class TestCookbook(unittest.TestCase):
             self.assertEquals(cookbook_child.name,
                               COOKBOOK_CHILD + str(i))
             self.assertEquals(cookbook_child.url,
-                              "http://child" + str(i) + ".git")
+                              'http://child%s.git' % str(i))
             i = i + 1
             self.assertEqual(len(cookbook_child.cookbook_childs), 0)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 2)

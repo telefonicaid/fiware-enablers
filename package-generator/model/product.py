@@ -149,7 +149,7 @@ class Product():
         images = images_str.split(' ')
         images_names = []
         for image in images:
-            name = Config.Clients._get_image_name(image)
+            name = Config.Clients.get_image_name(image)
             if name:
                 images_names.append(name)
         return images_names

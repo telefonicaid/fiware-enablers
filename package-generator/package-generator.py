@@ -90,10 +90,7 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     :return:
     """
     Config(auth_url, user, password, tenant_id, region_name)
-
-    productandrelease_client = Config.Clients.sdc_client.\
-        getProductAndReleaseResourceClient()
-    allproductreleases, _ = productandrelease_client.get_allproductandrelease()
+    allproductreleases = Config.Clients.get_product_releases()
 
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
 
@@ -140,7 +137,7 @@ def update_into_github(user_github, password_github):
     :param password_github:
     :return:
     """
-    branch_str = utils.create_branch()
+    branch_str = utils.create_branch("./../")
     URL_REPO = "https://api.github.com/repos/telefonicaid/fiware-enablers"
     utils.create_github_pull_request(URL_REPO, user_github,
                                      password_github, branch_str)

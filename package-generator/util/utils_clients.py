@@ -31,6 +31,14 @@ class util_apis():
     """This class have some utils for accessing to APIS"""
 
     def __init__(self, auth_url, user, password, tenant_id, region_name):
+        """
+        Constructor for Util Apis.
+        :param auth_url: the keystone url.
+        :param user: the user
+        :param password: the password
+        :param tenant_id: the tenant ID
+        :param region_name: the region
+        """
         self.auth_url = auth_url
         self.user = user
         self.password = password
@@ -40,6 +48,10 @@ class util_apis():
         self.sdc_client = self._get_sdc_client()
 
     def _get_glance_client(self):
+        """
+        It obtains the glance client
+        :return: the glance client
+        """
         clients = osclients.OpenStackClients(self.auth_url)
         clients.set_region(self.region_name)
         clients.set_credential(self.user, self. password,
@@ -47,11 +59,30 @@ class util_apis():
         return clients.get_glanceclient()
 
     def _get_sdc_client(self):
+        """
+        It obtains a client for accessing to SDC.
+        :return: the sdc client
+        """
         return SDCClient(self.user, self. password, self.tenant_id,
                          self.auth_url, self.region_name)
 
-    def _get_image_name(self, image_id):
+    def get_image_name(self, image_id):
+        """
+        It gets an image name from an ID
+        :param image_id: the ID of the image
+        :return: the image name.
+        """
         try:
             return self.glance_client.images.get(image_id).name
         except:
             return None
+
+    def get_product_releases(self):
+        """
+        It obtains the product releases.
+        :return: Array with product releases
+        """
+        productandrelease_client = self.sdc_client.\
+        getProductAndReleaseResourceClient()
+        allproductreleases, _ = productandrelease_client.get_allproductandrelease()
+        return allproductreleases
