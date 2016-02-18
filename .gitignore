@@ -1,2 +1,7 @@
 # IDE
 .idea/
+
+*.pyc
+build/
+dist/
+*.egg-info
