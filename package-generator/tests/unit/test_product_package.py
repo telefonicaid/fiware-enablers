@@ -93,7 +93,7 @@ class TestProductPackage(unittest.TestCase):
         ]
         product = Product(PRODUCT_NAME, PRODUCT_VERSION)
         product_package = ProductPackage(product)
-        self.assertEquals(product_package.get_product().get_product_name(),
+        self.assertEquals(product_package.get_product().product_name,
                           PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 1)
         self.mock_open.reset_mock()
@@ -117,7 +117,7 @@ class TestProductPackage(unittest.TestCase):
         metadatas["installator"] = "Chef"
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
         product_package = ProductPackage(product)
-        self.assertEquals(product_package.get_product().get_product_name(),
+        self.assertEquals(product_package.get_product().product_name,
                           PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 2)
         self.mock_open.reset_mock()
@@ -143,7 +143,7 @@ class TestProductPackage(unittest.TestCase):
         metadatas["installator"] = "Puppet"
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
         product_package = ProductPackage(product)
-        self.assertEquals(product_package.get_product().get_product_name(),
+        self.assertEquals(product_package.get_product().product_name,
                           PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 3)
         self.mock_open.reset_mock()

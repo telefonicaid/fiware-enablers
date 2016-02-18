@@ -22,8 +22,7 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-
-from util import utils
+from util import utils_file as utils
 from util.configuration import Config
 import json
 
@@ -52,26 +51,6 @@ class Cookbook:
         self.installator = installator
         self.url = self._get_url()
         self.cookbook_childs = self._get_cookbook_children_from_metadata()
-
-    def get_cookbook_name(self):
-        """
-        It returns the cookbook name.
-        :return: name
-        """
-        return self.name
-
-    def get_url(self):
-        """It returns the cookbook url
-        :return: url
-        """
-        return self.url
-
-    def get_cookbooks_child(self):
-        """
-        It returns the children cookbooks.
-        :return:
-        """
-        return self.cookbook_childs
 
     def _get_url(self):
         """
@@ -114,7 +93,7 @@ class Cookbook:
             metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
 
         if (KEY_CHILD_PRODUCT_CHEF in metadata_str or
-            KEY_CHILD_PRODUCT_PUPPET in metadata_str):
+                KEY_CHILD_PRODUCT_PUPPET in metadata_str):
             return True
         return False
 
@@ -167,7 +146,7 @@ class Cookbook:
         for cookbook_child in self.cookbook_childs:
             if not self._exists(cookbook_child.name, cookbooks):
                 cookbooks.append(cookbook_child)
-            if len(cookbook_child.get_cookbooks_child()) != 0:
+            if len(cookbook_child.cookbook_childs) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in
                                  if not self._exists(x.name, cookbooks))

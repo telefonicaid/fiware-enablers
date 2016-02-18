@@ -25,7 +25,9 @@
 import unittest
 from model.product import Product
 from util.configuration import Config
+from util import utils_file
 import ConfigParser
+import mock
 
 PRODUCT_NAME = "product"
 PRODUCT_VERSION = "productVersion"
@@ -60,26 +62,34 @@ class TestProduct(unittest.TestCase):
         metadatas["key2"] = "value2"
 
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
-        self.assertEquals(product.get_product_name(), PRODUCT_NAME)
-        self.assertEquals(product.get_nid(), NID)
+        self.assertEquals(product.product_name, PRODUCT_NAME)
+        self.assertEquals(product.nid, NID)
         self.assertEquals(product.is_enabler(), True)
-        self.assertEquals(product.get_product_version(), PRODUCT_VERSION)
-        self.assertEquals(len(product.get_product_metadatas()), 2)
+        self.assertEquals(product.product_version, PRODUCT_VERSION)
+        self.assertEquals(len(product.metadatas), 2)
+        self.assertIsNone(product.images)
 
     def test_no_nid(self):
         product = Product(PRODUCT_NAME_OTHER, PRODUCT_VERSION)
-        self.assertEquals(product.get_product_name(), PRODUCT_NAME_OTHER)
-        self.assertEquals(product.get_nid(), None)
+        self.assertEquals(product.product_name, PRODUCT_NAME_OTHER)
+        self.assertEquals(product.nid, None)
         self.assertEquals(product.is_enabler(), False)
-        self.assertEquals(product.get_product_version(), PRODUCT_VERSION)
+        self.assertEquals(product.product_version, PRODUCT_VERSION)
 
-    def test_image_metadata(self):
-        """test obtaining a valid image"""
+    @mock.patch('util.utils_clients.util_apis')
+    def test_image_metadata(self, mock_image):
+        """test the functionalities to image metadata"""
+        IMAGE_NAME = "name1"
+        IMAGE_ID = "ID1"
+        mock_image._get_image_name.return_value = IMAGE_NAME
+        Config.Clients = mock_image
         metadatas = {}
-        metadatas["image"] = "value1"
+        metadatas["image"] = IMAGE_ID
 
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
         self.assertIsNotNone(product.get_image_metadata())
+        self.assertIsNotNone(product.images, [IMAGE_NAME])
+        self.assertEquals(product.get_image_metadata(), IMAGE_ID)
 
     def test_not_image_metadata(self):
         """test obtaining the image which does not exist"""
@@ -98,12 +108,12 @@ class TestProduct(unittest.TestCase):
         metadatas = {}
         metadatas["installator"] = "chef"
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
-        self.assertEquals(product.get_installator(), "Chef")
+        self.assertEquals(product.installator, "Chef")
 
     def test_check_no_installator(self):
         """test obtaining the image which does not exist"""
         product = Product(PRODUCT_NAME, PRODUCT_VERSION)
-        self.assertIsNone(product.get_installator())
+        self.assertIsNone(product.installator)
 
     def test_ports(self):
         """test the functionalities to get tcp and udp ports for the product"""
@@ -114,3 +124,13 @@ class TestProduct(unittest.TestCase):
         product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
         self.assertEquals(len(product.get_tcp_ports()), 2)
         self.assertEquals(len(product.get_udp_ports()), 1)
+
+    @mock.patch('util.utils_clients.util_apis')
+    def test_obtain_images(self, mock_image):
+        """test the functionalities to get product images"""
+        mock_image._get_image_name.return_value = "nameID"
+        Config.Clients = mock_image
+        metadatas = {}
+        metadatas["image"] = "ID"
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        self.assertEquals(product.images, ["nameID"])

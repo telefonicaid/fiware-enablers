@@ -25,7 +25,7 @@
 import shutil
 import errno
 import os
-from util import utils
+from util import utils_file as utils
 from model.cookbook import Cookbook
 
 PACKAGES_FOLDER = "./../murano-apps"
@@ -108,6 +108,10 @@ class ProductPackage():
         """
         utils.replace_word(self.package_manifest, "{GE_name}",
                            self.product.product_name)
+        utils.replace_word(self.package_manifest, "{GE_installator}",
+                           self.product.installator.lower())
+        utils.replace_word(self.package_manifest, "{GE_images}",
+                           self._get_images_str())
 
     def generate_class(self):
         """
@@ -118,7 +122,7 @@ class ProductPackage():
         utils.replace_word(self.package_classes_file,
                            "{GE_ports}", self._get_ports_str())
         utils.replace_word(self.package_classes_file,
-                           "{GE_nid}", self.product.get_nid())
+                           "{GE_nid}", self.product.nid)
 
     def generate_template(self):
         """
@@ -133,9 +137,16 @@ class ProductPackage():
             utils.replace_word(self.package_template, "{GE_recipe}",
                                self.product.product_version+"_install")
         utils.replace_word(self.package_template, "{GE_installator}",
-                           self.product.get_installator())
+                           self.product.installator)
         utils.replace_word(self.package_template, "{GE_cookbooks}",
                            self.get_cookbooks_str())
+
+    def _get_images_str(self):
+        image_str = ''
+        if self.product.images:
+            for image in self.product.images:
+                image_str = image_str + image + ";"
+        return image_str
 
     def _get_ports(self, protocol):
         """
@@ -169,15 +180,15 @@ class ProductPackage():
         :return: Cookbook array
         """
         cookbooks = []
-        cookbook = Cookbook(self.product.get_product_name(),
-                            self.product.get_installator(),
+        cookbook = Cookbook(self.product.product_name,
+                            self.product.installator,
                             self.product.is_enabler())
         cookbooks.append(cookbook)
 
-        for cookbook_child in cookbook.get_cookbooks_child():
+        for cookbook_child in cookbook.cookbook_childs:
             if not self._exists(cookbook_child.name, cookbooks):
                 cookbooks.append(cookbook_child)
-            if len(cookbook_child.get_cookbooks_child()) != 0:
+            if len(cookbook_child.cookbook_childs) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in
                                  if not self._exists(x.name, cookbooks))

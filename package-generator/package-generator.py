@@ -24,26 +24,11 @@
 #
 
 import argparse
-from sdcclient.client import SDCClient
-from utils.logger_utils import get_logger
-from github import Github
-from os import listdir
-import shutil
-import time
-from oslo_config import cfg
-from git import Repo
-import git
-
-
-from os.path import join, isdir
 
 from model.product_package import ProductPackage
 from model.product import Product
 from util.configuration import Config
-from util import utils
-
-
-logger = get_logger(__name__)
+import util.utils_file as utils
 
 PRODUCTANDRELEASE_BODY = "productAndReleaseDto"
 BODY_PRODUCT = "product"
@@ -81,7 +66,6 @@ def main(argv=None):
                         help='password github')
 
     args = parser.parse_args()
-    logger.info(args)
 
     create_murano_packages(auth_url=args.auth_url,
                            tenant_id=args.tenant_id,
@@ -105,38 +89,25 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     :param password_github:
     :return:
     """
+    Config(auth_url, user, password, tenant_id, region_name)
 
-    logger.info("==========================================================\n")
-    logger.info("Platform: " + auth_url + ". Region: " + region_name +
-                ". Username: " + user + " Tenant-ID: " + tenant_id + "\n")
-    logger.info("==========================================================\n")
-
-    logger.info("SDC call to get the list of products available in catalog")
-
-    sdc_client = SDCClient(user, password, tenant_id, auth_url, region_name)
-    productandrelease_client = sdc_client.getProductAndReleaseResourceClient()
+    productandrelease_client = Config.Clients.sdc_client.\
+        getProductAndReleaseResourceClient()
     allproductreleases, _ = productandrelease_client.get_allproductandrelease()
 
-    load_config()
-
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
+
         product = get_product(product_xml)
+        print product.product_name
         image = product.get_image_metadata()
         if 'hi' is not image and product.is_enabler():
+            print product.product_name
             package_murano = ProductPackage(product)
             package_murano.generate_manifest()
             package_murano.generate_class()
             package_murano.generate_template()
-            print product.get_installator()
 
     update_into_github(user_github, password_github)
-
-
-def load_config():
-    """
-    Loading configuration
-    """
-    Config(".")
 
 
 def get_product(product_json):
