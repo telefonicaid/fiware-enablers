@@ -33,7 +33,6 @@ class DeployPackagesTest(core.MuranoTestsCore):
         cls.flavor = core.CONF.murano.standard_flavor
         cls.keyname = core.CONF.murano.keyname
         cls.instance_type = core.CONF.murano.instance_type
-        cls.self.murano_apps_folder = core.CONF.murano.murano_apps_folder
 
     @classmethod
     def tearDownClass(cls):
@@ -94,6 +93,7 @@ class DeployPackagesTest(core.MuranoTestsCore):
         self.flavor = core.CONF.murano.standard_flavor
         self.keyname = core.CONF.murano.keyname
         self.instance_type = core.CONF.murano.instance_type
+        self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         files = [f for f in listdir(self.murano_apps_folder) if
                  isdir(join(self.murano_apps_folder, f))]
         for folder in files:

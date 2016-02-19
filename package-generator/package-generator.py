@@ -25,15 +25,13 @@
 
 import argparse
 from sdcclient.client import SDCClient
-from utils.logger_utils import get_logger
 
 from model.product_package import ProductPackage
 from model.product import Product
 from util.configuration import Config
 from util import utils
-import distutils
+import distutils.util as util2
 
-logger = get_logger(__name__)
 
 PRODUCTANDRELEASE_BODY = "productAndReleaseDto"
 BODY_PRODUCT = "product"
@@ -74,7 +72,6 @@ def main(argv=None):
                         help='password github')
 
     args = parser.parse_args()
-    logger.info(args)
 
     create_murano_packages(auth_url=args.auth_url,
                            tenant_id=args.tenant_id,
@@ -100,12 +97,6 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     :return:
     """
 
-    logger.info("==========================================================\n")
-    logger.info("Platform: " + auth_url + ". Region: " + region_name +
-                ". Username: " + user + " Tenant-ID: " + tenant_id + "\n")
-    logger.info("==========================================================\n")
-
-    logger.info("SDC call to get the list of products available in catalog")
 
     sdc_client = SDCClient(user, password, tenant_id, auth_url, region_name)
     productandrelease_client = sdc_client.getProductAndReleaseResourceClient()
@@ -121,9 +112,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
             package_murano.generate_manifest()
             package_murano.generate_class()
             package_murano.generate_template()
-            print product.get_installator()
 
-    if distutils.util.strtobool(upload):
+    if util2.strtobool(upload):
         update_into_github(user_github, password_github)
 
 

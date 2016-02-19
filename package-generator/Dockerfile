@@ -7,7 +7,9 @@ RUN git clone https://github.com/telefonicaid/fiware-enablers /opt/fiware-enable
 WORKDIR /opt/fiware-enablers/package-generator
 RUN sed -i -e "s/-e//" /opt/fiware-enablers/package-generator/requirements.txt
 COPY start.sh /opt/fiware-enablers/package-generator/start.sh
-RUN pip install --upgrade -r requirements.txt
+RUN pip install -r requirements.txt
 RUN pip install -r tests-requirements.txt
 RUN pip install nose
+COPY other.sh  /opt/fiware-enablers/package-generator/other.sh
 CMD ./start.sh
+
