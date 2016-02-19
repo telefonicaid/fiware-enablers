@@ -33,6 +33,7 @@ class DeployPackagesTest(core.MuranoTestsCore):
         cls.flavor = core.CONF.murano.standard_flavor
         cls.keyname = core.CONF.murano.keyname
         cls.instance_type = core.CONF.murano.instance_type
+        cls.self.murano_apps_folder = core.CONF.murano.murano_apps_folder
 
     @classmethod
     def tearDownClass(cls):
@@ -93,11 +94,12 @@ class DeployPackagesTest(core.MuranoTestsCore):
         self.flavor = core.CONF.murano.standard_flavor
         self.keyname = core.CONF.murano.keyname
         self.instance_type = core.CONF.murano.instance_type
-        files = [f for f in listdir("./../../murano-apps") if
-                 isdir(join("./../../murano-apps", f))]
+        files = [f for f in listdir(self.murano_apps_folder) if
+                 isdir(join(self.murano_apps_folder, f))]
         for folder in files:
-            self.upload_app('./../../../../../../../../../murano-apps/'
-                            + folder, folder, {"tags": ["tag"]})
+            print folder
+            self.upload_app(self.murano_apps_folder + folder,
+                            folder, {"tags": ["tag"]})
             self._test_deploy(folder,
                               'io.murano.conflang.chef.' + folder, 22)
             self.purge_environments()
@@ -115,6 +117,9 @@ class DeployPackagesTest(core.MuranoTestsCore):
 murano_group = cfg.OptGroup(name='murano', title="murano")
 
 MuranoGroup = [
+    cfg.StrOpt('murano_apps_folder',
+               default='.',
+               help="Murano apps folder"),
     cfg.StrOpt('auth_url',
                default='http://127.0.0.1:5000/v2.0/',
                help="keystone url"),
