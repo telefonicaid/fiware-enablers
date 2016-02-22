@@ -25,25 +25,13 @@
 
 import argparse
 from sdcclient.client import SDCClient
-from utils.logger_utils import get_logger
-from github import Github
-from os import listdir
-import shutil
-import time
-from oslo_config import cfg
-from git import Repo
-import git
-
-
-from os.path import join, isdir
 
 from model.product_package import ProductPackage
 from model.product import Product
 from util.configuration import Config
 from util import utils
+import distutils.util as util2
 
-
-logger = get_logger(__name__)
 
 PRODUCTANDRELEASE_BODY = "productAndReleaseDto"
 BODY_PRODUCT = "product"
@@ -73,6 +61,9 @@ def main(argv=None):
     parser.add_argument("-k", "--os-auth-url", dest="auth_url",
                         default='http://cloud.lab.fiware.org:4731/v2.0',
                         help='url to keystone <host or ip>:<port>/v2.0')
+    parser.add_argument("-g", "--os-upload", dest="upload",
+                        default="False",
+                        help='To upload to github?')
     parser.add_argument("-ug", "--os-user_github", dest="user_github",
                         default='None',
                         help='user github')
@@ -81,7 +72,6 @@ def main(argv=None):
                         help='password github')
 
     args = parser.parse_args()
-    logger.info(args)
 
     create_murano_packages(auth_url=args.auth_url,
                            tenant_id=args.tenant_id,
@@ -89,11 +79,12 @@ def main(argv=None):
                            password=args.password,
                            region_name=args.region_name,
                            user_github=args.user_github,
-                           password_github=args.password_github)
+                           password_github=args.password_github,
+                           upload = args.upload)
 
 
 def create_murano_packages(auth_url, tenant_id, user, password, region_name,
-                           user_github, password_github):
+                           user_github, password_github, upload):
     """
     It creates the murano package and uploades it into github.
     :param auth_url:
@@ -106,12 +97,6 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     :return:
     """
 
-    logger.info("==========================================================\n")
-    logger.info("Platform: " + auth_url + ". Region: " + region_name +
-                ". Username: " + user + " Tenant-ID: " + tenant_id + "\n")
-    logger.info("==========================================================\n")
-
-    logger.info("SDC call to get the list of products available in catalog")
 
     sdc_client = SDCClient(user, password, tenant_id, auth_url, region_name)
     productandrelease_client = sdc_client.getProductAndReleaseResourceClient()
@@ -128,7 +113,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
             package_murano.generate_class()
             package_murano.generate_template()
 
-    update_into_github(user_github, password_github)
+    if util2.strtobool(upload):
+        update_into_github(user_github, password_github)
 
 
 def load_config():
