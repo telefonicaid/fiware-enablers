@@ -140,6 +140,7 @@ def download_files_git(url_file):
     """
     It download a file repository
     :param url_file: the git repository url
+    :return nothing
     """
     folder = COOKBOOK_FOLDER + get_name_folder(url_file)
     if is_git_repository(url_file):
@@ -167,6 +168,7 @@ def create_branch(folder):
         repo.index.add(["murano-apps/"+folder])
         # Commit the changes to deviate masters history
         repo.index.commit("Added a new file in the past - for later merege")
+    repo.index.commit("Murano Packages update. Ready to be merged") 
     repo.commit()
     repo.remotes.origin.push(new)
     return str_branch
