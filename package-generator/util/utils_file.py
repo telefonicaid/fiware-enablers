@@ -30,9 +30,7 @@ from os import listdir
 from os.path import join, isdir
 import time
 import git
-from urllib import urlopen
 
-import re
 
 COOKBOOK_FOLDER = "cookbooks/"
 
@@ -58,7 +56,7 @@ def replace_word(infile, old_word, new_word):
 def is_git_repository(url):
     """
     It returns if the url is a git repository.
-    :param url:
+    :param url: the url to check if it is a git repo
     :return: True/False
     """
     return (url.startswith(("git://",
@@ -69,8 +67,8 @@ def is_git_repository(url):
 def get_name_folder(url):
     """
     It returns the name of the folder for the url repository.
-    :param url:
-    :return:
+    :param url: the url to obtain the folder
+    :return: folder
     """
     splits = url.rsplit('/', 1)
     if len(splits) == 1:
@@ -84,7 +82,7 @@ def get_name_folder(url):
 def read_metadata_puppet(url_file):
     """
     It reads the metadata.json from a git or svn repository .
-    :param url_file:
+    :param url_file: the url to obtain the metadata
     :return: the metadata in string
     """
     read_metadata(url_file, "metadata.json")
@@ -93,7 +91,7 @@ def read_metadata_puppet(url_file):
 def read_metadata_chef(url_file):
     """
     It reads the metadata.rb from a git or svn repository .
-    :param url_file:
+    :param url_file: the url to obtain the metadata
     :return: the metadata in string
     """
     read_metadata(url_file, "metadata.rb")
@@ -101,9 +99,10 @@ def read_metadata_chef(url_file):
 
 def read_metadata(url_file, metadata_file):
     """
-    It reads the metadata.rb from a git or svn repository .
-    :param url_file:
-    :return: the metadata.rb in string
+    It reads the metadata files for both Chef and Puppet
+    :param url_file: the url to obtain the metadata
+    :param metadata_file: the metadata file name
+    :return: a string with the metadata contain
     """
     metadata_str = ''
 
@@ -133,23 +132,27 @@ def create_github_pull_request(repo_url, user_github, password_github, branch):
     for repo in g.get_user().get_repos():
         if repo.url == repo_url:
             repo.create_pull("New update in Murano-packages",
-                             "Created by package-generator", "develop", branch)
+                             "Created by package-generator", branch, "develop")
 
 
 def download_files_git(url_file):
+    """
+    It download a file repository
+    :param url_file: the git repository url
+    """
     folder = COOKBOOK_FOLDER + get_name_folder(url_file)
     if is_git_repository(url_file):
         if not os.path.exists(folder):
             git.Git().clone(url_file, folder)
 
 
-def create_branch():
+def create_branch(folder):
     """
-    It creates a brach in the git repo and upload it
+    It creates a branch in the git repo and upload it
     into github
     :return:
     """
-    repo = git.repo.Repo("./../")
+    repo = git.repo.Repo(folder)
     str_branch = "update_packages"+str(time.time())
 
     # Create branch in repo
@@ -161,7 +164,7 @@ def create_branch():
         # add it to the index
         repo.index.add(["murano-apps/"+folder])
         # Commit the changes to deviate masters history
-    repo.index.commit("Murano Packages update. Ready to be merged")
+        repo.index.commit("Added a new file in the past - for later merege")
     repo.commit()
     repo.remotes.origin.push(new)
     return str_branch

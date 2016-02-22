@@ -81,8 +81,8 @@ class DeployPackagesTest(core.MuranoTestsCore):
             print "Deployment OK"
         except Exception as e:
             print "Error " + e.message + ": " +\
-                  self.murano_client().deployments.list(environment.id)[-1].result['result']['message']
-
+                  (self.murano_client().deployments.list(environment.id)[-1].
+                   result['result']['message'])
 
 
     @mock.patch('murano.tests.functional.engine.config')
@@ -98,9 +98,17 @@ class DeployPackagesTest(core.MuranoTestsCore):
                  isdir(join(self.murano_apps_folder, f))]
         for folder in files:
             print folder
-            self.upload_app(self.murano_apps_folder + folder,
-                            folder, {"tags": ["tag"]})
-            self._test_deploy(folder,
+            package = self.upload_app(self.murano_apps_folder
+                            + folder, folder, {"tags": ["tag"]})
+            tag_images = package.tags[len(package.tags)-1]
+            if ';' in tag_images:
+                images = tag_images.split(';')
+                for image in images:
+                    self.linux = image
+                    self._test_deploy(folder,
+                              'io.murano.conflang.chef.' + folder, 22)
+            else:
+                self._test_deploy(folder,
                               'io.murano.conflang.chef.' + folder, 22)
             self.purge_environments()
             self.purge_uploaded_packages()

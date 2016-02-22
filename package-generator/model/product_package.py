@@ -25,16 +25,23 @@
 import shutil
 import errno
 import os
-from util import utils
+from util import utils_file as utils
 from model.cookbook import Cookbook
 
 PACKAGES_FOLDER = "./../murano-apps"
-PACKAGE_TEMPLATE_CLASS = "template/PackageTemplate/Classes/GE_name.yaml"
-PACKAGE_TEMPLATE_MANIFEST = "template/PackageTemplate/manifest.yaml"
-PACKAGE_TEMPLATE_PLAN = "template/PackageTemplate/Resources/" \
-                        "DeployExample.template"
+PACKAGE_TEMPLATE_FOLDER = "template/PackageTemplate"
+PACKAGE_TEMPLATE_CLASS = PACKAGE_TEMPLATE_FOLDER + "/Classes/GE_name.yaml"
+PACKAGE_TEMPLATE_MANIFEST = PACKAGE_TEMPLATE_FOLDER + "/manifest.yaml"
+PACKAGE_TEMPLATE_PLAN = PACKAGE_TEMPLATE_FOLDER + "/Resources/DeployExample.template"
 TCP = "tcp"
 UDP = "udp"
+REPLACE_GE_NAME = "{GE_name}"
+REPLACE_GE_INSTALLATOR = "{GE_installator}"
+REPLACE_GE_RECIPE = "{GE_recipe}"
+REPLACE_GE_COOKBOOKS = "{GE_cookbooks}"
+REPLACE_GE_IMAGES = "{GE_images}"
+REPLACE_GE_PORTS = "{GE_ports}"
+REPLACE_GE_NID = "{GE_nid}"
 
 
 class ProductPackage():
@@ -96,46 +103,54 @@ class ProductPackage():
             shutil.copy(PACKAGE_TEMPLATE_CLASS, self.package_classes_file)
             shutil.copy(PACKAGE_TEMPLATE_MANIFEST, self.package_manifest)
             shutil.copy(PACKAGE_TEMPLATE_PLAN, self.package_template)
-        except OSError as exc:
-            if exc.errno == errno.ENOTDIR:
-                shutil.copy("PackageTemplate", self.product.product_name)
-            else:
-                raise
+        except:
+            raise
 
     def generate_manifest(self):
         """
         It generates the package manifest.
         """
-        utils.replace_word(self.package_manifest, "{GE_name}",
+        utils.replace_word(self.package_manifest, REPLACE_GE_NAME,
                            self.product.product_name)
+        utils.replace_word(self.package_manifest, REPLACE_GE_INSTALLATOR,
+                           self.product.installator.lower())
+        utils.replace_word(self.package_manifest, REPLACE_GE_IMAGES,
+                           self._get_images_str())
 
     def generate_class(self):
         """
         It generates the package class file.
         """
         utils.replace_word(self.package_classes_file,
-                           "{GE_name}", self.product.product_name)
+                           REPLACE_GE_NAME, self.product.product_name)
         utils.replace_word(self.package_classes_file,
-                           "{GE_ports}", self._get_ports_str())
+                           REPLACE_GE_PORTS, self._get_ports_str())
         utils.replace_word(self.package_classes_file,
-                           "{GE_nid}", self.product.get_nid())
+                           REPLACE_GE_NID, self.product.nid)
 
     def generate_template(self):
         """
         It generates the package Excecution Plan.
         :return:
         """
-        utils.replace_word(self.package_template, "{GE_name}",
+        utils.replace_word(self.package_template, REPLACE_GE_NAME,
                            self.product.product_name)
         if self.product.is_puppet_installator():
-            utils.replace_word(self.package_template, "{GE_recipe}", "install")
+            utils.replace_word(self.package_template, REPLACE_GE_RECIPE, "install")
         else:
-            utils.replace_word(self.package_template, "{GE_recipe}",
+            utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
                                self.product.product_version+"_install")
-        utils.replace_word(self.package_template, "{GE_installator}",
-                           self.product.get_installator())
-        utils.replace_word(self.package_template, "{GE_cookbooks}",
+        utils.replace_word(self.package_template, REPLACE_GE_INSTALLATOR,
+                           self.product.installator)
+        utils.replace_word(self.package_template, REPLACE_GE_COOKBOOKS,
                            self.get_cookbooks_str())
+
+    def _get_images_str(self):
+        image_str = ''
+        if self.product.images:
+            for image in self.product.images:
+                image_str = image_str + image + ";"
+        return image_str
 
     def _get_ports(self, protocol):
         """
@@ -161,7 +176,7 @@ class ProductPackage():
         Class file
         :return:
         """
-        return self._get_ports("tcp") + self._get_ports("udp")
+        return self._get_ports(TCP) + self._get_ports(UDP)
 
     def get_all_cookbooks(self):
         """
@@ -169,15 +184,15 @@ class ProductPackage():
         :return: Cookbook array
         """
         cookbooks = []
-        cookbook = Cookbook(self.product.get_product_name(),
-                            self.product.get_installator(),
+        cookbook = Cookbook(self.product.product_name,
+                            self.product.installator,
                             self.product.is_enabler())
         cookbooks.append(cookbook)
 
-        for cookbook_child in cookbook.get_cookbooks_child():
+        for cookbook_child in cookbook.cookbook_childs:
             if not self._exists(cookbook_child.name, cookbooks):
                 cookbooks.append(cookbook_child)
-            if len(cookbook_child.get_cookbooks_child()) != 0:
+            if len(cookbook_child.cookbook_childs) != 0:
                 cookbooks_in = cookbook_child.get_all_cookbooks_child()
                 cookbooks.extend(x for x in cookbooks_in
                                  if not self._exists(x.name, cookbooks))
