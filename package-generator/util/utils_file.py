@@ -41,6 +41,7 @@ def replace_word(infile, old_word, new_word):
     :param infile: the file
     :param old_word: old word
     :param new_word: the work to replace
+    :return: nothing
     """
     if not os.path.isfile(infile):
         print ("Error on replace_word, not a regular file: "+infile)
@@ -150,7 +151,8 @@ def create_branch(folder):
     """
     It creates a branch in the git repo and upload it
     into github
-    :return:
+    :param folder: The folder to create the brach.
+    :return: the branch name
     """
     repo = git.repo.Repo(folder)
     str_branch = "update_packages"+str(time.time())
@@ -174,6 +176,7 @@ def delete_branch(branch):
     """
     It deletes the branch in the git repo
     :param branch: the branch to delete
+    :return: nothing
     """
     repo = git.repo.Repo("./../")
     repo.delete_head(branch)
