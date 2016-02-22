@@ -1,0 +1,21 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy xml3d
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: xml3d::5.1.1_install
+    Files:
+        - xml3d : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/xml3d
+
+    Options:
+      captureStdout: true
+      captureStderr: true

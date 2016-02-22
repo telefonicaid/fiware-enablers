@@ -1,0 +1,4 @@
+package-generator:
+  image: package-generator
+  environment:
+   - PASSWORD
