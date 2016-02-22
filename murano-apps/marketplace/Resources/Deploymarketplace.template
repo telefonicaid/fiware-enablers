@@ -1,0 +1,21 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy marketplace
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: marketplace::3.2.1_install
+    Files:
+        - marketplace : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/marketplace
+
+    Options:
+      captureStdout: true
+      captureStderr: true

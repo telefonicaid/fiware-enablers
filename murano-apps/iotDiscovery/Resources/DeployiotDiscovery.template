@@ -1,0 +1,24 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy iotDiscovery
+
+Parameters:
+  port: $port
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: iotDiscovery::4.1.1_install
+    Files:
+        - iotDiscovery : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/iotDiscovery
+        - java : https://github.com/cookbooks/java.git
+        - mysql : https://github.com/chef-cookbooks/mysql
+        - tomcat : https://github.com/chef-cookbooks/tomcat
+
+    Options:
+      captureStdout: true
+      captureStderr: true
