@@ -128,7 +128,7 @@ class TestProduct(unittest.TestCase):
     @mock.patch('util.utils_clients.util_apis')
     def test_obtain_images(self, mock_image):
         """test the functionalities to get product images"""
-        mock_image._get_image_name.return_value = "nameID"
+        mock_image.get_image_name.return_value = "nameID"
         Config.Clients = mock_image
         metadatas = {}
         metadatas["image"] = "ID"
