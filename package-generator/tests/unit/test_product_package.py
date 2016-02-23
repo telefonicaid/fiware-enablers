@@ -26,12 +26,9 @@ import unittest
 from model.product_package import ProductPackage
 from model.product import Product
 from util.configuration import Config
-import six
-import io
-from mock import patch
 import mock
 import ConfigParser
-from sys import version_info
+
 
 COOKBOOK_NAME = "product"
 COOKBOOK_URL = "http://product.git"
