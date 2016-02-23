@@ -26,6 +26,7 @@
 import ConfigParser
 from scripts.getnids.getnid import NID
 from scripts.getnids import getnid
+from util.utils_clients import util_apis
 
 
 class Config():
@@ -34,20 +35,20 @@ class Config():
     CONFIG_MODULES = {}
     CONFIG_PRODUCT = {}
     NID = {}
+    Clients = {}
 
-    def __init__(self, setting_path):
+    def __init__(self, auth_url, user, password, tenant_id, region_name):
         """
         Constructor
         :param setting_path: the path where the configuration files are
         :return:
         """
-        Config.CONFIG_COOKBOOK = self.load_config(setting_path +
-                                                  '/settings/cookbooks_urls')
-        Config.CONFIG_MODULES = self.load_config(setting_path +
-                                                  '/settings/modules_urls')
-        Config.CONFIG_PRODUCT = self.load_config(setting_path +
-                                                 '/settings/product_names')
+        Config.CONFIG_COOKBOOK = self.load_config('./settings/cookbooks_urls')
+        Config.CONFIG_MODULES = self.load_config('./settings/modules_urls')
+        Config.CONFIG_PRODUCT = self.load_config('./settings/product_names')
         Config.NID = self.get_all_nids()
+        Config.Clients = util_apis(auth_url, user, password, tenant_id,
+                                   region_name)
 
     def load_config(self, file):
         """

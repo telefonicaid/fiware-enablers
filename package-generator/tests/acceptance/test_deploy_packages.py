@@ -100,10 +100,18 @@ class DeployPackagesTest(core.MuranoTestsCore):
             package = self.get_package(folder)
             if package:
                 self.delete_package(package)
-                self.upload_app(self.murano_apps_folder + folder, folder, {"tags": ["tag"]})
+                uploaded_package = self.upload_app(self.murano_apps_folder + folder, folder, {"tags": ["tag"]})
             else:
-                self.upload_app(self.murano_apps_folder + folder, folder, {"tags": ["tag"]})
-            self._test_deploy(folder,
+                uploaded_package = self.upload_app(self.murano_apps_folder + folder, folder, {"tags": ["tag"]})
+            tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
+            if ';' in tag_images:
+                images = tag_images.split(';')
+                for image in images:
+                    self.linux = image
+                    self._test_deploy(folder,
+                              'io.murano.conflang.chef.' + folder, 22)
+            else:
+                self._test_deploy(folder,
                               'io.murano.conflang.chef.' + folder, 22)
             self.purge_environments()
 

@@ -47,28 +47,9 @@ class Product():
         self.product_name = product_name
         self.product_version = product_version
         self.metadatas = metadatas
+        self.installator = self._get_installator()
         self.nid = self._get_nid_from_catalogue()
-
-    def get_product_name(self):
-        """
-        It returns the product name.
-        :return: product name
-        """
-        return self.product_name
-
-    def get_product_version(self):
-        """
-        It returs the product version.
-        :return:
-        """
-        return self.product_version
-
-    def get_product_metadatas(self):
-        """
-        It returns the product metadatas.
-        :return:
-        """
-        return self.metadatas
+        self.images = self._get_images_names()
 
     def get_image_metadata(self):
         """
@@ -85,7 +66,7 @@ class Product():
     def _get_nid_from_catalogue(self):
         try:
             nid_aux = Config.CONFIG_PRODUCT.get("main",
-                                                self.get_product_name())
+                                                self.product_name)
             return Config.NID.get(nid_aux)
         except:
             return None
@@ -114,13 +95,6 @@ class Product():
             ports = value.split()
         return ports
 
-    def get_nid(self):
-        """
-        It obtains the product nid.
-        :return: nid
-        """
-        return self.nid
-
     def get_nid_metadata(self):
         """
         It obtains the metadata image
@@ -137,8 +111,7 @@ class Product():
         It checks if the product is a FIWARE enabler.
         :return: True/False
         """
-        nid = self.get_nid()
-        if nid is not None:
+        if self.nid is not None:
             return True
         return False
 
@@ -147,12 +120,11 @@ class Product():
         It checks if the installator is Puppet
         :return: True/False
         """
-        installator = self.get_installator()
-        if PUPPET_INSTALLATOR in installator:
+        if PUPPET_INSTALLATOR in self.installator:
             return True
         return False
 
-    def get_installator(self):
+    def _get_installator(self):
         """
         It returns the type of installator
         :return:
@@ -162,3 +134,22 @@ class Product():
             value = self.metadatas.get(PRODUCT_INSTALLATOR)
             installator = value[0].upper() + value[1:]
         return installator
+
+    def _get_images_names(self):
+        """
+        It obtains the image names associated to the
+        products.
+        :return: array with the image names
+        """
+        if not self.is_enabler():
+            return None
+        images_str = self.get_image_metadata()
+        if not images_str:
+            return None
+        images = images_str.split(' ')
+        images_names = []
+        for image in images:
+            name = Config.Clients.get_image_name(image)
+            if name:
+                images_names.append(name)
+        return images_names

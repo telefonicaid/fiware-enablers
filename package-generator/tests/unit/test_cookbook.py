@@ -86,10 +86,10 @@ class TestCookbook(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
         cookbook = Cookbook(COOKBOOK_NAME, CHEF)
-        self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
-        self.assertEquals(len(cookbook.get_cookbooks_child()), 0)
+        self.assertEquals(cookbook.name, COOKBOOK_NAME)
+        self.assertEquals(len(cookbook.cookbook_childs), 0)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 0)
-        self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
+        self.assertEquals(cookbook.url, COOKBOOK_URL)
         self.mock_open.reset_mock()
 
     @mock.patch('os.path.exists')
@@ -105,15 +105,15 @@ class TestCookbook(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
         cookbook = Cookbook(COOKBOOK_NAME, CHEF)
-        self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
-        self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
+        self.assertEquals(cookbook.name, COOKBOOK_NAME)
+        self.assertEquals(len(cookbook.cookbook_childs), 1)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 1)
-        self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
-        for cookbook_child in cookbook.get_cookbooks_child():
-            self.assertEquals(cookbook_child.get_cookbook_name(),
+        self.assertEquals(cookbook.url, COOKBOOK_URL)
+        for cookbook_child in cookbook.cookbook_childs:
+            self.assertEquals(cookbook_child.name,
                               COOKBOOK_CHILD1)
-            self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL1)
-            self.assertEqual(len(cookbook_child.get_cookbooks_child()), 0)
+            self.assertEquals(cookbook_child.url, COOKBOOK_CHILD_URL1)
+            self.assertEqual(len(cookbook_child.cookbook_childs), 0)
         self.mock_open.reset_mock()
 
     @mock.patch('os.path.exists')
@@ -131,14 +131,14 @@ class TestCookbook(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
         cookbook = Cookbook(COOKBOOK_NAME, CHEF)
-        self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
-        self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
-        self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
-        for cookbook_child in cookbook.get_cookbooks_child():
-            self.assertEquals(cookbook_child.get_cookbook_name(),
+        self.assertEquals(cookbook.name, COOKBOOK_NAME)
+        self.assertEquals(cookbook.url, COOKBOOK_URL)
+        self.assertEquals(len(cookbook.cookbook_childs), 1)
+        for cookbook_child in cookbook.cookbook_childs:
+            self.assertEquals(cookbook_child.name,
                               COOKBOOK_CHILD1)
-            self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL1)
-            self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
+            self.assertEquals(cookbook_child.url, COOKBOOK_CHILD_URL1)
+            self.assertEqual(len(cookbook_child.cookbook_childs), 1)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 2)
         self.mock_open.reset_mock()
 
@@ -157,15 +157,15 @@ class TestCookbook(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
         cookbook = Cookbook(COOKBOOK_NAME, CHEF)
-        self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
-        self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
-        self.assertEquals(len(cookbook.get_cookbooks_child()), 1)
-        for cookbook_child in cookbook.get_cookbooks_child():
-            self.assertEquals(cookbook_child.get_cookbook_name(),
+        self.assertEquals(cookbook.name, COOKBOOK_NAME)
+        self.assertEquals(cookbook.url, COOKBOOK_URL)
+        self.assertEquals(len(cookbook.cookbook_childs), 1)
+        for cookbook_child in cookbook.cookbook_childs:
+            self.assertEquals(cookbook_child.name,
                               COOKBOOK_CHILD1)
-            self.assertEquals(cookbook_child.get_url(), COOKBOOK_CHILD_URL1)
-            self.assertEqual(len(cookbook_child.get_cookbooks_child()), 1)
-        self.assertEquals(len(cookbook.get_all_cookbooks_child()), 1)
+            self.assertEquals(cookbook_child.url, COOKBOOK_CHILD_URL1)
+            self.assertEqual(len(cookbook_child.cookbook_childs), 1)
+        self.assertEquals(len(cookbook.cookbook_childs), 1)
         self.mock_open.reset_mock()
 
     @mock.patch('os.path.exists')
@@ -184,16 +184,16 @@ class TestCookbook(unittest.TestCase):
             mock.mock_open(read_data=METADATA_JSON_STR_NO_CHILD).return_value,
         ]
         cookbook = Cookbook(COOKBOOK_NAME, PUPPET)
-        self.assertEquals(cookbook.get_cookbook_name(), COOKBOOK_NAME)
-        self.assertEquals(cookbook.get_url(), COOKBOOK_URL)
-        self.assertEquals(len(cookbook.get_cookbooks_child()), 2)
+        self.assertEquals(cookbook.name, COOKBOOK_NAME)
+        self.assertEquals(cookbook.url, COOKBOOK_URL)
+        self.assertEquals(len(cookbook.cookbook_childs), 2)
         i = 1
-        for cookbook_child in cookbook.get_cookbooks_child():
-            self.assertEquals(cookbook_child.get_cookbook_name(),
+        for cookbook_child in cookbook.cookbook_childs:
+            self.assertEquals(cookbook_child.name,
                               COOKBOOK_CHILD + str(i))
-            self.assertEquals(cookbook_child.get_url(),
-                              "http://child" + str(i) + ".git")
+            self.assertEquals(cookbook_child.url,
+                              'http://child%s.git' % str(i))
             i = i + 1
-            self.assertEqual(len(cookbook_child.get_cookbooks_child()), 0)
+            self.assertEqual(len(cookbook_child.cookbook_childs), 0)
         self.assertEquals(len(cookbook.get_all_cookbooks_child()), 2)
         self.mock_open.reset_mock()
