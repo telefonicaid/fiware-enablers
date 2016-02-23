@@ -166,7 +166,9 @@ def create_branch(folder):
     for folder in files:
         # add it to the index
         repo.index.add(["murano-apps/"+folder])
-    repo.index.commit("Murano Packages update. Ready to be merged") 
+
+    repo.index.commit("Murano Packages update. "
+                      "Ready to be merged")
     repo.commit()
     repo.remotes.origin.push(new)
     return str_branch

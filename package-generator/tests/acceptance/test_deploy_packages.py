@@ -95,7 +95,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_package = package_str
 
         package = self.get_package(self.murano_package)
-
         if package:
             self.delete_package(package)
         package_id = 'io.murano.conflang.chef.' + self.murano_package
@@ -107,10 +106,12 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
         if ';' in tag_images:
             images = tag_images.split(';')
-            for image in images:
-                self.linux = image
-                self._test_deploy(self.murano_package, package_id, 22)
         else:
+            images = ["base_ubuntu_12.04", "base_ubuntu_14.04",
+                      "base_centos_6", "base_centos_7",
+                      "base_debian_7"]
+        for image in images:
+            self.linux = image
             self._test_deploy(self.murano_package, package_id, 22)
             self.purge_environments()
 

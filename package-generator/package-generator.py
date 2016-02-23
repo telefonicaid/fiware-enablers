@@ -80,7 +80,7 @@ def main(argv=None):
                            region_name=args.region_name,
                            user_github=args.user_github,
                            password_github=args.password_github,
-                           upload = args.upload)
+                           upload=args.upload)
 
 
 def create_murano_packages(auth_url, tenant_id, user, password, region_name,

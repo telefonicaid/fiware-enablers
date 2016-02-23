@@ -83,7 +83,7 @@ class util_apis():
         It obtains the product releases.
         :return: Array with product releases
         """
-        productandrelease_client = self.sdc_client.\
-        getProductAndReleaseResourceClient()
-        allproductreleases, _ = productandrelease_client.get_allproductandrelease()
+        client = self.sdc_client.\
+            getProductAndReleaseResourceClient()
+        allproductreleases, _ = client.get_allproductandrelease()
         return allproductreleases

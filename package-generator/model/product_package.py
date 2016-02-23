@@ -32,7 +32,8 @@ PACKAGES_FOLDER = "./../murano-apps"
 PACKAGE_TEMPLATE_FOLDER = "template/PackageTemplate"
 PACKAGE_TEMPLATE_CLASS = PACKAGE_TEMPLATE_FOLDER + "/Classes/GE_name.yaml"
 PACKAGE_TEMPLATE_MANIFEST = PACKAGE_TEMPLATE_FOLDER + "/manifest.yaml"
-PACKAGE_TEMPLATE_PLAN = PACKAGE_TEMPLATE_FOLDER + "/Resources/DeployExample.template"
+PACKAGE_TEMPLATE_PLAN = (PACKAGE_TEMPLATE_FOLDER +
+                         "/Resources/DeployExample.template")
 TCP = "tcp"
 UDP = "udp"
 REPLACE_GE_NAME = "{GE_name}"
@@ -141,7 +142,8 @@ class ProductPackage():
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
                            self.product.product_name)
         if self.product.is_puppet_installator():
-            utils.replace_word(self.package_template, REPLACE_GE_RECIPE, "install")
+            utils.replace_word(self.package_template,
+                               REPLACE_GE_RECIPE, "install")
         else:
             utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
                                self.product.product_version+"_install")
