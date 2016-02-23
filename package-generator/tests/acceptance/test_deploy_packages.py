@@ -18,24 +18,30 @@ import murano.tests.functional.engine.manager as core
 import murano.tests.functional.engine.config as config
 import mock
 import os
+import unittest
 from os import listdir
 from oslo_config import cfg
 
 from os.path import join, isdir
 
 
-class DeployPackagesTest(core.MuranoTestsCore):
+class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        super(DeployPackagesTest, cls).setUpClass()
-        cls.linux = core.CONF.murano.linux_image
-        cls.flavor = core.CONF.murano.standard_flavor
-        cls.keyname = core.CONF.murano.keyname
-        cls.instance_type = core.CONF.murano.instance_type
+    def __init__(self, methodName, murano_package=None):
+        """
+        Construction
+        :param methodName: the method to be executed
+        :param file: the murano package
+        :return: nothing
+        """
+        super(DeployPackagesTest, self).__init__(methodName)
+        self.murano_package = murano_package
 
-    @classmethod
     def tearDownClass(cls):
+        """
+        It remove everything existing
+        :return: nothing
+        """
         try:
             cls.purge_environments()
             cls.purge_uploaded_packages()
@@ -74,47 +80,39 @@ class DeployPackagesTest(core.MuranoTestsCore):
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
         self.add_service(environment, post_body, session)
-        try:
-            self.deploy_environment(environment, session)
-            self.wait_for_environment_deploy(environment)
-            self.deployment_success_check(environment, port)
-            print "Deployment OK"
-        except Exception as e:
-            print ("Error " + e.message + ": " +
-                   self.murano_client().deployments.list(environment.id)[-1].result['result']['message'])
-
+        self.deploy_environment(environment, session)
+        self.wait_for_environment_deploy(environment)
+        self.deployment_success_check(environment, port)
 
     @mock.patch('murano.tests.functional.engine.config')
-    def test_deploys(self, mock_config):
+    def runTest(self, mock_config):
         """It obtains the murano packages created and deploy then"""
-        mock_config.load_config = self.load_config()
+        mock_config.load_config = load_config()
         self.linux = core.CONF.murano.linux_image
         self.flavor = core.CONF.murano.standard_flavor
         self.keyname = core.CONF.murano.keyname
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
-        files = [f for f in listdir(self.murano_apps_folder) if
-                 isdir(join(self.murano_apps_folder, f))]
-        for folder in files:
-            print folder
-            package = self.get_package(folder)
-            if package:
-                self.delete_package(package)
-                uploaded_package = self.upload_app(self.murano_apps_folder + folder, folder, {"tags": ["tag"]})
-            else:
-                uploaded_package = self.upload_app(self.murano_apps_folder + folder, folder, {"tags": ["tag"]})
-            tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
-            if ';' in tag_images:
-                images = tag_images.split(';')
-                for image in images:
-                    self.linux = image
-                    self._test_deploy(folder,
-                              'io.murano.conflang.chef.' + folder, 22)
-            else:
-                self._test_deploy(folder,
-                              'io.murano.conflang.chef.' + folder, 22)
-            self.purge_environments()
 
+        package = self.get_package(self.murano_package)
+
+        if package:
+            self.delete_package(package)
+        package_id = 'io.murano.conflang.chef.' + self.murano_package
+        package_folder = self.murano_apps_folder + self.murano_package
+        uploaded_package = self.upload_app(package_folder,
+                                           self.murano_package,
+                                           {"tags": ["tag"]})
+
+        tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
+        if ';' in tag_images:
+            images = tag_images.split(';')
+            for image in images:
+                self.linux = image
+                self._test_deploy(self.murano_package, package_id, 22)
+        else:
+            self._test_deploy(self.murano_package, package_id, 22)
+            self.purge_environments()
 
     def delete_package(cls, package):
         """It deletes the package in murano."""
@@ -122,18 +120,11 @@ class DeployPackagesTest(core.MuranoTestsCore):
 
     def get_package(self, package_to_add):
         """It obtains the package from murano."""
-        for package in self.murano_client().packages.list(include_disabled=True):
+        for package in \
+                self.murano_client().packages.list(include_disabled=True):
             if package.name == package_to_add:
                 return package
 
-    def load_config(self):
-        __location = os.path.realpath(os.path.join(os.getcwd(),
-                                      os.path.dirname(__file__)))
-        path = os.path.join(__location, "config.conf")
-        if os.path.exists(path):
-            CONF([], project='muranointegration', default_config_files=[path])
-
-        config.register_config(CONF, murano_group, MuranoGroup)
 
 murano_group = cfg.OptGroup(name='murano', title="murano")
 
@@ -187,3 +178,28 @@ MuranoGroup = [
 ]
 
 CONF = cfg.CONF
+
+
+def load_config():
+    """ It loads the config.conf file as configuration """
+    __location = os.path.realpath(os.path.join(os.getcwd(),
+                                  os.path.dirname(__file__)))
+    path = os.path.join(__location, "config.conf")
+    if os.path.exists(path):
+        CONF([], project='muranointegration', default_config_files=[path])
+
+    config.register_config(CONF, murano_group, MuranoGroup)
+
+
+def load_tests(loader, tests, pattern):
+    """
+    It loads all tests (one test per murano package.
+    """
+    test_cases = unittest.TestSuite()
+    load_config()
+    murano_apps_folder = CONF.murano.murano_apps_folder
+    murano_packages = [f for f in listdir(murano_apps_folder) if
+                       isdir(join(murano_apps_folder, f))]
+    for murano_package in murano_packages:
+        test_cases.addTest(DeployPackagesTest("runTest", murano_package))
+    return test_cases
