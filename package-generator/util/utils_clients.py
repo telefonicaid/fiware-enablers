@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -38,6 +38,7 @@ class util_apis():
         :param password: the password
         :param tenant_id: the tenant ID
         :param region_name: the region
+        :return nothing
         """
         self.auth_url = auth_url
         self.user = user

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -40,8 +40,12 @@ class Config():
     def __init__(self, auth_url, user, password, tenant_id, region_name):
         """
         Constructor
-        :param setting_path: the path where the configuration files are
-        :return:
+        :param auth_url: the keystone url
+        :param user: the user
+        :param password: the password
+        :param tenant_id: tenant ID
+        :param region_name: the region
+        :return: nothing
         """
         Config.CONFIG_COOKBOOK = self.load_config('./settings/cookbooks_urls')
         Config.CONFIG_MODULES = self.load_config('./settings/modules_urls')
@@ -54,7 +58,7 @@ class Config():
         """
         It loads the configuration file
         :param file: The configuration file
-        :return:
+        :return: nothing
         """
         config_product = ConfigParser.RawConfigParser()
         config_product.read(file)

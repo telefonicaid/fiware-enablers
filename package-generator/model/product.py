@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -42,7 +42,7 @@ class Product():
         :param product_name: the product name
         :param product_version: the release version
         :param metadatas: a set of metadatas
-        :return:
+        :return: nothing
         """
         self.product_name = product_name
         self.product_version = product_version
@@ -127,7 +127,7 @@ class Product():
     def _get_installator(self):
         """
         It returns the type of installator
-        :return:
+        :return: the installator
         """
         installator = None
         if PRODUCT_INSTALLATOR in self.metadatas.keys():

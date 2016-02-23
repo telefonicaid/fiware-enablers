@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -133,7 +133,7 @@ def create_github_pull_request(repo_url, user_github, password_github, branch):
     for repo in g.get_user().get_repos():
         if repo.url == repo_url:
             repo.create_pull("New update in Murano-packages",
-                             "Created by package-generator", branch, "develop")
+                             "Created by package-generator", "develop", branch)
 
 
 def download_files_git(url_file):
@@ -166,8 +166,6 @@ def create_branch(folder):
     for folder in files:
         # add it to the index
         repo.index.add(["murano-apps/"+folder])
-        # Commit the changes to deviate masters history
-        repo.index.commit("Added a new file in the past - for later merege")
     repo.index.commit("Murano Packages update. Ready to be merged") 
     repo.commit()
     repo.remotes.origin.push(new)
