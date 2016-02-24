@@ -159,7 +159,7 @@ class ProductPackage():
             leng = 0
             for image in self.product.images:
                 if leng != 0:
-                    image_str = ";" + image_str + image
+                    image_str = image_str + ";" + image
                 else:
                     image_str = image_str + image
                 leng = leng + 1
