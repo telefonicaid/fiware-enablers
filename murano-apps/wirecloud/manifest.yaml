@@ -3,8 +3,8 @@ Type: Application
 FullName: io.murano.conflang.chef.wirecloud
 Name: wirecloud
 Description: |
-  Example Chef.
+  Murano package for FIWARE wirecloud GEi . 24/02/2016
 Author: 'TID'
-Tags: [Test, Chef]
+Tags: [FIWARE, GEs, chef]
 Classes:
  io.murano.conflang.chef.wirecloud: wirecloud.yaml
