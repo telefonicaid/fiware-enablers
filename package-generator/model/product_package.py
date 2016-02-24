@@ -41,6 +41,8 @@ REPLACE_GE_INSTALLATOR = "{GE_installator}"
 REPLACE_GE_RECIPE = "{GE_recipe}"
 REPLACE_GE_COOKBOOKS = "{GE_cookbooks}"
 REPLACE_GE_IMAGES = "{GE_images}"
+REPLACE_GE_ATTS = "{GE_attributes}"
+REPLACE_GE_ATTS_RESOURCE = "{GE_attributes_resource}"
 REPLACE_GE_PORTS = "{GE_ports}"
 REPLACE_GE_NID = "{GE_nid}"
 
@@ -119,6 +121,8 @@ class ProductPackage():
                            self.product.installator.lower())
         utils.replace_word(self.package_manifest, REPLACE_GE_IMAGES,
                            self._get_images_str())
+        utils.replace_word(self.package_manifest, REPLACE_GE_ATTS,
+                           self._get_attributes_str())
         utils.replace_word(self.package_manifest, "{date}",
                            time.strftime("%d/%m/%Y"))
 
@@ -133,6 +137,10 @@ class ProductPackage():
                            REPLACE_GE_PORTS, self._get_ports_str())
         utils.replace_word(self.package_classes_file,
                            REPLACE_GE_NID, self.product.nid)
+        utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS_RESOURCE,
+                           self._get_attributes_resource())
+        utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS,
+                           self._get_attributes_class_str())
 
     def generate_template(self):
         """
@@ -151,6 +159,9 @@ class ProductPackage():
                            self.product.installator)
         utils.replace_word(self.package_template, REPLACE_GE_COOKBOOKS,
                            self.get_cookbooks_str())
+        utils.replace_word(self.package_template, REPLACE_GE_ATTS,
+                           self._get_attributes_template_str())
+
 
     def _get_images_str(self):
         image_str = ''
@@ -164,6 +175,49 @@ class ProductPackage():
                     image_str = image_str + image
                 leng = leng + 1
         return image_str
+
+    def _get_attributes_str(self):
+        atts_str = ''
+        if self.product.attributes:
+            leng = len(self.product.attributes)
+            atts_str = ', attributes='
+            if self.product.attributes:
+                for att in self.product.attributes:
+                    atts_str = atts_str + att + ";"
+        return atts_str
+
+    def _get_attributes_template_str(self):
+        atts_str = ''
+        port = self.product.get_port()
+        if port:
+            atts_str = atts_str + 'port: {0}'.format(port)
+        if self.product.attributes:
+            for key in self.product.attributes:
+                atts_str = atts_str + (" " * 2) + key + ":" + self.product.attributes[key] + "\n"
+        return atts_str
+
+    def _get_attributes_resource(self):
+        template_resource = "- $template: $resources.yaml(\'Deploy {0}.template\')".\
+            format(self.product.product_name)
+        if not self.product.attributes:
+            return template_resource
+        template_resource = template_resource + ".bind(dict(\n"
+        leng = len(self.product.attributes) - 1
+        for key in self.product.attributes:
+            if leng == 0:
+               template_resource = template_resource + (" " * 16) +"{1}  => {2}))".format(template_resource, key, key)
+            else:
+               template_resource = template_resource + (" " * 16) +"{1}  => {2},\n".format(template_resource, key, key)
+            leng = leng - 1
+
+        return template_resource
+
+    def _get_attributes_class_str(self):
+        atts_str = ''
+        if self.product.attributes:
+            for key in self.product.attributes:
+                atts_str = atts_str + (" " * 2) + key + ":\n" + (" " * 4) + "Contract: $.string()\n"
+        return atts_str
 
     def _get_ports(self, protocol):
         """

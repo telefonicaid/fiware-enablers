@@ -3,7 +3,7 @@ Version: 1.0.0
 Name: Deploy {GE_name}
 
 Parameters:
-  port: $port
+  {GE_attributes}
 
 Body: |
   return executeRecipe(args).stdout

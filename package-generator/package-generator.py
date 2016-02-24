@@ -124,6 +124,7 @@ def get_product(product_json):
     product_name = product_json[BODY_PRODUCT][BODY_PRODUCTNAME]
     product_version = product_json[BODY_PRODUCTVERSION]
     metadatas = {}
+    attributes = {}
     if product_json[BODY_PRODUCT].get(BODY_METADATAS):
     # Checks if there are metadatas in the product
         for metadata_json in product_json[BODY_PRODUCT][BODY_METADATAS]:
@@ -135,7 +136,18 @@ def get_product(product_json):
                 metadata_key = metadatas_json[BODY_METADATA_KEY]
                 metadata_value = metadatas_json[BODY_METADATA_VALUE]
             metadatas[metadata_key] = metadata_value
-    return Product(product_name, product_version, metadatas)
+
+        if "attributes" in product_json[BODY_PRODUCT].keys():
+            for att_json in product_json[BODY_PRODUCT]["attributes"]:
+                try:
+                    att_key = att_json[BODY_METADATA_KEY]
+                    att_value = att_json[BODY_METADATA_VALUE]
+                except TypeError:
+                    att_json = product_json[BODY_PRODUCT]["attributes"]
+                    att_key = att_json[BODY_METADATA_KEY]
+                    att_value = att_json[BODY_METADATA_VALUE]
+                attributes[att_key] = att_value
+    return Product(product_name, product_version, metadatas, attributes)
 
 
 def update_into_github(user_github, password_github):

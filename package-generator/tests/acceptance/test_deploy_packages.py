@@ -46,7 +46,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         except Exception as e:
             raise e
 
-    def _test_deploy(self, environment_name, package_name, port):
+    def _test_deploy(self, environment_name, package_name, port, atts):
         """
         It deploys an enviornment.
         :param environment_name:  environment name
@@ -73,6 +73,9 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 "id": str(uuid.uuid4())
             }
         }
+        if atts:
+            for att in atts:
+               post_body[att] = atts[att]
 
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment(name=environment_name)

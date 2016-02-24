@@ -37,7 +37,7 @@ from util.configuration import Config
 class Product():
     """This class represents the product.
     """
-    def __init__(self, product_name, product_version, metadatas={}):
+    def __init__(self, product_name, product_version, metadatas={}, attributes={}):
         """
         :param product_name: the product name
         :param product_version: the release version
@@ -50,6 +50,7 @@ class Product():
         self.installator = self._get_installator()
         self.nid = self._get_nid_from_catalogue()
         self.images = self._get_images_names()
+        self.attributes = attributes
 
     def get_image_metadata(self):
         """
@@ -83,6 +84,18 @@ class Product():
         if SSH_PORT not in ports:
             ports.append(SSH_PORT)
         return ports
+
+    def get_port(self):
+        """
+        It obtains the tcp ports for the product.
+        :return: ports
+        """
+        if TCP_PORTS in self.metadatas.keys():
+            value = self.metadatas.get(TCP_PORTS)
+            ports = value.split()
+        if len(ports) != 0:
+            return ports[0]
+        return None
 
     def get_udp_ports(self):
         """

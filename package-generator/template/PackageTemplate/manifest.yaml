@@ -3,8 +3,8 @@ Type: Application
 FullName: io.murano.conflang.{GE_installator}.{GE_name}
 Name: {GE_name}
 Description: |
-  Murano package for FIWARE {GE_name} GEi . {date}
+  Murano package for FIWARE {GE_name} GEi. {date}
 Author: 'TID'
-Tags: [FIWARE, GEs, {GE_installator}{GE_images}]
+Tags: [FIWARE, GEs, {GE_installator}{GE_images}{GE_attributes}]
 Classes:
  io.murano.conflang.{GE_installator}.{GE_name}: {GE_name}.yaml
