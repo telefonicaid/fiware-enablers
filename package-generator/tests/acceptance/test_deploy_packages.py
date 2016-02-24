@@ -43,7 +43,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         """
         try:
             cls.purge_environments()
-            cls.purge_uploaded_packages()
         except Exception as e:
             raise e
 
@@ -101,7 +100,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         package_folder = self.murano_apps_folder + self.murano_package
         uploaded_package = self.upload_app(package_folder,
                                            self.murano_package,
-                                           {"tags": ["tag"]})
+                                           {"is_public": True, "tags": ["tag"]})
 
         tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
         if ';' in tag_images:
