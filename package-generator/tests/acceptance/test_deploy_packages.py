@@ -1,4 +1,4 @@
-# Copyright (c) 2015 OpenStack Foundation
+# Copyright (c) 2016 OpenStack Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -43,7 +43,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         """
         try:
             cls.purge_environments()
-            cls.purge_uploaded_packages()
         except Exception as e:
             raise e
 
@@ -95,22 +94,23 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_package = package_str
 
         package = self.get_package(self.murano_package)
-
         if package:
             self.delete_package(package)
         package_id = 'io.murano.conflang.chef.' + self.murano_package
         package_folder = self.murano_apps_folder + self.murano_package
         uploaded_package = self.upload_app(package_folder,
                                            self.murano_package,
-                                           {"tags": ["tag"]})
+                                           {"is_public": True, "tags": ["tag"]})
 
         tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
         if ';' in tag_images:
             images = tag_images.split(';')
-            for image in images:
-                self.linux = image
-                self._test_deploy(self.murano_package, package_id, 22)
         else:
+            images = ["base_ubuntu_12.04", "base_ubuntu_14.04",
+                      "base_centos_6", "base_centos_7",
+                      "base_debian_7"]
+        for image in images:
+            self.linux = image
             self._test_deploy(self.murano_package, package_id, 22)
             self.purge_environments()
 

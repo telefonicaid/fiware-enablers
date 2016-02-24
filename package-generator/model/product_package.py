@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 import shutil
-import errno
+import time
 import os
 from util import utils_file as utils
 from model.cookbook import Cookbook
@@ -32,7 +32,8 @@ PACKAGES_FOLDER = "./../murano-apps"
 PACKAGE_TEMPLATE_FOLDER = "template/PackageTemplate"
 PACKAGE_TEMPLATE_CLASS = PACKAGE_TEMPLATE_FOLDER + "/Classes/GE_name.yaml"
 PACKAGE_TEMPLATE_MANIFEST = PACKAGE_TEMPLATE_FOLDER + "/manifest.yaml"
-PACKAGE_TEMPLATE_PLAN = PACKAGE_TEMPLATE_FOLDER + "/Resources/DeployExample.template"
+PACKAGE_TEMPLATE_PLAN = (PACKAGE_TEMPLATE_FOLDER +
+                         "/Resources/DeployExample.template")
 TCP = "tcp"
 UDP = "udp"
 REPLACE_GE_NAME = "{GE_name}"
@@ -98,6 +99,7 @@ class ProductPackage():
     def _copy_files_from_templates(self):
         """
         It copies based files from the Template folder.
+        :return: nothing
         """
         try:
             shutil.copy(PACKAGE_TEMPLATE_CLASS, self.package_classes_file)
@@ -109,6 +111,7 @@ class ProductPackage():
     def generate_manifest(self):
         """
         It generates the package manifest.
+        :return: nothing
         """
         utils.replace_word(self.package_manifest, REPLACE_GE_NAME,
                            self.product.product_name)
@@ -116,10 +119,13 @@ class ProductPackage():
                            self.product.installator.lower())
         utils.replace_word(self.package_manifest, REPLACE_GE_IMAGES,
                            self._get_images_str())
+        utils.replace_word(self.package_manifest, "{date}",
+                           time.strftime("%d/%m/%Y"))
 
     def generate_class(self):
         """
         It generates the package class file.
+        :return: nothing
         """
         utils.replace_word(self.package_classes_file,
                            REPLACE_GE_NAME, self.product.product_name)
@@ -131,12 +137,13 @@ class ProductPackage():
     def generate_template(self):
         """
         It generates the package Excecution Plan.
-        :return:
+        :return: nothing
         """
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
                            self.product.product_name)
         if self.product.is_puppet_installator():
-            utils.replace_word(self.package_template, REPLACE_GE_RECIPE, "install")
+            utils.replace_word(self.package_template,
+                               REPLACE_GE_RECIPE, "install")
         else:
             utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
                                self.product.product_version+"_install")

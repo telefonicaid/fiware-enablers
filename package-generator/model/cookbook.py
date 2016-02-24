@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -45,6 +45,7 @@ class Cookbook:
         :param name:  cookbook name
         :param installator:  cookbook installator
         :param enabler: is a FIWARE enabler
+        :return: nothing
         """
         self.name = name
         self.enabler = enabler
@@ -112,6 +113,11 @@ class Cookbook:
             return self._get_cookbooks_metadata_puppet(metadata_str)
 
     def _get_cookbooks_metadata_chef(self, metadata_str):
+        """
+        If obtains the cookbooks from the metadata.rb
+        :param metadata_str: the metadata rb in string
+        :return: cookbook array
+        """
         cookbooks = []
         lines = metadata_str.splitlines()
         for line in lines:
@@ -127,6 +133,11 @@ class Cookbook:
         return cookbooks
 
     def _get_cookbooks_metadata_puppet(self, metadata_str):
+        """
+        If obtains the cookbooks from the metadata.json
+        :param metadata_str: the metadata json in string
+        :return: cookbook array
+        """
         cookbooks = []
         metadata = json.loads(metadata_str)
         dependences = metadata.get(KEY_CHILD_PRODUCT_PUPPET)
@@ -153,6 +164,12 @@ class Cookbook:
         return cookbooks
 
     def _exists(self, cookbook_name, cookbooks):
+        """
+        It checks if the cookbooks is in the array
+        :param cookbook_name: cookbook name
+        :param cookbooks: Cookbooks array
+        :return: True/False
+        """
         for cookbook in cookbooks:
             if cookbook_name == cookbook.name:
                 return True

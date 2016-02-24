@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -60,6 +60,7 @@ class TestProductPackage(unittest.TestCase):
     @mock.patch('os.mkdir')
     @mock.patch('os.makedirs')
     def setUp(self, mock_path, mock_mkdir, mock_makedir):
+        """ setup """
         mock_path.return_value = True
         mock_mkdir.return_value = None
         mock_makedir.return_value = None
@@ -73,8 +74,8 @@ class TestProductPackage(unittest.TestCase):
         Config.NID = {}
 
     def tearDown(self):
+        """ tear down  """
         self.mock_open.reset_mock()
-        pass
 
     @mock.patch('shutil.copy')
     @mock.patch('os.path.exists')

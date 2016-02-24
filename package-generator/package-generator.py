@@ -80,7 +80,7 @@ def main(argv=None):
                            region_name=args.region_name,
                            user_github=args.user_github,
                            password_github=args.password_github,
-                           upload = args.upload)
+                           upload=args.upload)
 
 
 def create_murano_packages(auth_url, tenant_id, user, password, region_name,
@@ -102,8 +102,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
 
         product = get_product(product_xml)
-        print product.product_name
         image = product.get_image_metadata()
+        print product.product_name
         if 'hi' is not image and product.is_enabler():
             print product.product_name
             package_murano = ProductPackage(product)

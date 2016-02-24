@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -45,6 +45,7 @@ class TestProduct(unittest.TestCase):
     """Class to test basic operations for the Product class"""
 
     def setUp(self):
+        """ setup """
         config_cookbook = ConfigParser.RawConfigParser()
         config_cookbook.add_section("main")
         config_cookbook.set("main", COOKBOOK_NAME, COOKBOOK_URL)
@@ -70,6 +71,7 @@ class TestProduct(unittest.TestCase):
         self.assertIsNone(product.images)
 
     def test_no_nid(self):
+        """ test a product without a nid """
         product = Product(PRODUCT_NAME_OTHER, PRODUCT_VERSION)
         self.assertEquals(product.product_name, PRODUCT_NAME_OTHER)
         self.assertEquals(product.nid, None)
