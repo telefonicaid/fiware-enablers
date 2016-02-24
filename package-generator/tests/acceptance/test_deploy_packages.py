@@ -100,15 +100,16 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         package_folder = self.murano_apps_folder + self.murano_package
         uploaded_package = self.upload_app(package_folder,
                                            self.murano_package,
-                                           {"is_public": True, "tags": ["tag"]})
+                                           {"is_public": True,
+                                            "tags": ["tag"]})
 
-        tag_images = uploaded_package.tags[len(uploaded_package.tags)-1]
-        if ';' in tag_images:
-            images = tag_images.split(';')
-        else:
-            images = ["base_ubuntu_12.04", "base_ubuntu_14.04",
-                      "base_centos_6", "base_centos_7",
-                      "base_debian_7"]
+        images = ["base_ubuntu_14.04", "base_centos_7"]
+        tags = uploaded_package.tags
+        for tag in tags:
+            if "images" in tag:
+                tag = tag[7:len(tag)]
+                images = tag.split(';')
+
         for image in images:
             self.linux = image
             self._test_deploy(self.murano_package, package_id, 22)

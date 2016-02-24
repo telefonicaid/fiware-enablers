@@ -155,8 +155,14 @@ class ProductPackage():
     def _get_images_str(self):
         image_str = ''
         if self.product.images:
+            image_str = ', images='
+            leng = 0
             for image in self.product.images:
-                image_str = image_str + image + ";"
+                if leng != 0:
+                    image_str = ";" + image_str + image
+                else:
+                    image_str = image_str + image
+                ++leng
         return image_str
 
     def _get_ports(self, protocol):
