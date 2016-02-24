@@ -102,10 +102,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
 
         product = get_product(product_xml)
-        print product.product_name
         image = product.get_image_metadata()
         if 'hi' is not image and product.is_enabler():
-            print product.product_name
             package_murano = ProductPackage(product)
             package_murano.generate_manifest()
             package_murano.generate_class()
