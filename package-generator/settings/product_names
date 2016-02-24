@@ -35,7 +35,7 @@ augmentedreality: augmented-reality
 interface_designer: interface-designer
 authzforce: authorization-pdp-authzforce
 wstore: store-wstore
-idas: backend-device-management-idas
+iotagent: backend-device-management-idas
 poi_dp: poi-data-provider
 Stream_oriented_kurento: stream-oriented-kurento
 ofnic: network-information-and-control-ofnic
