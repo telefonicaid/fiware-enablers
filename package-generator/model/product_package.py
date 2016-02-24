@@ -162,7 +162,7 @@ class ProductPackage():
                     image_str = ";" + image_str + image
                 else:
                     image_str = image_str + image
-                ++leng
+                leng = leng + 1
         return image_str
 
     def _get_ports(self, protocol):
