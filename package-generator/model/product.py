@@ -37,7 +37,8 @@ from util.configuration import Config
 class Product():
     """This class represents the product.
     """
-    def __init__(self, product_name, product_version, metadatas={}, attributes={}):
+    def __init__(self, product_name, product_version, metadatas={},
+                 attributes={}):
         """
         :param product_name: the product name
         :param product_version: the release version
@@ -65,6 +66,10 @@ class Product():
         return image
 
     def _get_nid_from_catalogue(self):
+        """
+        It obtains the NID from the catalogue
+        :return: nid
+        """
         try:
             nid_aux = Config.CONFIG_PRODUCT.get("main",
                                                 self.product_name)
@@ -87,8 +92,8 @@ class Product():
 
     def get_port(self):
         """
-        It obtains the tcp ports for the product.
-        :return: ports
+        It obtains a port from the product.
+        :return: port
         """
         if TCP_PORTS in self.metadatas.keys():
             value = self.metadatas.get(TCP_PORTS)

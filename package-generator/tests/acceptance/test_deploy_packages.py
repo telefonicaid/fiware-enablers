@@ -75,7 +75,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         }
         if atts:
             for att in atts:
-               post_body[att] = atts[att]
+                post_body[att] = atts[att]
 
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment(name=environment_name)

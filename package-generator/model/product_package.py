@@ -162,8 +162,11 @@ class ProductPackage():
         utils.replace_word(self.package_template, REPLACE_GE_ATTS,
                            self._get_attributes_template_str())
 
-
     def _get_images_str(self):
+        """
+        It obtains the string with the image information
+        :return: the string
+        """
         image_str = ''
         if self.product.images:
             image_str = ', images='
@@ -177,6 +180,10 @@ class ProductPackage():
         return image_str
 
     def _get_attributes_str(self):
+        """
+        It obtains the string with the attribute information for the manifest
+        :return: the string
+        """
         atts_str = ''
         if self.product.attributes:
             leng = len(self.product.attributes)
@@ -187,17 +194,26 @@ class ProductPackage():
         return atts_str
 
     def _get_attributes_template_str(self):
+        """
+        It obtains the string with the attribute information for the template
+        :return: the string
+        """
         atts_str = ''
         port = self.product.get_port()
         if port:
-            atts_str = atts_str + 'port: {0}'.format(port)
+            atts_str = atts_str + 'port: $port\n'
         if self.product.attributes:
             for key in self.product.attributes:
-                atts_str = atts_str + (" " * 2) + key + ":" + self.product.attributes[key] + "\n"
+                atts_str = atts_str + (" " * 2) + key + ": $" + key + "\n"
         return atts_str
 
     def _get_attributes_resource(self):
-        template_resource = "- $template: $resources.yaml(\'Deploy {0}.template\')".\
+        """
+        It obtains the string with the attribute information for the class
+        :return: the string
+        """
+        template_resource = \
+            "- $template: $resources.yaml(\'Deploy{0}.template\')".\
             format(self.product.product_name)
         if not self.product.attributes:
             return template_resource
@@ -205,18 +221,27 @@ class ProductPackage():
         leng = len(self.product.attributes) - 1
         for key in self.product.attributes:
             if leng == 0:
-               template_resource = template_resource + (" " * 16) +"{1}  => {2}))".format(template_resource, key, key)
+                template_resource = \
+                    template_resource + (" " * 16) + "{1} => $.{2}))".\
+                        format(template_resource, key, key)
             else:
-               template_resource = template_resource + (" " * 16) +"{1}  => {2},\n".format(template_resource, key, key)
+                template_resource = \
+                    template_resource + (" " * 16) + "{1} => $.{2},\n".\
+                        format(template_resource, key, key)
             leng = leng - 1
 
         return template_resource
 
     def _get_attributes_class_str(self):
+        """
+        It obtains the string with the attribute information fo the class
+        :return: the string
+        """
         atts_str = ''
         if self.product.attributes:
             for key in self.product.attributes:
-                atts_str = atts_str + (" " * 2) + key + ":\n" + (" " * 4) + "Contract: $.string()\n"
+                atts_str = atts_str + (" " * 2) + key + ":\n" +\
+                           (" " * 4) + "Contract: $.string()\n"
         return atts_str
 
     def _get_ports(self, protocol):
@@ -266,6 +291,12 @@ class ProductPackage():
         return cookbooks
 
     def _exists(self, cookbook_name, cookbooks):
+        """
+        It checks if the cookbook is already stored in the array.
+        :param cookbook_name: the cookbook name
+        :param cookbooks: the cookbook array
+        :return: True/False
+        """
         for cookbook in cookbooks:
             if cookbook_name == cookbook.name:
                 return True
