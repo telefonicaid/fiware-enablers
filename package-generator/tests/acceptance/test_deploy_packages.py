@@ -107,15 +107,19 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                             "tags": ["tag"]})
 
         images = ["base_ubuntu_14.04", "base_centos_7"]
+        atts = {}
         tags = uploaded_package.tags
         for tag in tags:
             if "images" in tag:
                 tag = tag[7:len(tag)]
                 images = tag.split(';')
+            if "attributes" in tag:
+                tag = tag[11:len(tag)]
+                atts = tag.split(';')
 
         for image in images:
             self.linux = image
-            self._test_deploy(self.murano_package, package_id, 22)
+            self._test_deploy(self.murano_package, package_id, 22, atts)
             self.purge_environments()
 
     def delete_package(cls, package):
