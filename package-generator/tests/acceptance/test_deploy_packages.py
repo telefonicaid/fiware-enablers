@@ -96,8 +96,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
 
-        self.murano_package = "iotagent"
-
         package = self.get_package(self.murano_package)
         if package:
             self.delete_package(package)
