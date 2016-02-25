@@ -1,10 +1,10 @@
 Format: 1.0
 Type: Application
-FullName: io.murano.conflang.chef.cep
+FullName: io.murano.conflang.puppet.cep
 Name: cep
 Description: |
-  Example Chef.
+  Murano package for FIWARE cep GEi . 24/02/2016
 Author: 'TID'
-Tags: [Test, Chef]
+Tags: [FIWARE, GEs, puppet]
 Classes:
- io.murano.conflang.chef.cep: cep.yaml
+ io.murano.conflang.puppet.cep: cep.yaml

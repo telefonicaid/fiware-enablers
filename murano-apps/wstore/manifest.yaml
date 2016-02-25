@@ -3,8 +3,8 @@ Type: Application
 FullName: io.murano.conflang.chef.wstore
 Name: wstore
 Description: |
-  Example Chef.
+  Murano package for FIWARE wstore GEi . 24/02/2016
 Author: 'TID'
-Tags: [Test, Chef]
+Tags: [FIWARE, GEs, chef]
 Classes:
  io.murano.conflang.chef.wstore: wstore.yaml

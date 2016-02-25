@@ -1,10 +1,10 @@
 Format: 1.0
 Type: Application
-FullName: io.murano.conflang.chef.iotbroker
+FullName: io.murano.conflang.puppet.iotbroker
 Name: iotbroker
 Description: |
-  Example Chef.
+  Murano package for FIWARE iotbroker GEi . 24/02/2016
 Author: 'TID'
-Tags: [Test, Chef]
+Tags: [FIWARE, GEs, puppet, images=base_ubuntu_14.04]
 Classes:
- io.murano.conflang.chef.iotbroker: iotbroker.yaml
+ io.murano.conflang.puppet.iotbroker: iotbroker.yaml
