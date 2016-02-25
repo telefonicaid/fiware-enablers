@@ -12,6 +12,7 @@ Extends: std:Application
 Properties:
   instance:
     Contract: $.class(res:Instance).notNull()
+{GE_attributes}
 
 Methods:
   initialize:
@@ -30,8 +31,7 @@ Methods:
           - $.instance.deploy()
           - $resources: new(sys:Resources)
           # Deploy {GE_name}
-          - $template: $resources.yaml('Deploy{GE_name}.template')
-
+          {GE_attributes_resource}
           - $._environment.reporter.report($this, 'Instance is created. Deploying {GE_name}')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp
