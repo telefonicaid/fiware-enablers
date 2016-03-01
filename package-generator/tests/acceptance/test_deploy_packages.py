@@ -21,6 +21,7 @@ import os
 import unittest
 from os import listdir
 from oslo_config import cfg
+import re
 
 from os.path import join, isdir
 
@@ -75,7 +76,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         }
         if atts:
             for att in atts:
-                post_body[att] = atts[att]
+                post_body[att] = att
 
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment(name=environment_name)
@@ -96,15 +97,21 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
 
+        self.murano_package  = "ExamplePuppet"
+
+        tags = []
         package = self.get_package(self.murano_package)
         if package:
             self.delete_package(package)
-        package_id = 'io.murano.conflang.chef.' + self.murano_package
+            tags = package.tags
+
         package_folder = self.murano_apps_folder + self.murano_package
+
+        tags.append({"is_public", True})
         uploaded_package = self.upload_app(package_folder,
                                            self.murano_package,
-                                           {"is_public": True,
-                                            "tags": ["tag"]})
+                                           tags)
+        package_id = uploaded_package.class_definitions[0]
 
         images = ["base_ubuntu_14.04", "base_centos_7"]
         atts = {}
