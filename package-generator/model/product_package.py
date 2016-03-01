@@ -222,12 +222,12 @@ class ProductPackage():
         for key in self.product.attributes:
             if leng == 0:
                 template_resource = \
-                    template_resource + (" " * 16) + "{1} => $.{2}))".\
-                        format(template_resource, key, key)
+                    template_resource + \
+                    (" " * 16) + "{1} => $.{2}))".format(key, key)
             else:
                 template_resource = \
-                    template_resource + (" " * 16) + "{1} => $.{2},\n".\
-                        format(template_resource, key, key)
+                    template_resource +\
+                    (" " * 16) + "{1} => $.{2},\n".format(key, key)
             leng = leng - 1
 
         return template_resource
@@ -240,8 +240,8 @@ class ProductPackage():
         atts_str = ''
         if self.product.attributes:
             for key in self.product.attributes:
-                atts_str = atts_str + (" " * 2) + key + ":\n" +\
-                           (" " * 4) + "Contract: $.string()\n"
+                atts_str = (atts_str + (" " * 2) + key + ":\n" +
+                    (" " * 4) + "Contract: $.string()\n")
         return atts_str
 
     def _get_ports(self, protocol):

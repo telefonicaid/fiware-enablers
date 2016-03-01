@@ -13,8 +13,10 @@ Properties:
 
   instance:
     Contract: $.class(res:Instance).notNull()
-
-
+  att1:
+    Contract: $.string()
+  att2:
+    Contract: $.string()
 
 Methods:
   initialize:
@@ -36,8 +38,9 @@ Methods:
           - $.instance.deploy()
           - $resources: new(sys:Resources)
           # Deploy Chef example
-          - $template: $resources.yaml('DeployExampleChef.template')
-
+          - $template: $resources.yaml('DeployExampleChef.template').bind(dict(
+                att1  => $.att1,
+                att2  => $.att2))
           - $._environment.reporter.report($this, 'Instance is created. Deploying Chef example')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp

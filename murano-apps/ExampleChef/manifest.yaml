@@ -5,6 +5,6 @@ Name: ExampleChef
 Description: |
   Example Chef.
 Author: 'TID'
-Tags: [Test, Chef]
+Tags: [Test, Chef, attributes=att1,att2]
 Classes:
  io.murano.conflang.chef.ExampleChef: ExampleChef.yaml

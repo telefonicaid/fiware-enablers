@@ -1,0 +1,23 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy Example Chef
+
+Parameters:
+  att1: $att1
+  att2: $att2
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: test::install
+    Files:
+        -  test/recipes/install.rb
+        -  test/metadata.rb
+        -  test/README.rdoc
+    Options:
+      captureStdout: true
+      captureStderr: true
