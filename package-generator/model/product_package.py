@@ -261,12 +261,12 @@ class ProductPackage():
         for key in self.product.attributes:
             if leng == 0:
                 template_resource = \
-                    template_resource + (" " * 16) + "{1} => $.{2}))".\
-                    format(template_resource, key, key)
+                    template_resource + \
+                    (" " * 16) + "{0} => $.{1}))".format(key, key)
             else:
                 template_resource = \
-                    template_resource + (" " * 16) + "{1} => $.{2},\n".\
-                    format(template_resource, key, key)
+                    template_resource +\
+                    (" " * 16) + "{0} => $.{1},\n".format(key, key)
             leng = leng - 1
 
         return template_resource
