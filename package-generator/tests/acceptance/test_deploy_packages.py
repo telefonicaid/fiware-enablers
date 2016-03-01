@@ -96,17 +96,20 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
 
+        self.murano_package = "apache2"
+
         package = self.get_package(self.murano_package)
         if package:
             self.delete_package(package)
-        package_id = 'io.murano.conflang.chef.' + self.murano_package
+
         package_folder = self.murano_apps_folder + self.murano_package
         uploaded_package = self.upload_app(package_folder,
                                            self.murano_package,
                                            {"is_public": True,
                                             "tags": ["tag"]})
+        package_id = uploaded_package.class_definitions[0]
 
-        images = ["base_ubuntu_14.04", "base_centos_7"]
+        images = ["base_ubuntu_14.04"]
         atts = {}
         tags = uploaded_package.tags
         for tag in tags:
@@ -118,6 +121,11 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 atts = tag.split(';')
 
         for image in images:
+            if image == "base_ubuntu_12.04":
+                if len(image) == 1:
+                    image = "base_ubuntu_14.04"
+                else:
+                    continue
             self.linux = image
             self._test_deploy(self.murano_package, package_id, 22, atts)
             self.purge_environments()
@@ -139,50 +147,7 @@ murano_group = cfg.OptGroup(name='murano', title="murano")
 MuranoGroup = [
     cfg.StrOpt('murano_apps_folder',
                default='.',
-               help="Murano apps folder"),
-    cfg.StrOpt('auth_url',
-               default='http://127.0.0.1:5000/v2.0/',
-               help="keystone url"),
-    cfg.StrOpt('user',
-               default='admin',
-               help="keystone user"),
-    cfg.StrOpt('password',
-               default='pass',
-               help="password for keystone user"),
-    cfg.StrOpt('tenant',
-               default='admin',
-               help='keystone tenant'),
-    cfg.StrOpt('keyname',
-               default='',
-               help='name of keypair for debugging'),
-    cfg.StrOpt('murano_url',
-               default='http://127.0.0.1:8082/v1/',
-               help="murano url"),
-    cfg.StrOpt('standard_flavor',
-               default='m1.medium',
-               help="flavor for sanity tests"),
-    cfg.StrOpt('advanced_flavor',
-               default='m1.large',
-               help="flavor for advanced tests"),
-    cfg.StrOpt('linux_image',
-               default='default_linux',
-               help="image for linux services"),
-    cfg.StrOpt('instance_type',
-               default='io.murano.resources.LinuxMuranoInstance',
-               help="murano instance type"),
-    cfg.StrOpt('docker_image',
-               default='ubuntu14.04-x64-docker',
-               help="image for docker applications"),
-    cfg.StrOpt('windows_image',
-               default='default_windows',
-               help="image for windows services"),
-    cfg.StrOpt('hdp_image',
-               default="hdp-sandbox",
-               help="image for hdp-sandbox"),
-    cfg.StrOpt('kubernetes_image',
-               default="ubuntu14.04-x64-kubernetes",
-               help="image for kubernetes"),
-    cfg.StrOpt('region_name', help="region name for services")
+               help="Murano apps folder")
 ]
 
 CONF = cfg.CONF

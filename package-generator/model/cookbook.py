@@ -28,8 +28,8 @@ import json
 
 URL_FORGE = "https://forge.fiware.org/scmrepos/svn/testbed/trunk/" \
             "cookbooks/GESoftware/"
-KEY_CHILD_PRODUCT_CHEF = "depends"
-KEY_CHILD_PRODUCT_PUPPET = "dependencies"
+KEY_CHILD_CHEF = "depends"
+KEY_CHILD_PUPPET = "dependencies"
 CHEF = "Chef"
 PUPPET = "Puppet"
 METADATA_CHEF = "metadata.rb"
@@ -60,13 +60,16 @@ class Cookbook:
         in the configuration file
         :return: cookbook url
         """
-        url = ''
-        if self.enabler:
-            url = URL_FORGE + self.name
-        elif self.installator == CHEF:
-            url = Config.CONFIG_COOKBOOK.get("main", self.name)
-        else:
-            url = Config.CONFIG_MODULES.get("main", self.name)
+        url = None
+        try:
+            if self.enabler:
+                url = URL_FORGE + self.name
+            elif self.installator == CHEF:
+                url = Config.CONFIG_COOKBOOK.get("main", self.name)
+            else:
+                url = Config.CONFIG_MODULES.get("main", self.name)
+        except Exception as e:
+            print e
         return url
 
     def _get_cookbook_children_from_metadata(self):
@@ -88,14 +91,15 @@ class Cookbook:
         the metadata file
         :return: True/False
         """
-        if self.installator == CHEF:
-            metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
-        else:
-            metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
+        if self.url:
+            if self.installator == CHEF:
+                metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
+            else:
+                metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
 
-        if (KEY_CHILD_PRODUCT_CHEF in metadata_str or
-                KEY_CHILD_PRODUCT_PUPPET in metadata_str):
-            return True
+            if (KEY_CHILD_CHEF in metadata_str or
+                    KEY_CHILD_PUPPET in metadata_str):
+                return True
         return False
 
     def _get_cookbooks_metadata(self):
@@ -121,8 +125,8 @@ class Cookbook:
         cookbooks = []
         lines = metadata_str.splitlines()
         for line in lines:
-            if KEY_CHILD_PRODUCT_CHEF in line:
-                dep = line.find(KEY_CHILD_PRODUCT_CHEF)
+            if KEY_CHILD_CHEF in line:
+                dep = line.find(KEY_CHILD_CHEF)
                 if line.find("\'", dep) != -1:
                     beg = line.find("\'")
                     end = line.find("\'", beg + 1)

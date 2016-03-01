@@ -98,8 +98,8 @@ class Product():
         if TCP_PORTS in self.metadatas.keys():
             value = self.metadatas.get(TCP_PORTS)
             ports = value.split()
-        if len(ports) != 0:
-            return ports[0]
+            if ports:
+                return ports[0]
         return None
 
     def get_udp_ports(self):
@@ -171,3 +171,25 @@ class Product():
             if name:
                 images_names.append(name)
         return images_names
+
+    def is_fiware_cookbooks(self):
+        """
+        It checks if the package already exists in murano package
+        repository from openstack.
+        :return:
+        """
+        fiware_cookbooks = False
+        if self.is_enabler():
+            fiware_cookbooks = True
+        try:
+            Config.CONFIG_MURANOAPPS.get('main', self.product_name)
+        except:
+            fiware_cookbooks = True
+        return fiware_cookbooks
+
+    def get_murano_app_name(self):
+        """
+        It gets the murano package name in the oficial repository.
+        :return:
+        """
+        return Config.CONFIG_MURANOAPPS.get('main', self.product_name)

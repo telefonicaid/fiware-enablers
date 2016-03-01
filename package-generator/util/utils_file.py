@@ -143,10 +143,12 @@ def download_files_git(url_file):
     :return nothing
     """
     folder = COOKBOOK_FOLDER + get_name_folder(url_file)
+    download_git_repo(url_file, folder)
+
+def download_git_repo(url_file, folder):
     if is_git_repository(url_file):
         if not os.path.exists(folder):
             git.Git().clone(url_file, folder)
-
 
 def create_branch(folder):
     """

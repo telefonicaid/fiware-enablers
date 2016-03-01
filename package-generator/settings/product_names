@@ -15,7 +15,7 @@ MRCoAP: protocol-adapter-mr-coap
 keyrock: identity-management-keyrock
 sec: security-monitoring
 orion: publishsubscribe-context-broker-orion-context-broker
-repository: epository-repository-ri
+repository: repository-repository-ri
 iotbroker: iot-broker
 cosmos: bigdata-analysis-cosmos
 t: trustworthy-factory

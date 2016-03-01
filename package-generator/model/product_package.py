@@ -27,6 +27,7 @@ import time
 import os
 from util import utils_file as utils
 from model.cookbook import Cookbook
+import yaml
 
 PACKAGES_FOLDER = "./../murano-apps"
 PACKAGE_TEMPLATE_FOLDER = "template/PackageTemplate"
@@ -45,6 +46,9 @@ REPLACE_GE_ATTS = "{GE_attributes}"
 REPLACE_GE_ATTS_RESOURCE = "{GE_attributes_resource}"
 REPLACE_GE_PORTS = "{GE_ports}"
 REPLACE_GE_NID = "{GE_nid}"
+COOKBOOK_FOLDER = "cookbooks/"
+MURANO_APPS = COOKBOOK_FOLDER + "murano-apps"
+MURANO_APPS_URL = "https://github.com/openstack/murano-apps.git"
 
 
 class ProductPackage():
@@ -66,8 +70,6 @@ class ProductPackage():
         self.package_resources = self.package_folder + "Resources/"
         self.package_template = (self.package_resources + "Deploy" +
                                  product.product_name + ".template")
-        self.cookbooks = self.get_all_cookbooks()
-        self._generate_package_folder()
 
     def get_product(self):
         """
@@ -98,6 +100,17 @@ class ProductPackage():
             os.makedirs(self.package_resources)
         self._copy_files_from_templates()
 
+    def _download_package_folder(self):
+        if not os.path.exists(PACKAGES_FOLDER):
+            os.makedirs(PACKAGES_FOLDER)
+        if not os.path.isdir(COOKBOOK_FOLDER):
+            utils.download_git_repo(MURANO_APPS_URL, MURANO_APPS)
+        folder_out = PACKAGES_FOLDER + "/" + self.product.product_name
+        folder_in = (MURANO_APPS +
+                     self.product.get_murano_app_name() + "/package")
+        if not os.path.exists(folder_out):
+            shutil.copytree(folder_in, folder_out)
+
     def _copy_files_from_templates(self):
         """
         It copies based files from the Template folder.
@@ -126,6 +139,28 @@ class ProductPackage():
         utils.replace_word(self.package_manifest, "{date}",
                            time.strftime("%d/%m/%Y"))
 
+    def update_manifest_no_ge(self):
+        try:
+            manifest_file = (PACKAGES_FOLDER + "/" +
+                             self.product.product_name +
+                             "/manifest.yaml")
+            with open(manifest_file, "r") as fread:
+                stream = fread.read()
+                text = yaml.load(stream)
+                tags = text["Tags"]
+                if self.product.images:
+                    tags.append(self._get_images_str())
+                if self.product.attributes:
+                    tags.append(self._get_attributes_str())
+                text["Tags"] = tags
+                fread.close()
+            with open(manifest_file, 'w+') as fwrite:
+                data = yaml.dump(text, default_flow_style=True)
+                fwrite.write(data)
+                fwrite.close()
+        except Exception as exc:
+            print(exc)
+
     def generate_class(self):
         """
         It generates the package class file.
@@ -135,8 +170,12 @@ class ProductPackage():
                            REPLACE_GE_NAME, self.product.product_name)
         utils.replace_word(self.package_classes_file,
                            REPLACE_GE_PORTS, self._get_ports_str())
-        utils.replace_word(self.package_classes_file,
-                           REPLACE_GE_NID, self.product.nid)
+        if self.product.nid:
+            utils.replace_word(self.package_classes_file,
+                               REPLACE_GE_NID, self.product.nid)
+        else:
+            utils.replace_word(self.package_classes_file,
+                               REPLACE_GE_NID, '')
         utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS_RESOURCE,
                            self._get_attributes_resource())
         utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS,
@@ -223,11 +262,11 @@ class ProductPackage():
             if leng == 0:
                 template_resource = \
                     template_resource + (" " * 16) + "{1} => $.{2}))".\
-                        format(template_resource, key, key)
+                    format(template_resource, key, key)
             else:
                 template_resource = \
                     template_resource + (" " * 16) + "{1} => $.{2},\n".\
-                        format(template_resource, key, key)
+                    format(template_resource, key, key)
             leng = leng - 1
 
         return template_resource
@@ -241,7 +280,7 @@ class ProductPackage():
         if self.product.attributes:
             for key in self.product.attributes:
                 atts_str = atts_str + (" " * 2) + key + ":\n" +\
-                           (" " * 4) + "Contract: $.string()\n"
+                    (" " * 4) + "Contract: $.string()\n"
         return atts_str
 
     def _get_ports(self, protocol):
@@ -279,15 +318,17 @@ class ProductPackage():
         cookbook = Cookbook(self.product.product_name,
                             self.product.installator,
                             self.product.is_enabler())
-        cookbooks.append(cookbook)
+        if cookbook.url:
+            cookbooks.append(cookbook)
 
-        for cookbook_child in cookbook.cookbook_childs:
-            if not self._exists(cookbook_child.name, cookbooks):
-                cookbooks.append(cookbook_child)
-            if len(cookbook_child.cookbook_childs) != 0:
-                cookbooks_in = cookbook_child.get_all_cookbooks_child()
-                cookbooks.extend(x for x in cookbooks_in
-                                 if not self._exists(x.name, cookbooks))
+            for cookbook_child in cookbook.cookbook_childs:
+                if (not self._exists(cookbook_child.name, cookbooks)
+                        and cookbook_child.url):
+                    cookbooks.append(cookbook_child)
+                if len(cookbook_child.cookbook_childs) != 0:
+                    cookbooks_in = cookbook_child.get_all_cookbooks_child()
+                    cookbooks.extend(x for x in cookbooks_in
+                                     if not self._exists(x.name, cookbooks))
         return cookbooks
 
     def _exists(self, cookbook_name, cookbooks):
@@ -309,6 +350,19 @@ class ProductPackage():
         """
         cookbooks_str = ''
         for cookbook in self.cookbooks:
-            cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
-                             " : " + cookbook.url + "\n")
+            if cookbook.url:
+                cookbooks_str = (cookbooks_str + (" " * 8) + "- " +
+                                 cookbook.name + " : " + cookbook.url + "\n")
         return cookbooks_str
+
+    def generate_package(self):
+        if self.product.is_fiware_cookbooks():
+            self.cookbooks = self.get_all_cookbooks()
+            if self.cookbooks:
+                self._generate_package_folder()
+                self.generate_manifest()
+                self.generate_class()
+                self.generate_template()
+        else:
+            self._download_package_folder()
+            self.update_manifest_no_ge()
