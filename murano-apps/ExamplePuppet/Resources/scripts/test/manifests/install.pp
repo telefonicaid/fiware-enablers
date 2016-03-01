@@ -12,3 +12,4 @@ class test::install($version='default_version'){
           content => "Operation: install; Product: test-att-01; Version: ${version}; Att01: ${custom_att_01}; Att02: ${custom_att_02}"
   }
 }
+
