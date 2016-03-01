@@ -146,6 +146,12 @@ def download_files_git(url_file):
     download_git_repo(url_file, folder)
 
 def download_git_repo(url_file, folder):
+    """
+    It download a git repo in a folder
+    :param url_file: the git repo url
+    :param folder: the folder to download
+    :return: nothing
+    """
     if is_git_repository(url_file):
         if not os.path.exists(folder):
             git.Git().clone(url_file, folder)

@@ -101,6 +101,10 @@ class ProductPackage():
         self._copy_files_from_templates()
 
     def _download_package_folder(self):
+        """
+        It download the packages from the official repository
+        :return: nothing
+        """
         if not os.path.exists(PACKAGES_FOLDER):
             os.makedirs(PACKAGES_FOLDER)
         if not os.path.isdir(COOKBOOK_FOLDER):
@@ -140,6 +144,12 @@ class ProductPackage():
                            time.strftime("%d/%m/%Y"))
 
     def update_manifest_no_ge(self):
+        """
+        It updates the product package files if required
+        :return:
+        """
+        if not(self.product.images or self.product.attributes):
+            return
         try:
             manifest_file = (PACKAGES_FOLDER + "/" +
                              self.product.product_name +
@@ -356,6 +366,10 @@ class ProductPackage():
         return cookbooks_str
 
     def generate_package(self):
+        """
+        It generate all files for the murano package.
+        :return: nothing
+        """
         if self.product.is_fiware_cookbooks():
             self.cookbooks = self.get_all_cookbooks()
             if self.cookbooks:
