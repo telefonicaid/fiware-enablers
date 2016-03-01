@@ -96,9 +96,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
-
-        self.murano_package  = "ExamplePuppet"
-
         tags = []
         package = self.get_package(self.murano_package)
         if package:
