@@ -144,7 +144,7 @@ class Cookbook:
         """
         cookbooks = []
         metadata = json.loads(metadata_str)
-        dependences = metadata.get(KEY_CHILD_PRODUCT_PUPPET)
+        dependences = metadata.get(KEY_CHILD_PUPPET)
         if dependences:
             for dependence in dependences:
                 cookbooks.append(utils.get_name_folder(dependence["name"]))

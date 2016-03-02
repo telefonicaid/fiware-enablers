@@ -47,7 +47,7 @@ REPLACE_GE_ATTS_RESOURCE = "{GE_attributes_resource}"
 REPLACE_GE_PORTS = "{GE_ports}"
 REPLACE_GE_NID = "{GE_nid}"
 COOKBOOK_FOLDER = "cookbooks/"
-MURANO_APPS = COOKBOOK_FOLDER + "murano-apps"
+MURANO_APPS = COOKBOOK_FOLDER + "murano-apps/"
 MURANO_APPS_URL = "https://github.com/openstack/murano-apps.git"
 
 
