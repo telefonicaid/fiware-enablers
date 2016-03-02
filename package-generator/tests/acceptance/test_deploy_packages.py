@@ -110,7 +110,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                            tags)
         package_id = uploaded_package.class_definitions[0]
 
-        images = ["base_ubuntu_14.04", "base_centos_7"]
+        images = ["base_ubuntu_14.04"]
         atts = {}
         tags = uploaded_package.tags
         for tag in tags:
@@ -122,6 +122,11 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 atts = tag.split(';')
 
         for image in images:
+            if image == "base_ubuntu_12.04":
+                if len(image) == 1:
+                    image = "base_ubuntu_14.04"
+                else:
+                    continue
             self.linux = image
             self._test_deploy(self.murano_package, package_id, 22, atts)
             self.purge_environments()
