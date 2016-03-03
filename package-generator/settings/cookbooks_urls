@@ -10,7 +10,7 @@ apache2: https://github.com/chef-cookbooks/httpd.git
 php: https://github.com/chef-cookbooks/php.git
 mysql: https://github.com/chef-cookbooks/mysql
 iptables:
-logrotate:
+logrotate: https://github.com/cookbooks/logrotate.git
 pacman:
 python: https://github.com/poise/python.git
 yum: https://github.com/chef-cookbooks/yum.git
@@ -46,3 +46,4 @@ jboss: https://github.com/andy-dufour/chef-jboss7.git
 synchronization_fives: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/synch-fives/
 3DMapTiles: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/SESoftware/3DMapTiles/
 application_python: https://github.com/poise/application_python.git
+
