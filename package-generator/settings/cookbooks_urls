@@ -1,5 +1,5 @@
 [main]
-java: https://github.com/cookbooks/java.git
+java: https://github.com/agileorbit-cookbooks/java.git
 openssl: https://github.com/chef-cookbooks/openssl.git
 build-essential: https://github.com/chef-cookbooks/build-essential.git
 apt: https://github.com/chef-cookbooks/apt.git
@@ -42,7 +42,7 @@ mongos: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftwa
 mediawiki: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/mediawiki
 R: https://github.com/stevendanna/cookbook-r.git
 readline: https://github.com/cookbooks/ap-cookbook-readline.git
-jboss: https://github.com/bryanwb/chef-jboss.git
+jboss: https://github.com/andy-dufour/chef-jboss7.git
 synchronization_fives: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/synch-fives/
 3DMapTiles: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/SESoftware/3DMapTiles/
 application_python: https://github.com/poise/application_python.git

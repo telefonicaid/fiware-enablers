@@ -3,6 +3,6 @@ tomcat: Tomcat
 mysql: MySQL
 postgresql: PostgreSQL
 mongodb: MongoDB
-apache2: ApacheHTTPServer
+apache2: ApacheHttpServer
 io.murano.databases: SQLDatabaseLibrary
 

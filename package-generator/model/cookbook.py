@@ -48,7 +48,7 @@ class Cookbook:
         :param enabler: is a FIWARE enabler
         :return: nothing
         """
-        self.name = name
+        self.name = self.get_cookbook_name(name)
         self.enabler = enabler
         self.installator = installator
         self.url = self._get_url()
@@ -189,3 +189,14 @@ class Cookbook:
             if cookbook_name == cookbook.name:
                 return True
         return False
+
+    def get_cookbook_name(self, name):
+        """
+        It obtains the cookbook name in case required.
+        :param name:  cookbook name
+        :return: cookbook name changed
+        """
+        try:
+            return Config.CONFIG_PRODUCT_NAMES.get('main', name)
+        except:
+            return name

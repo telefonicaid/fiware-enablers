@@ -33,10 +33,11 @@ class Config():
 
     CONFIG_COOKBOOK = {}
     CONFIG_MODULES = {}
-    CONFIG_PRODUCT = {}
+    CONFIG_PRODUCT_NIDS = {}
+    CONFIG_PRODUCT_NAMES = {}
+    CONFIG_MURANOAPPS = {}
     NID = {}
     Clients = {}
-    CONFIG_MURANOAPPS = {}
 
     def __init__(self, auth_url, user, password, tenant_id, region_name):
         """
@@ -50,7 +51,8 @@ class Config():
         """
         Config.CONFIG_COOKBOOK = self.load_config('./settings/cookbooks_urls')
         Config.CONFIG_MODULES = self.load_config('./settings/modules_urls')
-        Config.CONFIG_PRODUCT = self.load_config('./settings/product_names')
+        Config.CONFIG_PRODUCT_NIDS = self.load_config('./settings/product_names_for_nids')
+        Config.CONFIG_PRODUCT_NAMES = self.load_config('./settings/product_cookbook_names')
         Config.CONFIG_MURANOAPPS = \
             self.load_config('./settings/muranopackages_urls')
         Config.NID = self.get_all_nids()

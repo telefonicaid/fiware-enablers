@@ -112,6 +112,8 @@ class ProductPackage():
             os.makedirs(PACKAGES_FOLDER_GE)
         if not os.path.exists(PACKAGES_FOLDER_NO_GE):
             os.makedirs(PACKAGES_FOLDER_NO_GE)
+        if not os.path.exists(COOKBOOK_FOLDER):
+            os.makedirs(COOKBOOK_FOLDER)
 
     def _download_package_dependence(self, dependence):
         """
@@ -133,9 +135,12 @@ class ProductPackage():
         :return: nothing
         """
         self._check_folder_exists()
-        if not os.path.isdir(COOKBOOK_FOLDER):
+        if not os.path.isdir(MURANO_APPS):
             utils.download_git_repo(MURANO_APPS_URL, MURANO_APPS)
         folder_out = os.path.join(PACKAGES_FOLDER_NO_GE, folder)
+        folder_changed = utils.get_murano_app_name(folder)
+        if folder_changed:
+            folder = folder_changed
         folder_in = os.path.join(MURANO_APPS, folder, "package")
         if not os.path.exists(folder_out):
             shutil.copytree(folder_in, folder_out)
@@ -216,7 +221,7 @@ class ProductPackage():
         :return: nothing
         """
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
-                           self.product.product_name)
+                           self.product.get_cookbook_name(self.product.product_name))
         if self.product.is_puppet_installator():
             utils.replace_word(self.package_template,
                                REPLACE_GE_RECIPE, "install")
