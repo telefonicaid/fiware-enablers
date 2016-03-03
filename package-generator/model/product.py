@@ -172,19 +172,17 @@ class Product():
                 images_names.append(name)
         return images_names
 
-    def is_fiware_cookbooks(self):
+    def is_murano_app_oficial(self):
         """
         It checks if the package already exists in murano package
         repository from openstack.
         :return:
         """
-        fiware_cookbooks = False
-        if self.is_enabler():
-            fiware_cookbooks = True
         try:
             Config.CONFIG_MURANOAPPS.get('main', self.product_name)
-        except:
             fiware_cookbooks = True
+        except:
+            fiware_cookbooks = False
         return fiware_cookbooks
 
     def get_murano_app_name(self):

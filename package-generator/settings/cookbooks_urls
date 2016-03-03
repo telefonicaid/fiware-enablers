@@ -22,8 +22,8 @@ tomcat: https://github.com/chef-cookbooks/tomcat
 nodejs: https://github.com/redguide/nodejs.git
 ark: https://github.com/burtlo/ark.git
 homebrew: https://github.com/chef-cookbooks/homebrew.git
-seven_zip: https://github.com/daptiv/seven_zip.git
-django: https://github.com/honza/django-chef.git
+seven_zip: https://github.com/sneal/7-zip.git
+django: https://github.com/chef-cookbooks/opsworks-linux-demo-cookbook-django.git
 redis: https://github.com/ctrabold/chef-redis.git
 compat_resource: https://github.com/chef-cookbooks/compat_resource.git
 database: https://github.com/chef-cookbooks/database.git
@@ -32,7 +32,7 @@ windows: https://github.com/chef-cookbooks/windows.git
 postgresql: https://github.com/hw-cookbooks/postgresql.git
 chef_handler: https://github.com/chef-cookbooks/chef_handler.git
 chef-sugar: https://github.com/sethvargo/chef-sugar.git
-7-zip: https://github.com/daptiv/seven_zip.git
+7-zip: https://github.com/sneal/7-zip.git
 haproxy: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/haproxy
 mongodbshard: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/mongodbshard
 mongodbconfig: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/mongodbconfig
@@ -45,3 +45,4 @@ readline: https://github.com/cookbooks/ap-cookbook-readline.git
 jboss: https://github.com/bryanwb/chef-jboss.git
 synchronization_fives: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/synch-fives/
 3DMapTiles: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/SESoftware/3DMapTiles/
+application_python: https://github.com/poise/application_python.git

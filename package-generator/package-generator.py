@@ -104,7 +104,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
         product = get_product(product_xml)
         print product.product_name
         image = product.get_image_metadata()
-        if "old" in product.product_name or "test" in product.product_name or "hide" in product.product_name:
+        if ("old" in product.product_name or "test" in product.product_name
+            or "hide" in product.product_name):
             continue
         if image and "hi" in image:
             continue

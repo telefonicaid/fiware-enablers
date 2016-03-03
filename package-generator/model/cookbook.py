@@ -10,7 +10,7 @@
 #
 # You may obtain a copy of the License at:
 #
-#        http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -32,13 +32,14 @@ KEY_CHILD_CHEF = "depends"
 KEY_CHILD_PUPPET = "dependencies"
 CHEF = "Chef"
 PUPPET = "Puppet"
-METADATA_CHEF = "metadata.rb"
-METADATA_PUPPET = "metadata.json"
+METADATA_RB = "metadata.rb"
+METADATA_JSON = "metadata.json"
 
 
 class Cookbook:
     """This class represents the cookbook object.
     """
+
     def __init__(self, name, installator, enabler=False):
         """
         The constructor
@@ -93,12 +94,12 @@ class Cookbook:
         """
         if self.url:
             if self.installator == CHEF:
-                metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
+                metadata_str = utils.read_metadata(self.url, METADATA_RB)
             else:
-                metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
-
-            if (KEY_CHILD_CHEF in metadata_str or
-                    KEY_CHILD_PUPPET in metadata_str):
+                metadata_str = utils.read_metadata(self.url, METADATA_JSON)
+            if (metadata_str and
+                    (KEY_CHILD_CHEF in metadata_str or
+                     KEY_CHILD_PUPPET in metadata_str)):
                 return True
         return False
 
@@ -107,16 +108,19 @@ class Cookbook:
         It obtains a cookbook string array from the metadata file
         :return: A string array with the cookbook children
         """
-        if self.installator == CHEF:
-            metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
-        else:
-            metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
-        if self.installator == CHEF:
-            return self._get_cookbooks_metadata_chef(metadata_str)
-        else:
-            return self._get_cookbooks_metadata_puppet(metadata_str)
+        cookbooks = []
 
-    def _get_cookbooks_metadata_chef(self, metadata_str):
+        metadata_str_rb = utils.read_metadata(self.url, METADATA_RB)
+        metadata_str_json = utils.read_metadata(self.url, METADATA_JSON)
+
+        if metadata_str_rb:
+            cookbooks = self._get_cookbooks_metadata_rb(metadata_str_rb)
+        if metadata_str_json:
+            cookbooks = (cookbooks +
+                         self._get_cookbooks_metadata_json(metadata_str_json))
+        return cookbooks
+
+    def _get_cookbooks_metadata_rb(self, metadata_str):
         """
         If obtains the cookbooks from the metadata.rb
         :param metadata_str: the metadata rb in string
@@ -136,18 +140,25 @@ class Cookbook:
                 cookbooks.append(line[beg + 1: end])
         return cookbooks
 
-    def _get_cookbooks_metadata_puppet(self, metadata_str):
+    def _get_cookbooks_metadata_json(self, metadata_str):
         """
         If obtains the cookbooks from the metadata.json
         :param metadata_str: the metadata json in string
         :return: cookbook array
         """
         cookbooks = []
-        metadata = json.loads(metadata_str)
+        try:
+            metadata = json.loads(metadata_str)
+        except:
+            return cookbooks
         dependences = metadata.get(KEY_CHILD_PUPPET)
         if dependences:
             for dependence in dependences:
-                cookbooks.append(utils.get_name_folder(dependence["name"]))
+                try:
+                    de = dependence["name"]
+                except:
+                    de = dependence
+                cookbooks.append(utils.get_name_folder(de))
         return cookbooks
 
     def get_all_cookbooks_child(self):
