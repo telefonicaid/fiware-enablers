@@ -61,17 +61,27 @@ class Cookbook:
         in the configuration file
         :return: cookbook url
         """
-        url = None
-        try:
+        url = self._get_cookbook_url_config()
+
+        if not url :
             if self.enabler:
                 url = URL_FORGE + self.name
-            elif self.installator == CHEF:
+            else:
+                print "No found url for " + self.name
+
+        return url
+
+    def _get_cookbook_url_config(self):
+        url = None
+        try:
+            if self.installator == CHEF:
                 url = Config.CONFIG_COOKBOOK.get("main", self.name)
             else:
                 url = Config.CONFIG_MODULES.get("main", self.name)
         except Exception as e:
-            print e
+            pass
         return url
+
 
     def _get_cookbook_children_from_metadata(self):
         """

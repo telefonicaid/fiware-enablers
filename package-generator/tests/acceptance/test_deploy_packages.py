@@ -107,13 +107,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
 
-        muranos = [  "django", "jboss", "orion", "wstore",
-                   "wirecloud", "spagobi"]
-
-        muranos = ["MRCoAP"]
-        if self.murano_package not in muranos:
-            return
-
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,
                                           "murano-app-GE",
