@@ -1,5 +1,5 @@
 Namespaces:
-  =: io.murano.conflang.chef.Stream_oriented_kurento
+  =: io.murano.conflang.chef
   std: io.murano
   res: io.murano.resources
   sys: io.murano.system
@@ -12,6 +12,7 @@ Extends: std:Application
 Properties:
   instance:
     Contract: $.class(res:Instance).notNull()
+
 
 Methods:
   initialize:
@@ -43,7 +44,6 @@ Methods:
           - $resources: new(sys:Resources)
           # Deploy Stream_oriented_kurento
           - $template: $resources.yaml('DeployStream_oriented_kurento.template')
-
           - $._environment.reporter.report($this, 'Instance is created. Deploying Stream_oriented_kurento')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp

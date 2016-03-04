@@ -1,5 +1,5 @@
 Namespaces:
-  =: io.murano.conflang.chef.2D3DCapture
+  =: io.murano.conflang.chef
   std: io.murano
   res: io.murano.resources
   sys: io.murano.system
@@ -12,6 +12,7 @@ Extends: std:Application
 Properties:
   instance:
     Contract: $.class(res:Instance).notNull()
+
 
 Methods:
   initialize:
@@ -39,7 +40,6 @@ Methods:
           - $resources: new(sys:Resources)
           # Deploy 2D3DCapture
           - $template: $resources.yaml('Deploy2D3DCapture.template')
-
           - $._environment.reporter.report($this, 'Instance is created. Deploying 2D3DCapture')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp

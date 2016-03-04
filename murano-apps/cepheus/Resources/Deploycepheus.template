@@ -5,6 +5,7 @@ Name: Deploy cepheus
 Parameters:
   port: $port
 
+
 Body: |
   return executeRecipe(args).stdout
 
@@ -16,6 +17,7 @@ Scripts:
     Files:
         - cepheus : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cepheus
         - apt : https://github.com/chef-cookbooks/apt.git
+        - compat_resource : https://github.com/chef-cookbooks/compat_resource.git
 
     Options:
       captureStdout: true
