@@ -141,6 +141,8 @@ class ProductPackage():
                            self._get_attributes_resource())
         utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS,
                            self._get_attributes_class_str())
+        utils.replace_word(self.package_classes_file, REPLACE_GE_INSTALLATOR,
+                           self.product.installator.lower())
 
     def generate_template(self):
         """
