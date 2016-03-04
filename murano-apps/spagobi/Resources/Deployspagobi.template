@@ -5,6 +5,7 @@ Name: Deploy spagobi
 Parameters:
   port: $port
 
+
 Body: |
   return executeRecipe(args).stdout
 
@@ -19,8 +20,11 @@ Scripts:
         - database : https://github.com/chef-cookbooks/database.git
         - postgresql : https://github.com/hw-cookbooks/postgresql.git
         - apt : https://github.com/chef-cookbooks/apt.git
+        - compat_resource : https://github.com/chef-cookbooks/compat_resource.git
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
-        - 7-zip : https://github.com/daptiv/seven_zip
+        - 7-zip : https://github.com/sneal/7-zip.git
+        - windows : https://github.com/chef-cookbooks/windows.git
+        - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
         - openssl : https://github.com/chef-cookbooks/openssl.git
         - chef-sugar : https://github.com/sethvargo/chef-sugar
         - java : https://github.com/cookbooks/java.git

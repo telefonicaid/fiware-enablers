@@ -5,6 +5,7 @@ Name: Deploy Stream_oriented_kurento
 Parameters:
   port: $port
 
+
 Body: |
   return executeRecipe(args).stdout
 

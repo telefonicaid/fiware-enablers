@@ -1,5 +1,5 @@
 Namespaces:
-  =: io.murano.conflang.chef.cep
+  =: io.murano.conflang.puppet
   std: io.murano
   res: io.murano.resources
   sys: io.murano.system
@@ -12,6 +12,7 @@ Extends: std:Application
 Properties:
   instance:
     Contract: $.class(res:Instance).notNull()
+
 
 Methods:
   initialize:
@@ -39,7 +40,6 @@ Methods:
           - $resources: new(sys:Resources)
           # Deploy cep
           - $template: $resources.yaml('Deploycep.template')
-
           - $._environment.reporter.report($this, 'Instance is created. Deploying cep')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp
