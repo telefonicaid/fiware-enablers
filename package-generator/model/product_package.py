@@ -150,7 +150,7 @@ class ProductPackage():
         :return: nothing
         """
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
-                           self.product.product_name)
+                           self.product.cookbook_name)
         if self.product.is_puppet_installator():
             utils.replace_word(self.package_template,
                                REPLACE_GE_RECIPE, "install")
@@ -278,7 +278,7 @@ class ProductPackage():
         :return: Cookbook array
         """
         cookbooks = []
-        cookbook = Cookbook(self.product.product_name,
+        cookbook = Cookbook(self.product.cookbook_name,
                             self.product.installator,
                             self.product.is_enabler())
         cookbooks.append(cookbook)
