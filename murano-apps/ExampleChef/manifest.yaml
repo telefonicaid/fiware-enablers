@@ -1,6 +1,6 @@
 Format: 1.0
 Type: Application
-FullName: io.murano.conflang.chef
+FullName: io.murano.conflang.chef.ExampleChef
 Name: ExampleChef
 Description: |
   Example Chef.
