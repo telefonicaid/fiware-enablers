@@ -41,7 +41,8 @@ BODY_METADATAS = "metadatas"
 BODY_METADATA_KEY = "key"
 BODY_METADATA_VALUE = "value"
 
-DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace"]
+DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace", "SQLDatabaseLibrary",
+                       "mongodbconfig", "mongodbshard", "mongos", "orion-dbcluste"]
 
 
 def main(argv=None):
