@@ -192,7 +192,8 @@ class ProductPackage():
             if self.product.attributes:
                 for att in self.product.attributes:
                     atts_str = atts_str + att + ";"
-        return "{0}\"".format(atts_str)
+            return "{0}\"".format(atts_str)
+        return atts_str
 
     def _get_attributes_template_str(self):
         """
@@ -310,6 +311,7 @@ class ProductPackage():
         """
         cookbooks_str = ''
         for cookbook in self.cookbooks:
-            cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
+            if cookbook.url:
+                cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
                              " : " + cookbook.url + "\n")
         return cookbooks_str

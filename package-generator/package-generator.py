@@ -41,7 +41,7 @@ BODY_METADATAS = "metadatas"
 BODY_METADATA_KEY = "key"
 BODY_METADATA_VALUE = "value"
 
-DEPRECATED_PRODUCTS = ["MRCoAP"]
+DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace"]
 
 
 def main(argv=None):
