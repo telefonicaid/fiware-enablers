@@ -1,3 +1,4 @@
 [main]
 2d_ui: TwoD_UI
 2D3DCapture: TwoDThreeD_capture
+3DMapTiles: ThreeDMapTiles

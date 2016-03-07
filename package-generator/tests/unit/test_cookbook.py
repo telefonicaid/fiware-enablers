@@ -30,6 +30,7 @@ from util.configuration import Config
 import ConfigParser
 
 COOKBOOK_NAME = "product"
+COOKBOOK_NAME_DIFFERENT = "productDifferent"
 COOKBOOK_URL = "http://product.git"
 COOKBOOK_CHILD = "child"
 COOKBOOK_CHILD1 = "child1"
@@ -65,8 +66,13 @@ class TestCookbook(unittest.TestCase):
         config_cookbook.set("main", COOKBOOK_NAME, COOKBOOK_URL)
         config_cookbook.set("main", COOKBOOK_CHILD1, COOKBOOK_CHILD_URL1)
         config_cookbook.set("main", COOKBOOK_CHILD2, COOKBOOK_CHILD_URL2)
+        config_cookbook.set("main", COOKBOOK_NAME_DIFFERENT, COOKBOOK_NAME)
         Config.CONFIG_COOKBOOK = config_cookbook
         Config.CONFIG_MODULES = config_cookbook
+        config_product = ConfigParser.RawConfigParser()
+        config_product.add_section("main")
+        config_product.set("main", COOKBOOK_NAME_DIFFERENT, COOKBOOK_NAME)
+        Config.CONFIG_PRODUCT_NAMES = config_product
         mock_path.return_value = True
         mock_mkdir.return_value = None
         mock_makedir.return_value = None
@@ -74,6 +80,19 @@ class TestCookbook(unittest.TestCase):
     def tearDown(self):
         self.mock_open.reset_mock()
         pass
+
+    @mock.patch('os.path.exists')
+    @mock.patch('__builtin__.open', create=True)
+    def test_cookbook_diferent_name_product(self, mock_open, mock_exists):
+        mock_exists.return_value = True
+        self.mock_open = mock_open
+        self.mock_open.side_effect = [
+            mock.mock_open(read_data=metadata_product_no_child).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value
+        ]
+        cookbook = Cookbook(COOKBOOK_NAME_DIFFERENT, CHEF)
+        self.assertEquals(cookbook.name, COOKBOOK_NAME)
+
 
     @mock.patch('os.path.exists')
     @mock.patch('__builtin__.open', create=True)
@@ -125,6 +144,8 @@ class TestCookbook(unittest.TestCase):
         self.mock_open.side_effect = [
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child2).return_value,
             mock.mock_open(read_data=metadata_product_child2).return_value,
             mock.mock_open(read_data=metadata_product_child2).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value,
@@ -153,6 +174,9 @@ class TestCookbook(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]

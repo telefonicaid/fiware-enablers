@@ -53,7 +53,7 @@ class TestProduct(unittest.TestCase):
         config_product = ConfigParser.RawConfigParser()
         config_product.add_section("main")
         config_product.set("main", PRODUCT_NAME, PRODUCT_NAME_NID)
-        Config.CONFIG_PRODUCT = config_product
+        Config.CONFIG_PRODUCT_NIDS = config_product
         Config.NID = {PRODUCT_NAME_NID: NID}
 
     def test_constructor(self):
