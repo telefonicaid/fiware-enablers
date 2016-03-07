@@ -2,7 +2,7 @@
 java: https://github.com/agileorbit-cookbooks/java.git
 openssl: https://github.com/chef-cookbooks/openssl.git
 build-essential: https://github.com/chef-cookbooks/build-essential.git
-apt: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+apt: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
 git: https://github.com/chef-cookbooks/git.git
 yum-mysql-community: https://github.com/chef-cookbooks/yum-mysql-community.git
 yum-epel: https://github.com/chef-cookbooks/yum-epel.git
@@ -14,7 +14,7 @@ logrotate: https://github.com/cookbooks/logrotate.git
 pacman:
 python: https://github.com/poise/python.git
 yum: https://github.com/chef-cookbooks/yum.git
-mongodb: https://github.com/edelight/chef-mongodb.git
+mongodb: https://github.com/sunggun-yu/chef-mongodb3.git
 poise-python: https://github.com/poise/poise-python.git
 xml: https://github.com/chef-cookbooks/xml.git
 iis: https://github.com/chef-cookbooks/iis.git
