@@ -17,7 +17,7 @@ Scripts:
     Files:
         - iotDiscovery : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/iotDiscovery
         - java : https://github.com/cookbooks/java.git
-        - mysql : https://github.com/chef-cookbooks/mysql
+        - mysql : https://github.com/chef-cookbooks/mysql.git
         - tomcat : https://github.com/chef-cookbooks/tomcat
 
     Options:
