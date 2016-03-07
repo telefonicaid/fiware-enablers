@@ -4,6 +4,21 @@ Name: Deploy iotagent
 
 Parameters:
   port: $port
+  iota::base::http_proxy_gre: $iota::base::http_proxy_gre
+  iotagent::context_broker_endpoint: $iotagent::context_broker_endpoint
+  iotagent::iotagent_mongodb_host: $iotagent::iotagent_mongodb_host
+  iota_protocols: $iota_protocols
+  iotagent::iotagent_mongodb_port: $iotagent::iotagent_mongodb_port
+  iotagent::iotagent_server_name: $iotagent::iotagent_server_name
+  iotagent::iotagent_server_port: $iotagent::iotagent_server_port
+  iotagent::iotagent_log_level: $iotagent::iotagent_log_level
+  iota::ngsi::query_context_path: $iota::ngsi::query_context_path
+  iota::ngsi::register_context_path: $iota::ngsi::register_context_path
+  iota::ngsi::update_context_path: $iota::ngsi::update_context_path
+  iotagent::iota_server_address: $iotagent::iota_server_address
+  iota::ngsi::load_balancer_url: $iota::ngsi::load_balancer_url
+  iotagent: $iotagent
+
 
 Body: |
   return executeRecipe(args).stdout

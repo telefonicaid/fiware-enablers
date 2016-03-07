@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.orion
 Name: orion
 Description: |
-  Murano package for FIWARE orion GEi . 24/02/2016
+  Murano package for FIWARE orion GEi. 04/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef, images=base_centos_6]
 Classes:
