@@ -8,7 +8,7 @@ yum-mysql-community:
 yum-epel: https://github.com/chef-cookbooks/yum-epel.git
 apache2: https://github.com/chef-cookbooks/httpd.git
 php: https://github.com/chef-cookbooks/php.git
-mysql: https://github.com/chef-cookbooks/mysql
+mysql: https://github.com/chef-cookbooks/mysql.git
 iptables:
 logrotate:
 pacman:

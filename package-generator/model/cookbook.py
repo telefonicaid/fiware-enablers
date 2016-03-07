@@ -79,7 +79,6 @@ class Cookbook:
         :return: an Cookbook array with the cookbooks children
         """
         cookbooks = []
-        print self.name
         if self._has_child_cookbooks_metadata():
             cookbooks_str = self._get_cookbooks_metadata()
             for cookbook_str in cookbooks_str:
