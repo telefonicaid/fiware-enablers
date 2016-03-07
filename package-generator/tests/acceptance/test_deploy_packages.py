@@ -107,7 +107,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
 
-
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,
                                           "murano-app-GE",
