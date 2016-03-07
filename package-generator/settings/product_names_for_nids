@@ -10,7 +10,7 @@ sdc: software-deployment-configuration-sagitta
 cybercaptor: cyber-security-ge-cybercaptor
 bosun: policy-manager-bosun
 ckan: ckan
-2d_ui: 2d-ui
+TwoD_UI: 2d-ui
 MRCoAP: protocol-adapter-mr-coap
 keyrock: identity-management-keyrock
 sec: security-monitoring
@@ -45,4 +45,4 @@ synchronization: synchronization-fives
 gis: gis-data-provider-geoserver3d
 iotDiscovery: iot-discovery
 rss: revenue-settlement-and-sharing-system-rss-ri
-2D3DCapture: 2d3d-capture
+TwoDThreeD_capture: 2d3d-capture

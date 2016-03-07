@@ -36,6 +36,8 @@ class Config():
     CONFIG_PRODUCT_NIDS = {}
     CONFIG_PRODUCT_NAMES = {}
     CONFIG_MURANOAPPS = {}
+    CONFIG_PACKAGE_NAME = {}
+
     NID = {}
     Clients = {}
 
@@ -55,6 +57,7 @@ class Config():
         Config.CONFIG_PRODUCT_NAMES = self.load_config('./settings/product_cookbook_names')
         Config.CONFIG_MURANOAPPS = \
             self.load_config('./settings/muranopackages_urls')
+        Config.CONFIG_PACKAGE_NAME = self.load_config('./settings/package_names')
         Config.NID = self.get_all_nids()
         Config.Clients = util_apis(auth_url, user, password, tenant_id,
                                    region_name)

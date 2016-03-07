@@ -45,7 +45,8 @@ class Product():
         :param metadatas: a set of metadatas
         :return: nothing
         """
-        self.product_name = product_name
+        self.product_name = self.get_product_name(product_name)
+        self.cookbook_name = product_name
         self.product_version = product_version
         self.metadatas = metadatas
         self.installator = self._get_installator()

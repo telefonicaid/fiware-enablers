@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.spagobi
 Name: spagobi
 Description: |
-  Murano package for FIWARE spagobi GEi . 24/02/2016
+  Murano package for FIWARE spagobi GEi. 04/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
 Classes:

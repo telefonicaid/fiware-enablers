@@ -122,6 +122,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         requires = manifest.get("Require")
 
         package = self.get_package(package_id)
+
         if package:
             self.delete_package(package)
 

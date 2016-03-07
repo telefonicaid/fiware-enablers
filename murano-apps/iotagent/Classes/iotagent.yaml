@@ -1,5 +1,5 @@
 Namespaces:
-  =: io.murano.conflang.chef.iotagent
+  =: io.murano.conflang.puppet
   std: io.murano
   res: io.murano.resources
   sys: io.murano.system
@@ -12,6 +12,35 @@ Extends: std:Application
 Properties:
   instance:
     Contract: $.class(res:Instance).notNull()
+  iota::base::http_proxy_gre:
+    Contract: $.string()
+  iotagent::context_broker_endpoint:
+    Contract: $.string()
+  iotagent::iotagent_mongodb_host:
+    Contract: $.string()
+  iota_protocols:
+    Contract: $.string()
+  iotagent::iotagent_mongodb_port:
+    Contract: $.string()
+  iotagent::iotagent_server_name:
+    Contract: $.string()
+  iotagent::iotagent_server_port:
+    Contract: $.string()
+  iotagent::iotagent_log_level:
+    Contract: $.string()
+  iota::ngsi::query_context_path:
+    Contract: $.string()
+  iota::ngsi::register_context_path:
+    Contract: $.string()
+  iota::ngsi::update_context_path:
+    Contract: $.string()
+  iotagent::iota_server_address:
+    Contract: $.string()
+  iota::ngsi::load_balancer_url:
+    Contract: $.string()
+  iotagent:
+    Contract: $.string()
+
 
 Methods:
   initialize:
@@ -38,8 +67,21 @@ Methods:
           - $.instance.deploy()
           - $resources: new(sys:Resources)
           # Deploy iotagent
-          - $template: $resources.yaml('Deployiotagent.template')
-
+          - $template: $resources.yaml('Deployiotagent.template').bind(dict(
+                iota::base::http_proxy_gre => $.iota::base::http_proxy_gre,
+                iotagent::context_broker_endpoint => $.iotagent::context_broker_endpoint,
+                iotagent::iotagent_mongodb_host => $.iotagent::iotagent_mongodb_host,
+                iota_protocols => $.iota_protocols,
+                iotagent::iotagent_mongodb_port => $.iotagent::iotagent_mongodb_port,
+                iotagent::iotagent_server_name => $.iotagent::iotagent_server_name,
+                iotagent::iotagent_server_port => $.iotagent::iotagent_server_port,
+                iotagent::iotagent_log_level => $.iotagent::iotagent_log_level,
+                iota::ngsi::query_context_path => $.iota::ngsi::query_context_path,
+                iota::ngsi::register_context_path => $.iota::ngsi::register_context_path,
+                iota::ngsi::update_context_path => $.iota::ngsi::update_context_path,
+                iotagent::iota_server_address => $.iotagent::iota_server_address,
+                iota::ngsi::load_balancer_url => $.iota::ngsi::load_balancer_url,
+                iotagent => $.iotagent))
           - $._environment.reporter.report($this, 'Instance is created. Deploying iotagent')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp
