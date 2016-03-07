@@ -45,7 +45,8 @@ class Product():
         :param metadatas: a set of metadatas
         :return: nothing
         """
-        self.product_name = product_name
+        self.product_name = self.get_product_name(product_name)
+        self.cookbook_name = product_name
         self.product_version = product_version
         self.metadatas = metadatas
         self.installator = self._get_installator()
@@ -171,3 +172,14 @@ class Product():
             if name:
                 images_names.append(name)
         return images_names
+
+    def get_product_name(self, name):
+        """
+        It obtains the product name in case required.
+        :param name:  product name
+        :return: product name changed
+        """
+        try:
+            return Config.CONFIG_PACKAGE_NAME.get('main', name)
+        except:
+            return name

@@ -34,6 +34,7 @@ class Config():
     CONFIG_COOKBOOK = {}
     CONFIG_MODULES = {}
     CONFIG_PRODUCT = {}
+    CONFIG_PACKAGE_NAME = {}
     NID = {}
     Clients = {}
 
@@ -50,6 +51,7 @@ class Config():
         Config.CONFIG_COOKBOOK = self.load_config('./settings/cookbooks_urls')
         Config.CONFIG_MODULES = self.load_config('./settings/modules_urls')
         Config.CONFIG_PRODUCT = self.load_config('./settings/product_names')
+        Config.CONFIG_PACKAGE_NAME = self.load_config('./settings/package_names')
         Config.NID = self.get_all_nids()
         Config.Clients = util_apis(auth_url, user, password, tenant_id,
                                    region_name)

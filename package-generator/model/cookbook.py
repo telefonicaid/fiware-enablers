@@ -64,7 +64,11 @@ class Cookbook:
         if self.enabler:
             url = URL_FORGE + self.name
         elif self.installator == CHEF:
-            url = Config.CONFIG_COOKBOOK.get("main", self.name)
+            try:
+                url = Config.CONFIG_COOKBOOK.get("main", self.name)
+            except:
+                print "error " + self.name
+                return None
         else:
             url = Config.CONFIG_MODULES.get("main", self.name)
         return url
@@ -88,14 +92,15 @@ class Cookbook:
         the metadata file
         :return: True/False
         """
-        if self.installator == CHEF:
-            metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
-        else:
-            metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
+        if self.url:
+            if self.installator == CHEF:
+                metadata_str = utils.read_metadata(self.url, METADATA_CHEF)
+            else:
+                metadata_str = utils.read_metadata(self.url, METADATA_PUPPET)
 
-        if (KEY_CHILD_PRODUCT_CHEF in metadata_str or
-                KEY_CHILD_PRODUCT_PUPPET in metadata_str):
-            return True
+            if (KEY_CHILD_PRODUCT_CHEF in metadata_str or
+                    KEY_CHILD_PRODUCT_PUPPET in metadata_str):
+                return True
         return False
 
     def _get_cookbooks_metadata(self):

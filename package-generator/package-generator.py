@@ -41,6 +41,8 @@ BODY_METADATAS = "metadatas"
 BODY_METADATA_KEY = "key"
 BODY_METADATA_VALUE = "value"
 
+DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace"]
+
 
 def main(argv=None):
     """
@@ -102,8 +104,11 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
 
         product = get_product(product_xml)
+
+        if product.product_name in DEPRECATED_PRODUCTS:
+            continue
         image = product.get_image_metadata()
-        print product.product_name + " " + str(product.is_enabler())
+
         if 'hi' is not image and product.is_enabler():
             package_murano = ProductPackage(product)
             package_murano.generate_manifest()

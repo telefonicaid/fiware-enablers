@@ -150,7 +150,7 @@ class ProductPackage():
         :return: nothing
         """
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
-                           self.product.product_name)
+                           self.product.cookbook_name)
         if self.product.is_puppet_installator():
             utils.replace_word(self.package_template,
                                REPLACE_GE_RECIPE, "install")
@@ -188,11 +188,11 @@ class ProductPackage():
         """
         atts_str = ''
         if self.product.attributes:
-            leng = len(self.product.attributes)
-            atts_str = ', attributes='
+            atts_str = ', \"attributes='
             if self.product.attributes:
                 for att in self.product.attributes:
                     atts_str = atts_str + att + ";"
+            return "{0}\"".format(atts_str)
         return atts_str
 
     def _get_attributes_template_str(self):
@@ -278,7 +278,7 @@ class ProductPackage():
         :return: Cookbook array
         """
         cookbooks = []
-        cookbook = Cookbook(self.product.product_name,
+        cookbook = Cookbook(self.product.cookbook_name,
                             self.product.installator,
                             self.product.is_enabler())
         cookbooks.append(cookbook)
@@ -311,6 +311,7 @@ class ProductPackage():
         """
         cookbooks_str = ''
         for cookbook in self.cookbooks:
-            cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
+            if cookbook.url:
+                cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
                              " : " + cookbook.url + "\n")
         return cookbooks_str
