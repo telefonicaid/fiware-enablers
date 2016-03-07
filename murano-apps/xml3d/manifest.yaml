@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.xml3d
 Name: xml3d
 Description: |
-  Murano package for FIWARE xml3d GEi. 04/03/2016
+  Murano package for FIWARE xml3d GEi. 07/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef]
 Classes:

@@ -16,11 +16,10 @@ Scripts:
     EntryPoint: spagobi::1.0.2_install
     Files:
         - spagobi : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/spagobi
-        - mysql : https://github.com/chef-cookbooks/mysql
+        - mysql : https://github.com/chef-cookbooks/mysql.git
         - database : https://github.com/chef-cookbooks/database.git
         - postgresql : https://github.com/hw-cookbooks/postgresql.git
-        - apt : https://github.com/chef-cookbooks/apt.git
-        - compat_resource : https://github.com/chef-cookbooks/compat_resource.git
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - 7-zip : https://github.com/sneal/7-zip.git
         - windows : https://github.com/chef-cookbooks/windows.git

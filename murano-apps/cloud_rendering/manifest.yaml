@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.cloud_rendering
 Name: cloud_rendering
 Description: |
-  Murano package for FIWARE cloud_rendering GEi. 04/03/2016
+  Murano package for FIWARE cloud_rendering GEi. 07/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
 Classes:
