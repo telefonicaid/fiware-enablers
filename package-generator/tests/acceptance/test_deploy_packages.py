@@ -125,10 +125,9 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         if package:
             self.delete_package(package)
 
-        tags.append({"is_public", True})
         self.upload_app(package_folder,
                         self.murano_package,
-                        tags)
+                        {"is_public": True, "tags": tags})
 
         images = ["base_ubuntu_14.04"]
         atts = {}
@@ -141,7 +140,8 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                                    self.get_murano_name(require))
                     self.upload_app(folder_required,
                                     self.get_murano_name(require),
-                                    [{"is_public", True}])
+                                     {"is_public": True,
+                                     "tags": ["tag"]})
 
         for tag in tags:
             if "images" in tag:
