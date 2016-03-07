@@ -30,6 +30,8 @@ from os import listdir
 from os.path import join, isdir
 import time
 import git
+from configuration import Config
+import yaml
 
 
 COOKBOOK_FOLDER = "cookbooks/"
@@ -105,20 +107,51 @@ def read_metadata(url_file, metadata_file):
     :param metadata_file: the metadata file name
     :return: a string with the metadata contain
     """
-    metadata_str = ''
-
-    if not os.path.exists(COOKBOOK_FOLDER):
-        os.makedirs(COOKBOOK_FOLDER)
-    folder = COOKBOOK_FOLDER + get_name_folder(url_file)
-    if is_git_repository(url_file):
-        download_files_git(url_file)
-        if os.path.exists(folder + "/" + metadata_file):
-            infile = open(folder + "/" + metadata_file, 'r')
-            metadata_str = infile.read()
-    else:
-        f = urllib.urlopen(url_file + "/" + metadata_file)
-        metadata_str = f.read()
+    metadata_str = None
+    try:
+        if not os.path.exists(COOKBOOK_FOLDER):
+            os.makedirs(COOKBOOK_FOLDER)
+        folder = COOKBOOK_FOLDER + get_name_folder(url_file)
+        if is_git_repository(url_file):
+            download_files_git(url_file)
+            if os.path.exists(folder + "/" + metadata_file):
+                infile = open(folder + "/" + metadata_file, 'r')
+                metadata_str = infile.read()
+        else:
+            f = urllib.urlopen(url_file + "/" + metadata_file)
+            metadata_str = f.read()
+    except:
+        pass
     return metadata_str
+
+
+def read_yaml_local_file(file):
+    """
+    It reads a yaml file and store in a dict.
+    :param file: the file to read
+    :return: dict
+    """
+    try:
+        with open(file, "r") as fread:
+            stream = fread.read()
+            text = yaml.load(stream)
+            fread.close()
+    except:
+        return None
+    return text
+
+
+def write_local_yaml(out_file, yaml_text):
+    """
+    It write a yaml file to a file
+    :param out_file: the file where to store the data
+    :param yaml_text: the file content
+    :return: nothing
+    """
+    with open(out_file, 'w+') as fwrite:
+        data = yaml.dump(yaml_text, default_flow_style=True)
+        fwrite.write(data)
+        fwrite.close()
 
 
 def create_github_pull_request(repo_url, user_github, password_github, branch):
@@ -143,6 +176,16 @@ def download_files_git(url_file):
     :return nothing
     """
     folder = COOKBOOK_FOLDER + get_name_folder(url_file)
+    download_git_repo(url_file, folder)
+
+
+def download_git_repo(url_file, folder):
+    """
+    It download a git repo in a folder
+    :param url_file: the git repo url
+    :param folder: the folder to download
+    :return: nothing
+    """
     if is_git_repository(url_file):
         if not os.path.exists(folder):
             git.Git().clone(url_file, folder)
@@ -183,3 +226,14 @@ def delete_branch(branch):
     repo = git.repo.Repo("./../")
     repo.delete_head(branch)
     repo.commit()
+
+
+def get_murano_app_name(murano_app):
+    """
+    It gets the murano package name in the oficial repository.
+    :return:
+    """
+    try:
+        return Config.CONFIG_MURANOAPPS.get('main', murano_app)
+    except:
+        return None

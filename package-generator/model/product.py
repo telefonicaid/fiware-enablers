@@ -72,8 +72,8 @@ class Product():
         :return: nid
         """
         try:
-            nid_aux = Config.CONFIG_PRODUCT.get("main",
-                                                self.product_name)
+            nid_aux = Config.CONFIG_PRODUCT_NIDS.get("main",
+                                                     self.product_name)
             return Config.NID.get(nid_aux)
         except:
             return None
@@ -99,8 +99,8 @@ class Product():
         if TCP_PORTS in self.metadatas.keys():
             value = self.metadatas.get(TCP_PORTS)
             ports = value.split()
-        if len(ports) != 0:
-            return ports[0]
+            if ports:
+                return ports[0]
         return None
 
     def get_udp_ports(self):
@@ -172,6 +172,37 @@ class Product():
             if name:
                 images_names.append(name)
         return images_names
+
+    def is_murano_app_oficial(self):
+        """
+        It checks if the package already exists in murano package
+        repository from openstack.
+        :return:
+        """
+        try:
+            Config.CONFIG_MURANOAPPS.get('main', self.product_name)
+            fiware_cookbooks = True
+        except:
+            fiware_cookbooks = False
+        return fiware_cookbooks
+
+    def get_murano_app_name(self):
+        """
+        It gets the murano package name in the oficial repository.
+        :return:
+        """
+        return Config.CONFIG_MURANOAPPS.get('main', self.product_name)
+
+    def get_cookbook_name(self, name):
+        """
+        It obtains the cookbook name in case required.
+        :param name:  cookbook name
+        :return: cookbook name changed
+        """
+        try:
+            return Config.CONFIG_PRODUCT_NAMES.get('main', name)
+        except:
+            return name
 
     def get_product_name(self, name):
         """

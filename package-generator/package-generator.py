@@ -105,15 +105,17 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
 
         product = get_product(product_xml)
 
+        print product.product_name
+        image = product.get_image_metadata()
+        if ("old" in product.product_name or "test" in product.product_name
+            or "hide" in product.product_name):
+            continue
+        if image and "hi" in image:
+            continue
         if product.product_name in DEPRECATED_PRODUCTS:
             continue
-        image = product.get_image_metadata()
-
-        if 'hi' is not image and product.is_enabler():
-            package_murano = ProductPackage(product)
-            package_murano.generate_manifest()
-            package_murano.generate_class()
-            package_murano.generate_template()
+        package_murano = ProductPackage(product)
+        package_murano.generate_package()
 
     if util2.strtobool(upload):
         update_into_github(user_github, password_github)

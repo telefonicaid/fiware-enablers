@@ -29,6 +29,9 @@ from util import utils_file as utils
 from model.cookbook import Cookbook
 
 PACKAGES_FOLDER = "./../murano-apps"
+PACKAGES_FOLDER_GE = os.path.join(PACKAGES_FOLDER, "murano-app-GE")
+PACKAGES_FOLDER_NO_GE = os.path.join(PACKAGES_FOLDER, "murano-app-noGE")
+
 PACKAGE_TEMPLATE_FOLDER = "template/PackageTemplate"
 PACKAGE_TEMPLATE_CLASS = PACKAGE_TEMPLATE_FOLDER + "/Classes/GE_name.yaml"
 PACKAGE_TEMPLATE_MANIFEST = PACKAGE_TEMPLATE_FOLDER + "/manifest.yaml"
@@ -45,6 +48,9 @@ REPLACE_GE_ATTS = "{GE_attributes}"
 REPLACE_GE_ATTS_RESOURCE = "{GE_attributes_resource}"
 REPLACE_GE_PORTS = "{GE_ports}"
 REPLACE_GE_NID = "{GE_nid}"
+COOKBOOK_FOLDER = "cookbooks/"
+MURANO_APPS = COOKBOOK_FOLDER + "murano-apps/"
+MURANO_APPS_URL = "https://github.com/openstack/murano-apps.git"
 
 
 class ProductPackage():
@@ -57,8 +63,12 @@ class ProductPackage():
         :param product:  The product.
         """
         self.product = product
-        self.package_folder = (PACKAGES_FOLDER + "/" +
-                               product.product_name + "/")
+        if product.is_enabler():
+            self.package_folder = (PACKAGES_FOLDER_GE + "/" +
+                                   product.product_name + "/")
+        else:
+            self.package_folder = (PACKAGES_FOLDER_NO_GE + "/" +
+                                   product.product_name + "/")
         self.package_classes = self.package_folder + "Classes/"
         self.package_classes_file = (self.package_classes +
                                      self.product.product_name + ".yaml")
@@ -66,8 +76,6 @@ class ProductPackage():
         self.package_resources = self.package_folder + "Resources/"
         self.package_template = (self.package_resources + "Deploy" +
                                  product.product_name + ".template")
-        self.cookbooks = self.get_all_cookbooks()
-        self._generate_package_folder()
 
     def get_product(self):
         """
@@ -88,8 +96,7 @@ class ProductPackage():
         It generates the murano package folder structure.
         :return:
         """
-        if not os.path.exists(PACKAGES_FOLDER):
-            os.makedirs(PACKAGES_FOLDER)
+        self._check_folder_exists()
         if not os.path.exists(self.package_folder):
             os.makedirs(self.package_folder)
         if not os.path.exists(self.package_classes):
@@ -97,6 +104,46 @@ class ProductPackage():
         if not os.path.exists(self.package_resources):
             os.makedirs(self.package_resources)
         self._copy_files_from_templates()
+
+    def _check_folder_exists(self):
+        if not os.path.exists(PACKAGES_FOLDER):
+            os.makedirs(PACKAGES_FOLDER)
+        if not os.path.exists(PACKAGES_FOLDER_GE):
+            os.makedirs(PACKAGES_FOLDER_GE)
+        if not os.path.exists(PACKAGES_FOLDER_NO_GE):
+            os.makedirs(PACKAGES_FOLDER_NO_GE)
+        if not os.path.exists(COOKBOOK_FOLDER):
+            os.makedirs(COOKBOOK_FOLDER)
+
+    def _download_package_dependence(self, dependence):
+        """
+        It download the packages from the official repository
+        :return: nothing
+        """
+        self._download_package_folder(dependence)
+
+    def _download_package_murano(self):
+        """
+        It download the packages from the official repository
+        :return: nothing
+        """
+        self._download_package_folder(self.product.product_name)
+
+    def _download_package_folder(self, folder):
+        """
+        It download the packages from the official repository
+        :return: nothing
+        """
+        self._check_folder_exists()
+        if not os.path.isdir(MURANO_APPS):
+            utils.download_git_repo(MURANO_APPS_URL, MURANO_APPS)
+        folder_out = os.path.join(PACKAGES_FOLDER_NO_GE, folder)
+        folder_changed = utils.get_murano_app_name(folder)
+        if folder_changed:
+            folder = folder_changed
+        folder_in = os.path.join(MURANO_APPS, folder, "package")
+        if not os.path.exists(folder_out):
+            shutil.copytree(folder_in, folder_out)
 
     def _copy_files_from_templates(self):
         """
@@ -126,6 +173,28 @@ class ProductPackage():
         utils.replace_word(self.package_manifest, "{date}",
                            time.strftime("%d/%m/%Y"))
 
+    def update_manifest_no_ge(self):
+        """
+        It updates the product package files if required
+        :return:
+        """
+        if not(self.product.images or self.product.attributes):
+            return
+
+        manifest_yaml = utils.read_yaml_local_file(self.package_manifest)
+        if not manifest_yaml:
+            return
+        tags = manifest_yaml["Tags"]
+        if self.product.images:
+            tags.append(self._get_images_str())
+        if self.product.attributes:
+            tags.append(self._get_attributes_str())
+        if self.product.is_enabler:
+            tags.append("FIWARE_GE")
+        manifest_yaml["Tags"] = tags
+
+        utils.write_local_yaml(self.package_manifest, manifest_yaml)
+
     def generate_class(self):
         """
         It generates the package class file.
@@ -135,8 +204,12 @@ class ProductPackage():
                            REPLACE_GE_NAME, self.product.product_name)
         utils.replace_word(self.package_classes_file,
                            REPLACE_GE_PORTS, self._get_ports_str())
-        utils.replace_word(self.package_classes_file,
-                           REPLACE_GE_NID, self.product.nid)
+        if self.product.nid:
+            utils.replace_word(self.package_classes_file,
+                               REPLACE_GE_NID, self.product.nid)
+        else:
+            utils.replace_word(self.package_classes_file,
+                               REPLACE_GE_NID, '')
         utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS_RESOURCE,
                            self._get_attributes_resource())
         utils.replace_word(self.package_classes_file, REPLACE_GE_ATTS,
@@ -150,13 +223,17 @@ class ProductPackage():
         :return: nothing
         """
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
-                           self.product.cookbook_name)
+                           self.product.get_cookbook_name(self.product.product_name))
         if self.product.is_puppet_installator():
             utils.replace_word(self.package_template,
                                REPLACE_GE_RECIPE, "install")
         else:
-            utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
-                               self.product.product_version+"_install")
+            if self.product.is_enabler():
+                utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
+                                   self.product.product_version+"_install")
+            else:
+                utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
+                                   "default")
         utils.replace_word(self.package_template, REPLACE_GE_INSTALLATOR,
                            self.product.installator)
         utils.replace_word(self.package_template, REPLACE_GE_COOKBOOKS,
@@ -242,8 +319,8 @@ class ProductPackage():
         atts_str = ''
         if self.product.attributes:
             for key in self.product.attributes:
-                atts_str = (atts_str + (" " * 2) + key + ":\n" +
-                    (" " * 4) + "Contract: $.string()\n")
+                atts_str = atts_str + (" " * 2) + key + ":\n" +\
+                    (" " * 4) + "Contract: $.string()\n"
         return atts_str
 
     def _get_ports(self, protocol):
@@ -281,15 +358,17 @@ class ProductPackage():
         cookbook = Cookbook(self.product.cookbook_name,
                             self.product.installator,
                             self.product.is_enabler())
-        cookbooks.append(cookbook)
+        if cookbook.url:
+            cookbooks.append(cookbook)
 
-        for cookbook_child in cookbook.cookbook_childs:
-            if not self._exists(cookbook_child.name, cookbooks):
-                cookbooks.append(cookbook_child)
-            if len(cookbook_child.cookbook_childs) != 0:
-                cookbooks_in = cookbook_child.get_all_cookbooks_child()
-                cookbooks.extend(x for x in cookbooks_in
-                                 if not self._exists(x.name, cookbooks))
+            for cookbook_child in cookbook.cookbook_childs:
+                if (not self._exists(cookbook_child.name, cookbooks)
+                        and cookbook_child.url):
+                    cookbooks.append(cookbook_child)
+                if len(cookbook_child.cookbook_childs) != 0:
+                    cookbooks_in = cookbook_child.get_all_cookbooks_child()
+                    cookbooks.extend(x for x in cookbooks_in
+                                     if not self._exists(x.name, cookbooks))
         return cookbooks
 
     def _exists(self, cookbook_name, cookbooks):
@@ -312,6 +391,36 @@ class ProductPackage():
         cookbooks_str = ''
         for cookbook in self.cookbooks:
             if cookbook.url:
-                cookbooks_str = (cookbooks_str + (" " * 8) + "- " + cookbook.name +
-                             " : " + cookbook.url + "\n")
+                cookbooks_str = (cookbooks_str + (" " * 8) + "- " +
+                                 cookbook.name + " : " + cookbook.url + "\n")
         return cookbooks_str
+
+    def generate_package(self):
+        """
+        It generate all files for the murano package.
+        :return: nothing
+        """
+        if self.product.is_murano_app_oficial():
+            self._download_package_murano()
+            self.read_dependences()
+            self.update_manifest_no_ge()
+        else:
+            self.cookbooks = self.get_all_cookbooks()
+            if self.cookbooks:
+                self._generate_package_folder()
+                self.generate_manifest()
+                self.generate_class()
+                self.generate_template()
+
+    def read_dependences(self):
+        """
+        It read and download the dependences from a murano pacakge.
+        :return:
+        """
+        manifest_yaml = utils.read_yaml_local_file(self.package_manifest)
+        requires = manifest_yaml.get("Require")
+        if requires:
+            for require in requires:
+                app_name = utils.get_murano_app_name(require)
+                if app_name:
+                    self._download_package_dependence(app_name)
