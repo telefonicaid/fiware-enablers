@@ -76,6 +76,7 @@ class ProductPackage():
         self.package_resources = self.package_folder + "Resources/"
         self.package_template = (self.package_resources + "Deploy" +
                                  product.product_name + ".template")
+        self.cookbooks = self.get_all_cookbooks()
 
     def get_product(self):
         """
@@ -405,7 +406,7 @@ class ProductPackage():
             self.read_dependences()
             self.update_manifest_no_ge()
         else:
-            self.cookbooks = self.get_all_cookbooks()
+
             if self.cookbooks:
                 self._generate_package_folder()
                 self.generate_manifest()

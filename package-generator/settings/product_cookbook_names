@@ -1,2 +1,5 @@
 [main]
 R: r
+TwoD_UI: 2d_ui
+TwoDThreeD_capture: 2D3DCapture
+ThreeDMapTiles: 3DMapTiles
