@@ -203,3 +203,14 @@ class Product():
             return Config.CONFIG_PRODUCT_NAMES.get('main', name)
         except:
             return name
+
+    def get_product_name(self, name):
+        """
+        It obtains the product name in case required.
+        :param name:  product name
+        :return: product name changed
+        """
+        try:
+            return Config.CONFIG_PACKAGE_NAME.get('main', name)
+        except:
+            return name
