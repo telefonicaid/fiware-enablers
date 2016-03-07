@@ -1,0 +1,10 @@
+Format: 1.0
+Type: Application
+FullName: io.murano.conflang.chef.python
+Name: python
+Description: |
+  Murano package for FIWARE python GEi. 07/03/2016
+Author: 'TID'
+Tags: [FIWARE, GEs, chef]
+Classes:
+ io.murano.conflang.chef.python: python.yaml

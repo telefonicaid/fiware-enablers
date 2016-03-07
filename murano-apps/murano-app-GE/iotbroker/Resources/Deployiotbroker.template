@@ -1,0 +1,22 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy iotbroker
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Puppet
+    Version: 1.0.0
+    EntryPoint: iotbroker::install
+    Files:
+        - iotbroker : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/iotbroker
+
+    Options:
+      captureStdout: true
+      captureStderr: true

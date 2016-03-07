@@ -1,0 +1,59 @@
+Namespaces:
+  =: io.murano.conflang.chef
+  std: io.murano
+  res: io.murano.resources
+  sys: io.murano.system
+
+
+Name: RealVirtualInteractionGE
+
+Extends: std:Application
+
+Properties:
+  instance:
+    Contract: $.class(res:Instance).notNull()
+
+
+Methods:
+  initialize:
+    Body:
+      - $._environment: $.find(std:Environment).require()
+
+  deploy:
+    Body:
+      - If: not $.getAttr(deployed, false)
+        Then:
+          - $._environment.reporter.report($this, 'Creating VM for deployment')
+          - $securityGroupIngress:
+            - ToPort: 22
+              FromPort: 22
+              IpProtocol: tcp
+              External: true
+            - ToPort: 44445
+              FromPort: 44445
+              IpProtocol: tcp
+              External: true
+            - ToPort: 61616
+              FromPort: 61616
+              IpProtocol: tcp
+              External: true
+            - ToPort: 8080
+              FromPort: 8080
+              IpProtocol: tcp
+              External: true
+
+          - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
+          - $.instance.addNid(1249)
+          - $.instance.deploy()
+          - $resources: new(sys:Resources)
+          # Deploy RealVirtualInteractionGE
+          - $template: $resources.yaml('DeployRealVirtualInteractionGE.template')
+          - $._environment.reporter.report($this, 'Instance is created. Deploying RealVirtualInteractionGE')
+          - $.instance.agent.call($template, $resources)
+          - If: $.instance.assignFloatingIp
+            Then:
+              - $host: $.instance.floatingIpAddress
+            Else:
+              - $host: $.instance.ipAddresses[0]
+          - $._environment.reporter.report($this, format('RealVirtualInteractionGE is installed at {0}', $host))
+          - $.setAttr(deployed, true)

@@ -1,0 +1,23 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy orion-dbcluster
+
+Parameters:
+  
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: orion-dbcluster::default
+    Files:
+        - orion-dbcluster : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/orion-dbcluster
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - yum : https://github.com/chef-cookbooks/yum.git
+
+    Options:
+      captureStdout: true
+      captureStderr: true

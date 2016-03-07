@@ -1,0 +1,23 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy cepheus
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: cepheus::0.1.3_install
+    Files:
+        - cepheus : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cepheus
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+
+    Options:
+      captureStdout: true
+      captureStderr: true

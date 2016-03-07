@@ -1,0 +1,22 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy Stream_oriented_kurento
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: Stream_oriented_kurento::6.1.1_install
+    Files:
+        - Stream_oriented_kurento : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/Stream_oriented_kurento
+
+    Options:
+      captureStdout: true
+      captureStderr: true

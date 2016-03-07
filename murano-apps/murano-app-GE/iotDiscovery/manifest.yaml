@@ -1,0 +1,10 @@
+Format: 1.0
+Type: Application
+FullName: io.murano.conflang.chef.iotDiscovery
+Name: iotDiscovery
+Description: |
+  Murano package for FIWARE iotDiscovery GEi. 07/03/2016
+Author: 'TID'
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
+Classes:
+ io.murano.conflang.chef.iotDiscovery: iotDiscovery.yaml
