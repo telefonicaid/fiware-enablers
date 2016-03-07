@@ -188,12 +188,11 @@ class ProductPackage():
         """
         atts_str = ''
         if self.product.attributes:
-            leng = len(self.product.attributes)
-            atts_str = ', attributes='
+            atts_str = ', \"attributes='
             if self.product.attributes:
                 for att in self.product.attributes:
                     atts_str = atts_str + att + ";"
-        return atts_str
+        return "{0}\"".format(atts_str)
 
     def _get_attributes_template_str(self):
         """

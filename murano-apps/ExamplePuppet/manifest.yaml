@@ -1,6 +1,6 @@
 Format: 1.0
 Type: Application
-FullName: io.murano.conflang.puppet.ExamplePuppet
+FullName: io.murano.conflang.puppet
 Name: ExamplePuppet
 Description: |
   Example Puppet.
