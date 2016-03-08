@@ -38,13 +38,15 @@ class Product():
     """This class represents the product.
     """
     def __init__(self, product_name, product_version, metadatas={},
-                 attributes={}):
+                 attributes=[]):
         """
         :param product_name: the product name
         :param product_version: the release version
         :param metadatas: a set of metadatas
         :return: nothing
         """
+        self.product_name = product_name
+        self.is_murano_app = self.is_murano_app_oficial()
         self.product_name = self.get_product_name(product_name)
         self.cookbook_name = product_name
         self.product_version = product_version
@@ -53,6 +55,7 @@ class Product():
         self.nid = self._get_nid_from_catalogue()
         self.images = self._get_images_names()
         self.attributes = attributes
+
 
     def get_image_metadata(self):
         """
@@ -199,6 +202,11 @@ class Product():
         :param name:  product name
         :return: product name changed
         """
+        if self.is_murano_app:
+            try:
+                return Config.CONFIG_MURANOAPPS.get('main', name)
+            except:
+                return name
         try:
             return Config.CONFIG_PACKAGE_NAME.get('main', name)
         except:
