@@ -78,6 +78,13 @@ class ProductPackage():
                                  product.product_name + ".template")
         self.cookbooks = self.get_all_cookbooks()
 
+        if self.product.is_murano_app:
+            self._download_package_murano()
+            self.read_dependences()
+        else:
+            if self.cookbooks:
+                self._generate_package_folder()
+
     def get_product(self):
         """
         It returns the product
@@ -170,7 +177,7 @@ class ProductPackage():
         utils.replace_word(self.package_manifest, REPLACE_GE_IMAGES,
                            self._get_images_str())
         utils.replace_word(self.package_manifest, REPLACE_GE_ATTS,
-                           self._get_attributes_str())
+                           ", " + self._get_attributes_str())
         utils.replace_word(self.package_manifest, "{date}",
                            time.strftime("%d/%m/%Y"))
 
@@ -186,13 +193,20 @@ class ProductPackage():
         if not manifest_yaml:
             return
         tags = manifest_yaml["Tags"]
-        if self.product.images:
-            tags.append(self._get_images_str())
+        tags2 = []
+        for tag in tags:
+            if ("attributes" in tag) or ("images" in tag)\
+                    or ("FIWARE_GE" in tag):
+                continue
+            tags2.append(tag)
+
         if self.product.attributes:
-            tags.append(self._get_attributes_str())
+            tags2.append(self._get_attributes_str())
+        if self.product.images:
+            tags2.append(self._get_images_str())
         if self.product.is_enabler:
-            tags.append("FIWARE_GE")
-        manifest_yaml["Tags"] = tags
+            tags2.append("FIWARE_GE")
+        manifest_yaml["Tags"] = tags2
 
         utils.write_local_yaml(self.package_manifest, manifest_yaml)
 
@@ -226,8 +240,12 @@ class ProductPackage():
         utils.replace_word(self.package_template, REPLACE_GE_NAME,
                            self.product.get_cookbook_name(self.product.product_name))
         if self.product.is_puppet_installator():
-            utils.replace_word(self.package_template,
+            if self.product.is_enabler():
+                utils.replace_word(self.package_template,
                                REPLACE_GE_RECIPE, "install")
+            else:
+                utils.replace_word(self.package_template,
+                               REPLACE_GE_RECIPE, "")
         else:
             if self.product.is_enabler():
                 utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
@@ -266,11 +284,14 @@ class ProductPackage():
         """
         atts_str = ''
         if self.product.attributes:
-            atts_str = ', \"attributes='
+            atts_str = "attributes="
             if self.product.attributes:
                 for att in self.product.attributes:
-                    atts_str = atts_str + att + ";"
+                    atts_str = atts_str + "{0}:{1};".format(att, self.product.attributes[att])
+            print atts_str
+            return atts_str
             return "{0}\"".format(atts_str)
+
         return atts_str
 
     def _get_attributes_template_str(self):
@@ -401,14 +422,11 @@ class ProductPackage():
         It generate all files for the murano package.
         :return: nothing
         """
-        if self.product.is_murano_app_oficial():
-            self._download_package_murano()
-            self.read_dependences()
+        if self.product.is_murano_app:
+            self.update_attributes()
             self.update_manifest_no_ge()
         else:
-
             if self.cookbooks:
-                self._generate_package_folder()
                 self.generate_manifest()
                 self.generate_class()
                 self.generate_template()
@@ -425,3 +443,19 @@ class ProductPackage():
                 app_name = utils.get_murano_app_name(require)
                 if app_name:
                     self._download_package_dependence(app_name)
+
+    def update_attributes(self):
+        class_yaml = utils.read_yaml_local_file(self.package_classes_file)
+        properties = class_yaml.get("Properties")
+        attributes = {}
+        if properties:
+            for property in properties:
+                if property == "instance":
+                    continue
+                else:
+                    value = properties[property].get("default")
+                    if not value:
+                        value = ""
+                    attributes[property] = value
+            self.product.attributes.update(attributes)
+

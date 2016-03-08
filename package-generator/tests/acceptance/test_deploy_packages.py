@@ -75,10 +75,12 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 "id": str(uuid.uuid4())
             }
         }
+
         if atts:
             for att in atts:
                 post_body[att] = att
 
+        print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
@@ -154,7 +156,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         for image in images:
             if image == "base_ubuntu_12.04":
-                if len(image) == 1:
+                if len(images) == 1:
                     image = "base_ubuntu_14.04"
                 else:
                     continue
@@ -209,17 +211,22 @@ def add_tests(generator):
 
 def _test_pairs():
     load_config()
+    MURANO_APP_DISCARDED = ["SQLDatabaseLibrary"]
     murano_apps_folder = CONF.murano.murano_apps_folder
     folder = os.path.join(murano_apps_folder, "murano-app-GE")
     murano_packages = [f for f in listdir(folder) if
                        isdir(join(folder, f))]
     for murano_package in murano_packages:
+        if murano_package in MURANO_APP_DISCARDED:
+            continue
         yield DeployPackagesTest.deploy_package, murano_package, "GE"
 
     folder = os.path.join(murano_apps_folder, "murano-app-noGE")
     murano_packages = [f for f in listdir(folder) if
                        isdir(join(folder, f))]
     for murano_package in murano_packages:
+        if murano_package in MURANO_APP_DISCARDED:
+            continue
         yield DeployPackagesTest.deploy_package, murano_package, "noGE"
 
 DeployPackagesTest = add_tests(_test_pairs)(DeployPackagesTest)

@@ -42,7 +42,8 @@ BODY_METADATA_KEY = "key"
 BODY_METADATA_VALUE = "value"
 
 DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace", "SQLDatabaseLibrary",
-                       "mongodbconfig", "mongodbshard", "mongos", "orion-dbcluste"]
+                       "mongodbconfig", "mongodbshard", "mongos", "orion-dbcluster",
+                       "synchronization_fives", "repository", "mediawiki"]
 
 
 def main(argv=None):
@@ -105,8 +106,6 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
 
         product = get_product(product_xml)
-
-        print product.product_name
         image = product.get_image_metadata()
         if ("old" in product.product_name or "test" in product.product_name
             or "hide" in product.product_name):
@@ -115,6 +114,7 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
             continue
         if product.product_name in DEPRECATED_PRODUCTS:
             continue
+        print product.product_name
         package_murano = ProductPackage(product)
         package_murano.generate_package()
 
