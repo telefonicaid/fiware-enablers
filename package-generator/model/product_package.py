@@ -288,9 +288,7 @@ class ProductPackage():
             if self.product.attributes:
                 for att in self.product.attributes:
                     atts_str = atts_str + "{0}:{1};".format(att, self.product.attributes[att])
-            print atts_str
             return atts_str
-            return "{0}\"".format(atts_str)
 
         return atts_str
 

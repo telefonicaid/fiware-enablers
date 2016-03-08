@@ -114,7 +114,6 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
             continue
         if product.product_name in DEPRECATED_PRODUCTS:
             continue
-        print product.product_name
         package_murano = ProductPackage(product)
         package_murano.generate_package()
 

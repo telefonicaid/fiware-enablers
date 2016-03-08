@@ -80,7 +80,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
             for att in atts:
                 post_body[att] = att
 
-        print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
