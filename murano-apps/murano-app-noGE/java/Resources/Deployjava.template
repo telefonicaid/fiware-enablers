@@ -1,0 +1,23 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy java
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: java::default
+    Files:
+        - java : https://github.com/agileorbit-cookbooks/java.git
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+
+    Options:
+      captureStdout: true
+      captureStderr: true

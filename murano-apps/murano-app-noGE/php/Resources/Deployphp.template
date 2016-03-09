@@ -1,0 +1,34 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy php
+
+Parameters:
+  
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: php::default
+    Files:
+        - php : https://github.com/chef-cookbooks/php.git
+        - build-essential : https://github.com/chef-cookbooks/build-essential.git
+        - 7-zip : https://github.com/sneal/7-zip.git
+        - windows : https://github.com/chef-cookbooks/windows.git
+        - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
+        - xml : https://github.com/chef-cookbooks/xml.git
+        - chef-sugar : https://github.com/sethvargo/chef-sugar.git
+        - mysql : https://github.com/chef-cookbooks/mysql.git
+        - yum-mysql-community : https://github.com/chef-cookbooks/yum-mysql-community.git
+        - yum : https://github.com/chef-cookbooks/yum.git
+        - smf : https://github.com/livinginthepast/smf.git
+        - rbac : https://github.com/livinginthepast/rbac.git
+        - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
+        - iis : https://github.com/chef-cookbooks/iis.git
+
+    Options:
+      captureStdout: true
+      captureStderr: true

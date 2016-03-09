@@ -1,0 +1,21 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy redis
+
+Parameters:
+  
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: redis::default
+    Files:
+        - redis : https://github.com/ctrabold/chef-redis.git
+
+    Options:
+      captureStdout: true
+      captureStderr: true
