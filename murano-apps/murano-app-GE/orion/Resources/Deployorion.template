@@ -17,7 +17,7 @@ Scripts:
     Files:
         - orion : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/orion
         - mongodb : https://github.com/edelight/chef-mongodb.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
         - yum : https://github.com/chef-cookbooks/yum.git
         - python : https://github.com/poise/python.git
         - build-essential : https://github.com/chef-cookbooks/build-essential.git

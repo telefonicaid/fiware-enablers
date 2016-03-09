@@ -1,6 +1,6 @@
 FormatVersion: 2.1.0
 Version: 1.0.0
-Name: Deploy jboss
+Name: Deploy jboss7
 
 Parameters:
   port: $port
@@ -13,10 +13,10 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: jboss::default
+    EntryPoint: jboss7::default
     Files:
-        - jboss : https://github.com/andy-dufour/chef-jboss7.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - jboss7 : https://github.com/andy-dufour/chef-jboss7.git
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
         - java : https://github.com/agileorbit-cookbooks/java.git
         - ark : https://github.com/burtlo/ark.git
         - build-essential : https://github.com/chef-cookbooks/build-essential.git

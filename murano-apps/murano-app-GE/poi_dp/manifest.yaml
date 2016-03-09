@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.poi_dp
 Name: poi_dp
 Description: |
-  Murano package for FIWARE poi_dp GEi. 07/03/2016
+  Murano package for FIWARE poi_dp GEi. 09/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
 Classes:

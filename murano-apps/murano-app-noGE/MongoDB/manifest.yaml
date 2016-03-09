@@ -1,0 +1,11 @@
+{Author: 'Huawei, Inc', Classes: {io.murano.databases.MongoDB: MongoDB.yaml}, Description: 'MongoDB
+    is a cross-platform document-oriented database.
+
+    Classified as a NoSQL database, MongoDB eschews
+
+    the traditional table-based relational database structure
+
+    in favor of JSON-like documents with dynamic schemas.
+
+    ', Format: 1.0, FullName: io.murano.databases.MongoDB, Name: MongoDB, Tags: [
+    MongoDB, 'attributes=''username:;password:;database:;''', FIWARE_GE], Type: Application}

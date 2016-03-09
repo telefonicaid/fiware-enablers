@@ -24,7 +24,7 @@ Scripts:
         - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
         - yum : https://github.com/chef-cookbooks/yum.git
         - mongodb : https://github.com/edelight/chef-mongodb.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
         - apache2 : https://github.com/svanzoest-cookbooks/apache2.git
 
     Options:
