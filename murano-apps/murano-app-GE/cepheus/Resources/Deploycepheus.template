@@ -16,7 +16,7 @@ Scripts:
     EntryPoint: cepheus::0.1.3_install
     Files:
         - cepheus : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cepheus
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
 
     Options:
       captureStdout: true

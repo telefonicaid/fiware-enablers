@@ -3,8 +3,8 @@ Type: Application
 FullName: io.murano.conflang.puppet.iotagent
 Name: iotagent
 Description: |
-  Murano package for FIWARE iotagent GEi. 07/03/2016
+  Murano package for FIWARE iotagent GEi. 09/03/2016
 Author: 'TID'
-Tags: [FIWARE, GEs, puppet, images=base_centos_6, "attributes=iota::base::http_proxy_gre;iotagent::context_broker_endpoint;iotagent::iotagent_mongodb_host;iota_protocols;iotagent::iotagent_mongodb_port;iotagent::iotagent_server_name;iotagent::iotagent_server_port;iotagent::iotagent_log_level;iota::ngsi::query_context_path;iota::ngsi::register_context_path;iota::ngsi::update_context_path;iotagent::iota_server_address;iota::ngsi::load_balancer_url;iotagent;"]
+Tags: [FIWARE, GEs, puppet, images=base_centos_6, attributes='query_context_path:/NGSI10/queryContext;iotagent_server_name:qa;iota_protocols:"[iotagentul, iotagentmqtt, iotagenttt]";http_proxy_gre:127.0.0.1:8888;iotagent_mongodb_port:27017;load_balancer_url:http://127.0.0.1:2000;iota_server_address:localhost;update_context_path:/NGSI10/updateContext;context_broker_endpoint:http//10.0.0.2:1026;iotagent_server_port:8080;iotagent_mongodb_host:127.0.0.1;register_context_path:/NGSI9/registerContext;iotagent:{ul: {order : "20", resource : "d", fileName:  "UL20Service"}};iotagent_log_level:DEBUG;']
 Classes:
  io.murano.conflang.puppet.iotagent: iotagent.yaml

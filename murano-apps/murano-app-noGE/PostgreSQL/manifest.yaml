@@ -1,0 +1,12 @@
+{Author: 'Mirantis, Inc', Classes: {io.murano.databases.PostgreSql: PostgreSql.yaml},
+  Description: 'PostgreSQL is a powerful, open source object-relational database system.
+
+    It has more than 15 years of active development and a proven architecture
+
+    that has earned it a strong reputation for reliability, data integrity,
+
+    and correctness.
+
+    ', Format: 1.0, FullName: io.murano.databases.PostgreSql, Name: PostgreSQL, Require: {
+    io.murano.databases: null}, Tags: [Database, Postgre, SQL, RDBMS, 'attributes=''username:;password:;database:;''',
+    FIWARE_GE], Type: Application}

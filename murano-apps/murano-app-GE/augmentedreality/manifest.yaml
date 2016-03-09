@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.augmentedreality
 Name: augmentedreality
 Description: |
-  Murano package for FIWARE augmentedreality GEi. 07/03/2016
+  Murano package for FIWARE augmentedreality GEi. 09/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef, images=base_ubuntu_12.04]
 Classes:

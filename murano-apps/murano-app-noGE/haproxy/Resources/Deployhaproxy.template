@@ -13,7 +13,7 @@ Scripts:
   executeRecipe:
     Type: Puppet
     Version: 1.0.0
-    EntryPoint: haproxy::install
+    EntryPoint: haproxy::
     Files:
         - haproxy : https://github.com/puppetlabs/puppetlabs-haproxy.git
         - stdlib : https://github.com/puppetlabs/puppetlabs-stdlib.git

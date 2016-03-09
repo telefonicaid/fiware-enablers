@@ -23,7 +23,7 @@ Scripts:
         - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
         - ark : https://github.com/burtlo/ark.git
         - seven_zip : https://github.com/sneal/7-zip.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
         - homebrew : https://github.com/chef-cookbooks/homebrew.git
 
     Options:

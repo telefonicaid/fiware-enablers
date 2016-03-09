@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.java
 Name: java
 Description: |
-  Murano package for FIWARE java GEi. 07/03/2016
+  Murano package for FIWARE java GEi. 09/03/2016
 Author: 'TID'
 Tags: [FIWARE, GEs, chef]
 Classes:

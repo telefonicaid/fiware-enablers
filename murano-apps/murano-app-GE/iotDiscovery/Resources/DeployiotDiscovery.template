@@ -17,7 +17,7 @@ Scripts:
     Files:
         - iotDiscovery : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/iotDiscovery
         - java : https://github.com/agileorbit-cookbooks/java.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
         - mysql : https://github.com/chef-cookbooks/mysql.git
         - yum-mysql-community : https://github.com/chef-cookbooks/yum-mysql-community.git
         - yum : https://github.com/chef-cookbooks/yum.git

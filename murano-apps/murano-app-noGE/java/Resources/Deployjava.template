@@ -16,7 +16,7 @@ Scripts:
     EntryPoint: java::default
     Files:
         - java : https://github.com/agileorbit-cookbooks/java.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt/
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
 
     Options:
       captureStdout: true
