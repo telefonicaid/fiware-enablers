@@ -41,6 +41,7 @@ metadata_product_child = "depends \'" + COOKBOOK_CHILD1 + "\'"
 metadata_product_child2 = "depends \'" + COOKBOOK_CHILD2 + "\'"
 metadata_product_no_child = "other"
 PRODUCT_NAME = "product"
+PRODUCT_MURANO_NAME = "productMurano"
 
 METADATA_JSON = {
     "name": "product",
@@ -52,6 +53,7 @@ METADATA_JSON_STR_NO_CHILD = "{ \"name\": \"child\" }"
 METADATA_JSON_STR = "{ \"name\": \"product\",  \"dependencies\": " \
                     " [  {\"name\": " + COOKBOOK_CHILD1 + "}," \
                     "  {\"name\": " + COOKBOOK_CHILD2 + "} ] }"
+MANIFEST = "{\"Classes\": {\"ID\": \"Myclass\"}}"
 
 
 class TestProductPackage(unittest.TestCase):
@@ -71,6 +73,10 @@ class TestProductPackage(unittest.TestCase):
         config_product.set("main", COOKBOOK_CHILD2, COOKBOOK_CHILD_URL2)
         Config.CONFIG_COOKBOOK = config_product
         Config.CONFIG_MODULES = config_product
+        config_package = ConfigParser.RawConfigParser()
+        config_package.add_section("main")
+        config_package.set("main", PRODUCT_MURANO_NAME, PRODUCT_MURANO_NAME)
+        Config.CONFIG_MURANOAPPS = config_package
         Config.NID = {}
 
     def tearDown(self):
@@ -94,6 +100,27 @@ class TestProductPackage(unittest.TestCase):
         self.assertEquals(product_package.get_product().product_name,
                           PRODUCT_NAME)
         self.assertEquals(len(product_package.get_cookbooks()), 1)
+        self.mock_open.reset_mock()
+
+    @mock.patch('shutil.copy')
+    @mock.patch('os.path.exists')
+    @mock.patch('__builtin__.open', create=True)
+    def test_product_murano_package(self, mock_open,  mock_exists, mock_copy):
+        """test the object is correctly built"""
+        mock_exists.return_value = True
+        mock_copy.return_value = None
+        self.mock_open = mock_open
+        self.mock_open.side_effect = [
+            mock.mock_open(read_data=MANIFEST).return_value,
+            mock.mock_open(read_data=MANIFEST).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value,
+            mock.mock_open(read_data=MANIFEST).return_value
+        ]
+        product = Product(PRODUCT_MURANO_NAME, PRODUCT_VERSION)
+        product_package = ProductPackage(product)
+        self.assertEquals(product_package.get_product().product_name,
+                          PRODUCT_MURANO_NAME)
         self.mock_open.reset_mock()
 
     @mock.patch('shutil.copy')
