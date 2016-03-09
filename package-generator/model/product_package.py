@@ -80,7 +80,7 @@ class ProductPackage():
         self.package_template = (self.package_resources + "Deploy" +
                                  product.product_name + ".template")
         self.cookbooks = self.get_all_cookbooks()
-        if not self.product.is_murano_app:
+        if not self.product.is_murano_app and self.cookbooks:
             self._generate_package_folder()
 
     def get_product(self):
