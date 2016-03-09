@@ -80,6 +80,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
             for att in atts:
                 post_body[att] = att
 
+        print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
@@ -142,8 +143,8 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                                    self.get_murano_name(require))
                     self.upload_app(folder_required,
                                     self.get_murano_name(require),
-                                     {"is_public": True,
-                                     "tags": ["tag"]})
+                                    {"is_public": True,
+                                    "tags": ["tag"]})
 
         for tag in tags:
             if "images" in tag:

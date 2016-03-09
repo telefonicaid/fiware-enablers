@@ -56,7 +56,6 @@ class Product():
         self.images = self._get_images_names()
         self.attributes = attributes
 
-
     def get_image_metadata(self):
         """
         It obtains the metadata image
@@ -222,4 +221,3 @@ class Product():
             return Config.CONFIG_PRODUCT_NAMES.get('main', name)
         except:
             return name
-

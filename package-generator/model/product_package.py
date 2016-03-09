@@ -64,16 +64,16 @@ class ProductPackage():
         """
         self.product = product
         if product.is_enabler():
-            self.package_folder = (PACKAGES_FOLDER_GE + "/" +
-                                   product.product_name + "/")
+            self.package_folder =\
+                os.path.join(PACKAGES_FOLDER_GE, product.product_name)
         else:
-            self.package_folder = (PACKAGES_FOLDER_NO_GE + "/" +
-                                   product.product_name + "/")
-        self.package_classes = self.package_folder + "Classes/"
-        self.package_classes_file = (self.package_classes +
-                                     self.product.product_name + ".yaml")
-        self.package_manifest = self.package_folder + "manifest.yaml"
-        self.package_resources = self.package_folder + "Resources/"
+            self.package_folder = \
+                os.path.join(PACKAGES_FOLDER_NO_GE, product.product_name)
+        self.package_manifest = \
+            os.path.join(self.package_folder, "manifest.yaml")
+        self.package_classes = os.path.join(self.package_folder, "Classes")
+        self.package_classes_file = self.get_class_name_file()
+        self.package_resources = os.path.join(self.package_folder, "Resources")
         self.package_template = (self.package_resources + "Deploy" +
                                  product.product_name + ".template")
         self.cookbooks = self.get_all_cookbooks()
@@ -242,10 +242,10 @@ class ProductPackage():
         if self.product.is_puppet_installator():
             if self.product.is_enabler():
                 utils.replace_word(self.package_template,
-                               REPLACE_GE_RECIPE, "install")
+                                   REPLACE_GE_RECIPE, "install")
             else:
                 utils.replace_word(self.package_template,
-                               REPLACE_GE_RECIPE, "")
+                                   REPLACE_GE_RECIPE, "")
         else:
             if self.product.is_enabler():
                 utils.replace_word(self.package_template, REPLACE_GE_RECIPE,
@@ -284,11 +284,13 @@ class ProductPackage():
         """
         atts_str = ''
         if self.product.attributes:
-            atts_str = "attributes="
+            atts_str = "attributes=\'"
             if self.product.attributes:
                 for att in self.product.attributes:
-                    atts_str = atts_str + "{0}:{1};".format(att, self.product.attributes[att])
-            return atts_str
+                    atts_str = \
+                        atts_str + "{0}:{1};".format(att,
+                                                     self.product.attributes[att])
+            return atts_str + "\'"
 
         return atts_str
 
@@ -457,3 +459,16 @@ class ProductPackage():
                     attributes[property] = value
             self.product.attributes.update(attributes)
 
+    def get_class_name_file(self):
+        package_classes_file = \
+            os.path.join(self.package_classes,
+                         "{0}.yaml".format(self.product.product_name))
+        if self.product.is_murano_app:
+            manifest_yaml = utils.read_yaml_local_file(self.package_manifest)
+            classes = manifest_yaml.get("Classes")
+            if classes:
+                for classe in classes:
+                    package_classes_file = os.path.join(self.package_classes,
+                                                        classes[classe])
+                    break
+        return package_classes_file

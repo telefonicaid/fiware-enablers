@@ -63,7 +63,7 @@ class Cookbook:
         """
         url = self._get_cookbook_url_config()
 
-        if not url :
+        if not url:
             if self.enabler:
                 url = URL_FORGE + self.name
             else:
@@ -81,7 +81,6 @@ class Cookbook:
         except Exception as e:
             pass
         return url
-
 
     def _get_cookbook_children_from_metadata(self):
         """

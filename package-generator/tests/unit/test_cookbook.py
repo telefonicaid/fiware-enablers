@@ -93,7 +93,6 @@ class TestCookbook(unittest.TestCase):
         cookbook = Cookbook(COOKBOOK_NAME_DIFFERENT, CHEF)
         self.assertEquals(cookbook.name, COOKBOOK_NAME)
 
-
     @mock.patch('os.path.exists')
     @mock.patch('__builtin__.open', create=True)
     def test_cookbook_no_child_chef(self, mock_open,  mock_exists):
