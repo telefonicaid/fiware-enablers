@@ -77,8 +77,8 @@ class ProductPackage():
         self.package_classes = os.path.join(self.package_folder, "Classes")
         self.package_classes_file = self.get_class_name_file()
         self.package_resources = os.path.join(self.package_folder, "Resources")
-        self.package_template = (self.package_resources + "Deploy" +
-                                 product.product_name + ".template")
+        self.package_template = os.path.join(self.package_resources,
+                                             "Deploy{0}.template".format(product.product_name))
         self.cookbooks = self.get_all_cookbooks()
         if not self.product.is_murano_app and self.cookbooks:
             self._generate_package_folder()
@@ -174,8 +174,11 @@ class ProductPackage():
                            self.product.installator.lower())
         utils.replace_word(self.package_manifest, REPLACE_GE_IMAGES,
                            self._get_images_str())
-        utils.replace_word(self.package_manifest, REPLACE_GE_ATTS,
-                           ", " + self._get_attributes_str())
+        if self.product.attributes:
+            utils.replace_word(self.package_manifest, REPLACE_GE_ATTS,
+                               ", " + self._get_attributes_str())
+        else:
+            utils.replace_word(self.package_manifest, REPLACE_GE_ATTS, '')
         utils.replace_word(self.package_manifest, "{date}",
                            time.strftime("%d/%m/%Y"))
 
