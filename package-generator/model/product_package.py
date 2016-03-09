@@ -71,19 +71,17 @@ class ProductPackage():
                 os.path.join(PACKAGES_FOLDER_NO_GE, product.product_name)
         self.package_manifest = \
             os.path.join(self.package_folder, "manifest.yaml")
+        if self.product.is_murano_app:
+            self._download_package_murano()
+
         self.package_classes = os.path.join(self.package_folder, "Classes")
         self.package_classes_file = self.get_class_name_file()
         self.package_resources = os.path.join(self.package_folder, "Resources")
         self.package_template = (self.package_resources + "Deploy" +
                                  product.product_name + ".template")
         self.cookbooks = self.get_all_cookbooks()
-
-        if self.product.is_murano_app:
-            self._download_package_murano()
-            self.read_dependences()
-        else:
-            if self.cookbooks:
-                self._generate_package_folder()
+        if not self.product.is_murano_app:
+            self._generate_package_folder()
 
     def get_product(self):
         """
@@ -423,6 +421,7 @@ class ProductPackage():
         :return: nothing
         """
         if self.product.is_murano_app:
+            self.read_dependences()
             self.update_attributes()
             self.update_manifest_no_ge()
         else:
