@@ -1,0 +1,22 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy cloud_rendering
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: cloud_rendering::1.0.0_install
+    Files:
+        - cloud_rendering : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud_rendering
+
+    Options:
+      captureStdout: true
+      captureStderr: true

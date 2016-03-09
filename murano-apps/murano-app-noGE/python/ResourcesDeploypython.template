@@ -1,0 +1,27 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy python
+
+Parameters:
+  
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: python::default
+    Files:
+        - python : https://github.com/poise/python.git
+        - build-essential : https://github.com/chef-cookbooks/build-essential.git
+        - 7-zip : https://github.com/sneal/7-zip.git
+        - windows : https://github.com/chef-cookbooks/windows.git
+        - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
+        - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
+        - yum : https://github.com/chef-cookbooks/yum.git
+
+    Options:
+      captureStdout: true
+      captureStderr: true

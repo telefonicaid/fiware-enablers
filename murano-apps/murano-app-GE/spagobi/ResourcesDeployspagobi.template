@@ -1,0 +1,37 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy spagobi
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: spagobi::1.0.2_install
+    Files:
+        - spagobi : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/spagobi
+        - mysql : https://github.com/chef-cookbooks/mysql.git
+        - yum-mysql-community : https://github.com/chef-cookbooks/yum-mysql-community.git
+        - yum : https://github.com/chef-cookbooks/yum.git
+        - smf : https://github.com/livinginthepast/smf.git
+        - rbac : https://github.com/livinginthepast/rbac.git
+        - database : https://github.com/chef-cookbooks/database.git
+        - postgresql : https://github.com/hw-cookbooks/postgresql.git
+        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
+        - build-essential : https://github.com/chef-cookbooks/build-essential.git
+        - 7-zip : https://github.com/sneal/7-zip.git
+        - windows : https://github.com/chef-cookbooks/windows.git
+        - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
+        - openssl : https://github.com/chef-cookbooks/openssl.git
+        - chef-sugar : https://github.com/sethvargo/chef-sugar.git
+        - java : https://github.com/agileorbit-cookbooks/java.git
+
+    Options:
+      captureStdout: true
+      captureStderr: true
