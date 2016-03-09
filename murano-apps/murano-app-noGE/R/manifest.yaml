@@ -3,8 +3,8 @@ Type: Application
 FullName: io.murano.conflang.chef.R
 Name: R
 Description: |
-  Murano package for FIWARE R GEi. 07/03/2016
+  Murano package for FIWARE R GEi. 09/03/2016
 Author: 'TID'
-Tags: [FIWARE, GEs, chef]
+Tags: [FIWARE, GEs, chef, ]
 Classes:
  io.murano.conflang.chef.R: R.yaml
