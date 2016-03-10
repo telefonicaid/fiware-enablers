@@ -102,13 +102,11 @@ class Cookbook:
         :return: True/False
         """
         if self.url:
-            if self.installator == CHEF:
-                metadata_str = utils.read_metadata(self.url, METADATA_RB)
-            else:
-                metadata_str = utils.read_metadata(self.url, METADATA_JSON)
-            if (metadata_str and
-                    (KEY_CHILD_CHEF in metadata_str or
-                     KEY_CHILD_PUPPET in metadata_str)):
+            metadata_rb = utils.read_metadata(self.url, METADATA_RB)
+            metadata_json = utils.read_metadata(self.url, METADATA_JSON)
+            if metadata_rb and KEY_CHILD_CHEF in metadata_rb:
+                return True
+            elif metadata_json and KEY_CHILD_PUPPET in metadata_json:
                 return True
         return False
 
