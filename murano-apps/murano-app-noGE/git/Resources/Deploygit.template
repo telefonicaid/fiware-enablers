@@ -1,4 +1,4 @@
-FormatVersion: 2.1.0
+FormatVersion: 2.2.0
 Version: 1.0.0
 Name: Deploy git
 
@@ -15,14 +15,8 @@ Scripts:
     EntryPoint: git::default
     Files:
         - git : https://github.com/chef-cookbooks/git.git
-        - build-essential : https://github.com/chef-cookbooks/build-essential.git
-        - 7-zip : https://github.com/sneal/7-zip.git
-        - windows : https://github.com/chef-cookbooks/windows.git
-        - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
-        - dmg : https://github.com/chef-cookbooks/dmg.git
-        - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
-        - yum : https://github.com/chef-cookbooks/yum.git
 
     Options:
       captureStdout: true
       captureStderr: true
+      useBerkshelf: true

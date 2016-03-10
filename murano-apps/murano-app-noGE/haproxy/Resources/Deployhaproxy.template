@@ -1,4 +1,4 @@
-FormatVersion: 2.1.0
+FormatVersion: 2.2.0
 Version: 1.0.0
 Name: Deploy haproxy
 
@@ -11,14 +11,13 @@ Body: |
 
 Scripts:
   executeRecipe:
-    Type: Puppet
+    Type: Chef
     Version: 1.0.0
-    EntryPoint: haproxy::
+    EntryPoint: haproxy::default
     Files:
-        - haproxy : https://github.com/puppetlabs/puppetlabs-haproxy.git
-        - stdlib : https://github.com/puppetlabs/puppetlabs-stdlib.git
-        - concat : https://github.com/puppetlabs/puppetlabs-concat.git
+        - haproxy : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/haproxy
 
     Options:
       captureStdout: true
       captureStderr: true
+      
