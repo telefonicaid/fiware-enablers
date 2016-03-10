@@ -1,0 +1,10 @@
+Format: 1.0
+Type: Application
+FullName: io.murano.conflang.chef.redis
+Name: redis
+Description: |
+  Murano package for FIWARE redis GEi. 09/03/2016
+Author: 'TID'
+Tags: [FIWARE, GEs, chef]
+Classes:
+ io.murano.conflang.chef.redis: redis.yaml

@@ -1,0 +1,10 @@
+Format: 1.0
+Type: Application
+FullName: io.murano.conflang.chef.ckan
+Name: ckan
+Description: |
+  Murano package for FIWARE ckan GEi. 09/03/2016
+Author: 'TID'
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_12.04]
+Classes:
+ io.murano.conflang.chef.ckan: ckan.yaml

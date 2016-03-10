@@ -48,6 +48,7 @@ REPLACE_GE_ATTS = "{GE_attributes}"
 REPLACE_GE_ATTS_RESOURCE = "{GE_attributes_resource}"
 REPLACE_GE_PORTS = "{GE_ports}"
 REPLACE_GE_NID = "{GE_nid}"
+REPLACE_BERKSFILE = "{GE_berksfile}"
 COOKBOOK_FOLDER = "cookbooks/"
 MURANO_APPS = COOKBOOK_FOLDER + "murano-apps/"
 MURANO_APPS_URL = "https://github.com/openstack/murano-apps.git"
@@ -79,6 +80,7 @@ class ProductPackage():
         self.package_resources = os.path.join(self.package_folder, "Resources")
         self.package_template = os.path.join(self.package_resources,
                                              "Deploy{0}.template".format(product.product_name))
+        self.is_berksfile = False
         self.cookbooks = self.get_all_cookbooks()
         if not self.product.is_murano_app and self.cookbooks:
             self._generate_package_folder()
@@ -179,8 +181,6 @@ class ProductPackage():
                                ", \'{0}\'".format(self._get_attributes_str()))
         else:
             utils.replace_word(self.package_manifest, REPLACE_GE_ATTS, '')
-        utils.replace_word(self.package_manifest, "{date}",
-                           time.strftime("%d/%m/%Y"))
 
     def update_manifest_no_ge(self):
         """
@@ -260,6 +260,8 @@ class ProductPackage():
                            self.get_cookbooks_str())
         utils.replace_word(self.package_template, REPLACE_GE_ATTS,
                            self._get_attributes_template_str())
+        utils.replace_word(self.package_template, REPLACE_BERKSFILE,
+                           self._get_berksfile_str())
 
     def _get_images_str(self):
         """
@@ -309,6 +311,12 @@ class ProductPackage():
             for key in self.product.attributes:
                 atts_str = atts_str + (" " * 2) + key + ": $" + key + "\n"
         return atts_str
+
+    def _get_berksfile_str(self):
+        if self.is_berksfile:
+            return "useBerkshelf: true"
+        else:
+            return ''
 
     def _get_attributes_resource(self):
         """
@@ -385,6 +393,9 @@ class ProductPackage():
                             self.product.is_enabler())
         if cookbook.url:
             cookbooks.append(cookbook)
+            if cookbook.is_berksfile:
+                self.is_berksfile = True
+                return cookbooks
 
             for cookbook_child in cookbook.cookbook_childs:
                 if (not self._exists(cookbook_child.name, cookbooks)
@@ -476,3 +487,7 @@ class ProductPackage():
                                                         classes[classe])
                     break
         return package_classes_file
+
+
+
+

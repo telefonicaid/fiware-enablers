@@ -1,0 +1,93 @@
+Namespaces:
+  =: io.murano.conflang.puppet
+  std: io.murano
+  res: io.murano.resources
+  sys: io.murano.system
+
+
+Name: iotagent
+
+Extends: std:Application
+
+Properties:
+  instance:
+    Contract: $.class(res:Instance).notNull()
+  query_context_path:
+    Contract: $.string()
+  iotagent_server_name:
+    Contract: $.string()
+  iota_protocols:
+    Contract: $.string()
+  http_proxy_gre:
+    Contract: $.string()
+  iotagent_mongodb_port:
+    Contract: $.string()
+  load_balancer_url:
+    Contract: $.string()
+  iota_server_address:
+    Contract: $.string()
+  update_context_path:
+    Contract: $.string()
+  context_broker_endpoint:
+    Contract: $.string()
+  iotagent_server_port:
+    Contract: $.string()
+  iotagent_mongodb_host:
+    Contract: $.string()
+  register_context_path:
+    Contract: $.string()
+  iotagent:
+    Contract: $.string()
+  iotagent_log_level:
+    Contract: $.string()
+
+
+Methods:
+  initialize:
+    Body:
+      - $._environment: $.find(std:Environment).require()
+
+  deploy:
+    Body:
+      - If: not $.getAttr(deployed, false)
+        Then:
+          - $._environment.reporter.report($this, 'Creating VM for deployment')
+          - $securityGroupIngress:
+            - ToPort: 80
+              FromPort: 80
+              IpProtocol: tcp
+              External: true
+            - ToPort: 22
+              FromPort: 22
+              IpProtocol: tcp
+              External: true
+
+          - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
+          - $.instance.addNid(696)
+          - $.instance.deploy()
+          - $resources: new(sys:Resources)
+          # Deploy iotagent
+          - $template: $resources.yaml('Deployiotagent.template').bind(dict(
+                query_context_path => $.query_context_path,
+                iotagent_server_name => $.iotagent_server_name,
+                iota_protocols => $.iota_protocols,
+                http_proxy_gre => $.http_proxy_gre,
+                iotagent_mongodb_port => $.iotagent_mongodb_port,
+                load_balancer_url => $.load_balancer_url,
+                iota_server_address => $.iota_server_address,
+                update_context_path => $.update_context_path,
+                context_broker_endpoint => $.context_broker_endpoint,
+                iotagent_server_port => $.iotagent_server_port,
+                iotagent_mongodb_host => $.iotagent_mongodb_host,
+                register_context_path => $.register_context_path,
+                iotagent => $.iotagent,
+                iotagent_log_level => $.iotagent_log_level))
+          - $._environment.reporter.report($this, 'Instance is created. Deploying iotagent')
+          - $.instance.agent.call($template, $resources)
+          - If: $.instance.assignFloatingIp
+            Then:
+              - $host: $.instance.floatingIpAddress
+            Else:
+              - $host: $.instance.ipAddresses[0]
+          - $._environment.reporter.report($this, format('iotagent is installed at {0}', $host))
+          - $.setAttr(deployed, true)

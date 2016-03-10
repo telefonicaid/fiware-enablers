@@ -1,21 +1,21 @@
-FormatVersion: 2.2.0
+FormatVersion: 2.1.0
 Version: 1.0.0
-Name: Deploy {GE_name}
+Name: Deploy redis
 
 Parameters:
-  {GE_attributes}
+  
 
 Body: |
   return executeRecipe(args).stdout
 
 Scripts:
   executeRecipe:
-    Type: {GE_installator}
+    Type: Chef
     Version: 1.0.0
-    EntryPoint: {GE_name}::{GE_recipe}
+    EntryPoint: redis::default
     Files:
-{GE_cookbooks}
+        - redis : https://github.com/ctrabold/chef-redis.git
+
     Options:
       captureStdout: true
       captureStderr: true
-      {GE_berksfile}

@@ -34,6 +34,7 @@ CHEF = "Chef"
 PUPPET = "Puppet"
 METADATA_RB = "metadata.rb"
 METADATA_JSON = "metadata.json"
+BERKSFILE = "Berksfile"
 
 
 class Cookbook:
@@ -52,6 +53,7 @@ class Cookbook:
         self.enabler = enabler
         self.installator = installator
         self.url = self._get_url()
+        self.is_berksfile = self.is_berksfile()
         self.cookbook_childs = self._get_cookbook_children_from_metadata()
 
     def _get_url(self):
@@ -207,3 +209,15 @@ class Cookbook:
             return Config.CONFIG_PRODUCT_NAMES.get('main', name)
         except:
             return name
+
+    def is_berksfile(self):
+        """
+        It checks if the cookbooks can be installed by berkshell.
+        Just trying to find the file Berksfile
+        :return: True/False
+        """
+        berksfile = utils.read_metadata(self.url, BERKSFILE)
+        if berksfile and "source" in berksfile:
+            return True
+        return False
+

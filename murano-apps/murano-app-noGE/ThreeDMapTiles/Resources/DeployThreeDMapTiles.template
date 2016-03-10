@@ -1,0 +1,22 @@
+FormatVersion: 2.1.0
+Version: 1.0.0
+Name: Deploy 3DMapTiles
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: 3DMapTiles::default
+    Files:
+        - 3DMapTiles : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/SESoftware/3DMapTiles/
+
+    Options:
+      captureStdout: true
+      captureStderr: true
