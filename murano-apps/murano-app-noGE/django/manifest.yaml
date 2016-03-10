@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.django
 Name: django
 Description: |
-  Murano package for FIWARE django GEi. 09/03/2016
+  Murano package for FIWARE django GEi.
 Author: 'TID'
 Tags: [FIWARE, GEs, chef]
 Classes:
