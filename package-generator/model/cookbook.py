@@ -213,6 +213,11 @@ class Cookbook:
             return name
 
     def is_berksfile(self):
+        """
+        It checks if the cookbooks can be installed by berkshell.
+        Just trying to find the file Berksfile
+        :return: True/False
+        """
         berksfile = utils.read_metadata(self.url, BERKSFILE)
         if berksfile and "source" in berksfile:
             return True
