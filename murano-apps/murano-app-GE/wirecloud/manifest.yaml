@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.wirecloud
 Name: wirecloud
 Description: |
-  Murano package for FIWARE wirecloud GEi. 09/03/2016
+  Murano package for FIWARE wirecloud GEi.
 Author: 'TID'
 Tags: [FIWARE, GEs, chef]
 Classes:

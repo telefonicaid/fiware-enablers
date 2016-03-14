@@ -1,4 +1,4 @@
-FormatVersion: 2.1.0
+FormatVersion: 2.2.0
 Version: 1.0.0
 Name: Deploy django
 
@@ -26,3 +26,4 @@ Scripts:
     Options:
       captureStdout: true
       captureStderr: true
+      
