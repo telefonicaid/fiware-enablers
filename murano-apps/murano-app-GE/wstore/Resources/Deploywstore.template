@@ -1,0 +1,23 @@
+FormatVersion: 2.2.0
+Version: 1.0.0
+Name: Deploy wstore
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: wstore::0.3.0_install
+    Files:
+        - wstore : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/wstore
+
+    Options:
+      captureStdout: true
+      captureStderr: true
+      useBerkshelf: true
