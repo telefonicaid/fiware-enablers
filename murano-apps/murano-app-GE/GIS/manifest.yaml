@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.GIS
 Name: GIS
 Description: |
-  Murano package for FIWARE GIS GEi. 09/03/2016
+  Murano package for FIWARE GIS GEi.
 Author: 'TID'
 Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04;base_ubuntu_12.04]
 Classes:

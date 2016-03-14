@@ -1,4 +1,4 @@
-FormatVersion: 2.1.0
+FormatVersion: 2.2.0
 Version: 1.0.0
 Name: Deploy java
 
@@ -16,8 +16,8 @@ Scripts:
     EntryPoint: java::default
     Files:
         - java : https://github.com/agileorbit-cookbooks/java.git
-        - apt : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
 
     Options:
       captureStdout: true
       captureStderr: true
+      useBerkshelf: true
