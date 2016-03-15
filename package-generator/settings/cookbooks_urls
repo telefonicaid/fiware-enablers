@@ -1,7 +1,7 @@
 [main]
 java: https://github.com/agileorbit-cookbooks/java.git
 openssl: https://github.com/chef-cookbooks/openssl.git
-build-essential: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/build-essential/
+build-essential: https://github.com/chef-cookbooks/build-essential.git
 apt: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
 git: https://github.com/chef-cookbooks/git.git
 yum-mysql-community: https://github.com/chef-cookbooks/yum-mysql-community.git
@@ -15,9 +15,9 @@ pacman:
 python: https://github.com/poise/python.git
 yum: https://github.com/chef-cookbooks/yum.git
 mongodb: https://github.com/edelight/chef-mongodb.git
-poise-python: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/poise-python/
-poise: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/poise/
-poise-languages: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/poise-languages/
+poise-python: https://github.com/poise/poise-python.git
+poise: https://github.com/poise/poise.git
+poise-languages: https://github.com/poise/poise-languages.git
 xml: https://github.com/chef-cookbooks/xml.git
 iis: https://github.com/chef-cookbooks/iis.git
 tomcat: https://github.com/chef-cookbooks/tomcat
