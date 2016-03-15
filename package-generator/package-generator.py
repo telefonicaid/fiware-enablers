@@ -44,7 +44,9 @@ BODY_METADATA_VALUE = "value"
 DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace", "SQLDatabaseLibrary",
                        "mongodbconfig", "mongodbshard", "mongos",
                        "orion-dbcluster",
-                       "synchronization_fives", "repository", "mediawiki"]
+                       "synchronization_fives", "repository", "mediawiki",
+                       "haproxy", "wstore"]
+NO_TOUCH = ["iotagent"]
 
 
 def main(argv=None):
@@ -114,6 +116,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
         if image and "hi" in image:
             continue
         if product.product_name in DEPRECATED_PRODUCTS:
+            continue
+        if product.product_name in NO_TOUCH:
             continue
         print product.product_name
         package_murano = ProductPackage(product)

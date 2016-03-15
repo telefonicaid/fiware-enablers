@@ -293,9 +293,6 @@ class ProductPackage():
                     atts_str = \
                         atts_str + "{0}:{1};".format(att,
                                                      self.product.attributes[att])
-            if len(atts_str) > 36:
-                return ''
-
         return atts_str
 
     def _get_attributes_template_str(self):

@@ -78,7 +78,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         if atts:
             for att in atts:
-                post_body[att] = att
+                post_body[att[:-1]] = att[:-1]
 
         print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]

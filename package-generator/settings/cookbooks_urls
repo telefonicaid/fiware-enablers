@@ -1,21 +1,23 @@
 [main]
 java: https://github.com/agileorbit-cookbooks/java.git
 openssl: https://github.com/chef-cookbooks/openssl.git
-build-essential: https://github.com/chef-cookbooks/build-essential.git
+build-essential: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/build-essential/
 apt: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/apt-spagobi/
 git: https://github.com/chef-cookbooks/git.git
 yum-mysql-community: https://github.com/chef-cookbooks/yum-mysql-community.git
 yum-epel: https://github.com/chef-cookbooks/yum-epel.git
 apache2: https://github.com/svanzoest-cookbooks/apache2.git
 php: https://github.com/chef-cookbooks/php.git
-mysql: https://github.com/chef-cookbooks/mysql.git
+mysql: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/mysql/
 iptables:
 logrotate: https://github.com/cookbooks/logrotate.git
 pacman:
 python: https://github.com/poise/python.git
 yum: https://github.com/chef-cookbooks/yum.git
 mongodb: https://github.com/edelight/chef-mongodb.git
-poise-python: https://github.com/poise/poise-python.git
+poise-python: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/poise-python/
+poise: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/poise/
+poise-languages: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseRecipes/poise-languages/
 xml: https://github.com/chef-cookbooks/xml.git
 iis: https://github.com/chef-cookbooks/iis.git
 tomcat: https://github.com/chef-cookbooks/tomcat
@@ -28,7 +30,7 @@ redis: https://github.com/ctrabold/chef-redis.git
 database: https://github.com/chef-cookbooks/database.git
 dmg: https://github.com/chef-cookbooks/dmg.git
 windows: https://github.com/chef-cookbooks/windows.git
-postgresql: https://github.com/hw-cookbooks/postgresql.git
+postgresql: https://github.com/SimonKaluza/postgresql.git
 chef_handler: https://github.com/chef-cookbooks/chef_handler.git
 chef-sugar: https://github.com/sethvargo/chef-sugar.git
 7-zip: https://github.com/sneal/7-zip.git
