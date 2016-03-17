@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.git
 Name: git
 Description: |
-  Murano package for FIWARE git GEi. 09/03/2016
+  Murano package for FIWARE git GEi.
 Author: 'TID'
 Tags: [FIWARE, GEs, chef]
 Classes:

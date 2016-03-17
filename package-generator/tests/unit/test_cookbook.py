@@ -119,6 +119,7 @@ class TestCookbook(unittest.TestCase):
         self.mock_open.side_effect = [
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
@@ -141,6 +142,7 @@ class TestCookbook(unittest.TestCase):
         mock_exists.return_value = True
         self.mock_open = mock_open
         self.mock_open.side_effect = [
+            mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
@@ -169,6 +171,7 @@ class TestCookbook(unittest.TestCase):
         mock_exists.return_value = True
         self.mock_open = mock_open
         self.mock_open.side_effect = [
+            mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,

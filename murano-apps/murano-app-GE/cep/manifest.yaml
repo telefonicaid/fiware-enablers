@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.puppet.cep
 Name: cep
 Description: |
-  Murano package for FIWARE cep GEi. 09/03/2016
+  Murano package for FIWARE cep GEi.
 Author: 'TID'
 Tags: [FIWARE, GEs, puppet]
 Classes:

@@ -217,7 +217,9 @@ class Cookbook:
         :return: True/False
         """
         berksfile = utils.read_metadata(self.url, BERKSFILE)
-        if berksfile and "source" in berksfile:
+        if berksfile and "404" in berksfile:
+            return False
+        if berksfile and ("source" in berksfile or "site" in berksfile):
             return True
         return False
 

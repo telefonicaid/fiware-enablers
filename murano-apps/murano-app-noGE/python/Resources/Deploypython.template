@@ -3,7 +3,7 @@ Version: 1.0.0
 Name: Deploy python
 
 Parameters:
-  
+
 
 Body: |
   return executeRecipe(args).stdout
@@ -25,4 +25,3 @@ Scripts:
     Options:
       captureStdout: true
       captureStderr: true
-      

@@ -3,7 +3,7 @@ Type: Application
 FullName: io.murano.conflang.chef.php
 Name: php
 Description: |
-  Murano package for FIWARE php GEi. 09/03/2016
+  Murano package for FIWARE php GEi.
 Author: 'TID'
 Tags: [FIWARE, GEs, chef]
 Classes:
