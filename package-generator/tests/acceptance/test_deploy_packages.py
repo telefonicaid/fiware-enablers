@@ -78,7 +78,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         if atts:
             for att in atts:
-                post_body[att] = att
+                post_body[att[:-1]] = att[:-1]
 
         print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]
@@ -108,6 +108,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
+
+        muranos = ["PostgreSQL"]
+        if not self.murano_package in muranos:
+            return
 
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,

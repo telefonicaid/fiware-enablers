@@ -178,7 +178,7 @@ class ProductPackage():
                            self._get_images_str())
         if self.product.attributes:
             utils.replace_word(self.package_manifest, REPLACE_GE_ATTS,
-                               ", " + self._get_attributes_str())
+                               ", \'{0}\'".format(self._get_attributes_str()))
         else:
             utils.replace_word(self.package_manifest, REPLACE_GE_ATTS, '')
 
@@ -287,14 +287,12 @@ class ProductPackage():
         """
         atts_str = ''
         if self.product.attributes:
-            atts_str = "attributes=\'"
+            atts_str = "attributes="
             if self.product.attributes:
                 for att in self.product.attributes:
                     atts_str = \
                         atts_str + "{0}:{1};".format(att,
                                                      self.product.attributes[att])
-            return atts_str + "\'"
-
         return atts_str
 
     def _get_attributes_template_str(self):
@@ -351,7 +349,8 @@ class ProductPackage():
         if self.product.attributes:
             for key in self.product.attributes:
                 atts_str = atts_str + (" " * 2) + key + ":\n" +\
-                    (" " * 4) + "Contract: $.string()\n"
+                    (" " * 4) + "Contract: $.string()\n" + \
+                    (" " * 4) + "Default: \"" + self.product.attributes[key] +"\"\n"
         return atts_str
 
     def _get_ports(self, protocol):
