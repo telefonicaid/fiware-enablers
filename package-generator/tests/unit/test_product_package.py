@@ -136,6 +136,8 @@ class TestProductPackage(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
             mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_child).return_value,
+            mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
@@ -162,6 +164,8 @@ class TestProductPackage(unittest.TestCase):
         self.mock_open.side_effect = [
             mock.mock_open(read_data=METADATA_JSON_STR).return_value,
             mock.mock_open(read_data=METADATA_JSON_STR).return_value,
+            mock.mock_open(read_data=METADATA_JSON_STR).return_value,
+            mock.mock_open(read_data=METADATA_JSON_STR_NO_CHILD).return_value,
             mock.mock_open(read_data=METADATA_JSON_STR_NO_CHILD).return_value,
             mock.mock_open(read_data=METADATA_JSON_STR_NO_CHILD).return_value,
         ]
