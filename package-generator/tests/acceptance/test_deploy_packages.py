@@ -63,6 +63,20 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 "keyname": self.keyname,
                 "assignFloatingIp": True,
                 'name': environment_name,
+                'networks': {
+                    "useFlatNetwork": False,
+                    "primaryNetwork": None,
+                    "useEnvironmentNetwork": False,
+                    "customNetworks": [
+                        {
+                            "internalNetworkName": "node-int-net-01",
+                            "?": {
+                                "type": "io.murano.resources.ExistingNeutronNetwork",
+                                "id": "1e26a1d725b44b639aef9e856577a70d"
+                            }
+                        }
+                    ]
+                },
                 "?": {
                     "type": "io.murano.resources.FiwareMuranoInstance",
                     "id": str(uuid.uuid4())
