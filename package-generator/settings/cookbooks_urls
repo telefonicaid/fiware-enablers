@@ -24,7 +24,7 @@ tomcat: https://github.com/chef-cookbooks/tomcat
 nodejs: https://github.com/redguide/nodejs.git
 ark: https://github.com/burtlo/ark.git
 homebrew: https://github.com/chef-cookbooks/homebrew.git
-seven_zip: https://github.com/sneal/7-zip.git
+seven_zip: https://github.com/daptiv/seven_zip.git
 django: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftware/django/
 redis: https://github.com/ctrabold/chef-redis.git
 database: https://github.com/chef-cookbooks/database.git
@@ -53,3 +53,4 @@ rbac: https://github.com/livinginthepast/rbac.git
 runit: https://github.com/cookbooks/runit.git
 user: https://github.com/fnichol/chef-user.git
 imagemagick: https://github.com/someara/imagemagick.git
+cloud_portal: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud-portal
