@@ -1,0 +1,10 @@
+Format: 1.0
+Type: Application
+FullName: io.murano.conflang.chef.cloud_portal
+Name: cloud_portal
+Description: |
+  Murano package for FIWARE cloud_portal GEi.
+Author: 'TID'
+Tags: [FIWARE, GEs, chef]
+Classes:
+ io.murano.conflang.chef.cloud_portal: cloud_portal.yaml

@@ -5,7 +5,7 @@ Namespaces:
   sys: io.murano.system
 
 
-Name: wstore
+Name: cloud_portal
 
 Extends: std:Application
 
@@ -35,17 +35,17 @@ Methods:
               External: true
 
           - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
-          - $.instance.addNid(512)
+          - $.instance.addNid()
           - $.instance.deploy()
           - $resources: new(sys:Resources)
-          # Deploy wstore
-          - $template: $resources.yaml('Deploywstore.template')
-          - $._environment.reporter.report($this, 'Instance is created. Deploying wstore')
+          # Deploy cloud_portal
+          - $template: $resources.yaml('Deploycloud_portal.template')
+          - $._environment.reporter.report($this, 'Instance is created. Deploying cloud_portal')
           - $.instance.agent.call($template, $resources)
           - If: $.instance.assignFloatingIp
             Then:
               - $host: $.instance.floatingIpAddress
             Else:
               - $host: $.instance.ipAddresses[0]
-          - $._environment.reporter.report($this, format('wstore is installed at {0}', $host))
+          - $._environment.reporter.report($this, format('cloud_portal is installed at {0}', $host))
           - $.setAttr(deployed, true)

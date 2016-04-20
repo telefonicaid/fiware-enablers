@@ -1,6 +1,6 @@
 FormatVersion: 2.2.0
 Version: 1.0.0
-Name: Deploy webtundra
+Name: Deploy cloud_portal
 
 Parameters:
   port: $port
@@ -13,11 +13,11 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: webtundra::5.2.3_install
+    EntryPoint: cloud_portal::default
     Files:
-        - webtundra : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/webtundra
+        - cloud_portal : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud-portal
 
     Options:
       captureStdout: true
       captureStderr: true
-      
+      useBerkshelf: true
