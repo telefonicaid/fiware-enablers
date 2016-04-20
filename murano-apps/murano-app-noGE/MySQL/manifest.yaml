@@ -6,5 +6,5 @@
     the databases.
 
     ', Format: 1.0, FullName: io.murano.databases.MySql, Name: MySQL, Require: {io.murano.databases: null},
-  Tags: [Database, MySql, SQL, RDBMS, 'attributes=''username:;password:;database:;''',
+  Tags: [Database, MySql, SQL, RDBMS, 'attributes=username:;password:;database:;',
     FIWARE_GE], Type: Application}

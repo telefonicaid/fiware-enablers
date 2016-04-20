@@ -15,5 +15,5 @@
     April 1996, and celebrated its 17th birthday as a project this February.
 
     ', Format: 1.0, FullName: io.murano.apps.apache.ApacheHttpServer, Name: Apache
-    HTTP Server, Tags: [HTTP, Server, WebServer, HTML, Apache, 'attributes=''enablePHP:;''',
+    HTTP Server, Tags: [HTTP, Server, WebServer, HTML, Apache, 'attributes=enablePHP:;',
     FIWARE_GE], Type: Application}

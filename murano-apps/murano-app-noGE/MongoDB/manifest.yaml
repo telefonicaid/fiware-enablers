@@ -8,4 +8,4 @@
     in favor of JSON-like documents with dynamic schemas.
 
     ', Format: 1.0, FullName: io.murano.databases.MongoDB, Name: MongoDB, Tags: [
-    MongoDB, 'attributes=''username:;password:;database:;''', FIWARE_GE], Type: Application}
+    MongoDB, 'attributes=username:;password:;database:;', FIWARE_GE], Type: Application}
