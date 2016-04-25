@@ -15,9 +15,9 @@ Scripts:
     Version: 1.0.0
     EntryPoint: cloud_portal::default
     Files:
-        - cloud_portal : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud-portal
+        - cloud_portal : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud_portal
 
     Options:
       captureStdout: true
       captureStderr: true
-      
+      useBerkshelf: true

@@ -53,4 +53,4 @@ rbac: https://github.com/livinginthepast/rbac.git
 runit: https://github.com/cookbooks/runit.git
 user: https://github.com/fnichol/chef-user.git
 imagemagick: https://github.com/someara/imagemagick.git
-cloud_portal: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud-portal
+cloud_portal: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/cloud_portal
