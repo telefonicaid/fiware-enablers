@@ -3,7 +3,7 @@ RUN apt-get update && apt-get -y install python-pip python-dev \
   libmysqlclient-dev libpq-dev \
   libxml2-dev libxslt1-dev git \
   libffi-dev zip python-mysqldb 
-ADD . /opt/fiware-enablers
+RUN git clone https://github.com/telefonicaid/fiware-enablers /opt/fiware-enablers
 WORKDIR /opt/fiware-enablers/package-generator
 RUN pip install nose pytz
 RUN pip install -r requirements.txt
