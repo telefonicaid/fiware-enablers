@@ -46,7 +46,7 @@ DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace", "SQLDatabaseLibrary",
                        "orion-dbcluster",
                        "synchronization_fives", "repository", "mediawiki",
                        "haproxy", "wstore"]
-NO_TOUCH = ["iotagent", "python"]
+NO_TOUCH = ["iotagent", "python", "django"]
 
 
 def main(argv=None):
