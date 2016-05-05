@@ -13,7 +13,7 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: keyrock::0.0.1_install
+    EntryPoint: keyrock::5.2.0_install
     Files:
         - keyrock : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/keyrock
 

@@ -25,12 +25,20 @@ Methods:
         Then:
           - $._environment.reporter.report($this, 'Creating VM for deployment')
           - $securityGroupIngress:
-            - ToPort: 80
-              FromPort: 80
-              IpProtocol: tcp
-              External: true
             - ToPort: 22
               FromPort: 22
+              IpProtocol: tcp
+              External: true
+            - ToPort: 8000
+              FromPort: 8000
+              IpProtocol: tcp
+              External: true
+            - ToPort: 4730
+              FromPort: 4730
+              IpProtocol: tcp
+              External: true
+            - ToPort: 4731
+              FromPort: 4731
               IpProtocol: tcp
               External: true
 
