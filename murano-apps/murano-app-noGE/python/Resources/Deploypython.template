@@ -22,6 +22,8 @@ Scripts:
         - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
         - yum-epel : https://github.com/chef-cookbooks/yum-epel.git
         - yum : https://github.com/chef-cookbooks/yum.git
+        - mingw : https://github.com/chef-cookbooks/mingw.git
+        - compat_resource : https://github.com/chef-cookbooks/compat_resource.git 
 
     Options:
       captureStdout: true
