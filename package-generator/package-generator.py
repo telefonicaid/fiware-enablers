@@ -46,7 +46,7 @@ DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace", "SQLDatabaseLibrary",
                        "orion-dbcluster",
                        "synchronization_fives", "repository", "mediawiki",
                        "haproxy", "wstore"]
-NO_TOUCH = ["iotagent", "python", "django"]
+NO_TOUCH = ["iotagent", "python"]
 
 
 def main(argv=None):
@@ -119,6 +119,7 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
             continue
         if product.product_name in NO_TOUCH:
             continue
+
         print product.product_name
         package_murano = ProductPackage(product)
         package_murano.generate_package()
