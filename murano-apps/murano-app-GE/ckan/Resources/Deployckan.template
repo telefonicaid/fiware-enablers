@@ -13,7 +13,7 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: ckan::2.3_install
+    EntryPoint: ckan::2.5_install
     Files:
         - ckan : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/ckan
 
