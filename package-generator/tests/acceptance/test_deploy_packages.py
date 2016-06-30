@@ -63,6 +63,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 "keyname": self.keyname,
                 "assignFloatingIp": True,
                 'name': environment_name,
+
                 'networks': {
                     "useFlatNetwork": False,
                     "primaryNetwork": None,
@@ -96,7 +97,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]
-        environment = self.create_environment(name=environment_name)
+        environment = self.create_environment2(name=environment_name)
         session = self.create_session(environment)
         self.add_service(environment, post_body, session)
         self.deploy_environment(environment, session)
@@ -181,6 +182,17 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
     def delete_package(cls, package):
         """It deletes the package in murano."""
         cls.murano_client().packages.delete(package.id)
+
+    def create_environment2(cls, name=None):
+        """Creates Murano environment with random name.
+        :param name: Environment name
+        :return: Murano environment
+        """
+        if not name:
+            name = cls.rand_name('MuranoTe')
+        environment = cls.murano_client().environments.create({'name': name, "region": "Spain2"})
+        cls._environments.append(environment)
+        return environment
 
     def get_package(self, package_to_add):
         """It obtains the package from murano."""
