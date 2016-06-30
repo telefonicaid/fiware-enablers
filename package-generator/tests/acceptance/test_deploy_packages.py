@@ -63,7 +63,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 "keyname": self.keyname,
                 "assignFloatingIp": True,
                 'name': environment_name,
-
                 'networks': {
                     "useFlatNetwork": False,
                     "primaryNetwork": None,
