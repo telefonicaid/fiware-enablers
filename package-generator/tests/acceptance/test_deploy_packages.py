@@ -63,6 +63,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 "keyname": self.keyname,
                 "assignFloatingIp": True,
                 'name': environment_name,
+
                 'networks': {
                     "useFlatNetwork": False,
                     "primaryNetwork": None,
@@ -94,9 +95,8 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
             for att in atts:
                 post_body[att[:-1]] = att[:-1]
 
-        print post_body
         environment_name = environment_name + uuid.uuid4().hex[:5]
-        environment = self.create_environment(name=environment_name)
+        environment = self.create_environment2(name=environment_name)
         session = self.create_session(environment)
         self.add_service(environment, post_body, session)
         self.deploy_environment(environment, session)
@@ -122,7 +122,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
-
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,
                                           "murano-app-GE",
@@ -175,12 +174,24 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 else:
                     continue
             self.linux = image
+           # self.linux ="base_centos_7"
             self._test_deploy(self.murano_package, package_id, 22, atts)
             self.purge_environments()
 
     def delete_package(cls, package):
         """It deletes the package in murano."""
         cls.murano_client().packages.delete(package.id)
+
+    def create_environment2(cls, name=None):
+        """Creates Murano environment with random name.
+        :param name: Environment name
+        :return: Murano environment
+        """
+        if not name:
+            name = cls.rand_name('MuranoTe')
+        environment = cls.murano_client().environments.create({'name': name, "region": "Spain2"})
+        cls._environments.append(environment)
+        return environment
 
     def get_package(self, package_to_add):
         """It obtains the package from murano."""
