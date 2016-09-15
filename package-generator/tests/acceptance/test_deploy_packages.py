@@ -97,7 +97,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         environment_name = environment_name + uuid.uuid4().hex[:5]
         environment = self.create_environment2(name=environment_name)
+        print("environment")
+        print(environment)
         session = self.create_session(environment)
+        print(self.get_environment(environment))
         self.add_service(environment, post_body, session)
         self.deploy_environment(environment, session)
         self.wait_for_environment_deploy(environment)
@@ -174,7 +177,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 else:
                     continue
             self.linux = image
-           # self.linux ="base_centos_7"
             self._test_deploy(self.murano_package, package_id, 22, atts)
             self.purge_environments()
 
@@ -189,7 +191,16 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         """
         if not name:
             name = cls.rand_name('MuranoTe')
-        environment = cls.murano_client().environments.create({'name': name, "region": "Spain2"})
+        environment = cls.murano_client().environments.create({
+            "regionConfigs": {
+                "Spain2": {
+                    "agentRabbitMq": {
+                        "host": "murano.lab.fiware.org",
+                        "login": "guest",
+                        "password": "guest"
+			        }
+		        }
+	        } , 'name': name, "region": "Spain2"})
         cls._environments.append(environment)
         return environment
 
