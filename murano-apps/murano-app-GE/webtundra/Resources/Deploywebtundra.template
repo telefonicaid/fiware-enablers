@@ -13,7 +13,7 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: webtundra::5.2.3_install
+    EntryPoint: webtundra::5.4.3_install
     Files:
         - webtundra : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/webtundra
 
