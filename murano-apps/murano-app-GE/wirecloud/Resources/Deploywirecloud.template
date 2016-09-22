@@ -13,7 +13,7 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: wirecloud::0.8_install
+    EntryPoint: wirecloud::1.0_install
     Files:
         - wirecloud : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/wirecloud
 
