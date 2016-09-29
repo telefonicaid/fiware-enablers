@@ -134,12 +134,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-        if package_str == "business_api_ecosystem":
-            pass
-        else:
-            return
-
-
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
         tags = manifest["Tags"]
