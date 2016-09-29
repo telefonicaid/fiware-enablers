@@ -1,0 +1,23 @@
+FormatVersion: 2.2.0
+Version: 1.0.0
+Name: Deploy business_api_ecosystem
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: business_api_ecosystem::5.4.0_install
+    Files:
+        - business_api_ecosystem : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/business_api_ecosystem
+
+    Options:
+      captureStdout: true
+      captureStderr: true
+      useBerkshelf: true

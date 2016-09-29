@@ -1,0 +1,10 @@
+Format: 1.0
+Type: Application
+FullName: io.murano.conflang.chef.business_api_ecosystem
+Name: business_api_ecosystem
+Description: |
+  Murano package for FIWARE business_api_ecosystem GEi.
+Author: 'TID'
+Tags: [FIWARE, GEs, chef]
+Classes:
+ io.murano.conflang.chef.business_api_ecosystem: business_api_ecosystem.yaml
