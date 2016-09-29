@@ -13,7 +13,7 @@ Scripts:
   executeRecipe:
     Type: Chef
     Version: 1.0.0
-    EntryPoint: interface_designer::4.4.3_install
+    EntryPoint: interface_designer::5.4.3_install
     Files:
         - interface_designer : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/interface_designer
 

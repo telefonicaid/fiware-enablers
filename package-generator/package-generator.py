@@ -109,18 +109,7 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
     for product_xml in allproductreleases[PRODUCTANDRELEASE_BODY]:
 
         product = get_product(product_xml)
-        image = product.get_image_metadata()
-        if ("old" in product.product_name or "test" in product.product_name
-                or "hide" in product.product_name):
-            continue
-        if image and "hi" in image:
-            continue
-        if product.product_name in DEPRECATED_PRODUCTS:
-            continue
-        if product.product_name in NO_TOUCH:
-            continue
-
-        print product.product_name
+        product.get_image_metadata()
         package_murano = ProductPackage(product)
         package_murano.generate_package()
 
