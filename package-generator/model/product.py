@@ -56,6 +56,23 @@ class Product():
         self.images = self._get_images_names()
         self.attributes = attributes
 
+    def __init__(self, product_name, product_version):
+        """
+        :param product_name: the product name
+        :param product_version: the release version
+        :param metadatas: a set of metadatas
+        :return: nothing
+        """
+        self.product_name = product_name
+        self.product_version = product_version
+
+    def _get_productid_murano(self):
+        try:
+            return Config.packages[self.product_name]
+        except:
+            print  "no_found" + self.product_name
+            return None
+
     def get_image_metadata(self):
         """
         It obtains the metadata image

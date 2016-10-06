@@ -25,7 +25,10 @@
 
 import osclients
 from sdcclient.client import SDCClient
-
+from paasmanagerclient.client import PaaSManagerClient
+from muranoclient import client
+from keystoneclient.v2_0 import Client as KeystoneClient
+import uuid
 
 class util_apis():
     """This class have some utils for accessing to APIS"""
@@ -47,6 +50,8 @@ class util_apis():
         self.region_name = region_name
         self.glance_client = self._get_glance_client()
         self.sdc_client = self._get_sdc_client()
+        self.paas_manager_client = self._get_paas_manager_client()
+        self.murano_client = self._get_murano_client()
 
     def _get_glance_client(self):
         """
@@ -66,6 +71,32 @@ class util_apis():
         """
         return SDCClient(self.user, self. password, self.tenant_id,
                          self.auth_url, self.region_name)
+
+    def _get_paas_manager_client(self):
+        """
+        It obtains a client for accessing to SDC.
+        :return: the sdc client
+        """
+        return PaaSManagerClient(self.user, self. password, self.tenant_id,
+                         self.auth_url, self.region_name)
+
+    def _get_murano_client(self):
+        """Get a glance client. A client is different for each region
+        (although all clients share the same session and it is possible to have
+         simultaneously clients to several regions).
+         Before calling this method, the credential must be provided. The
+         constructor obtain the credential for environment variables if present
+         but also the method set_credential is available.
+         Be aware that calling the method set_credential invalidate the old
+         session if already existed and therefore can affect the old clients.
+        :return: a glance client valid for a region.
+        """
+        self.keystone_client = KeystoneClient(username=self.user, password=self.password, tenant_id=self.tenant_id,
+                                              auth_url=self.auth_url, region=self.region_name)
+        endpoint = self.get_murano_endpoint_from_keystone(self.region_name, "application-catalog", "publicURL" )
+        token = self.keystone_client.auth_ref['token']['id']
+        return client.Client(
+            version='1', endpoint=endpoint, token=token)
 
     def get_image_name(self, image_id):
         """
@@ -87,3 +118,44 @@ class util_apis():
             getProductAndReleaseResourceClient()
         allproductreleases, _ = client.get_allproductandrelease()
         return allproductreleases
+
+    def get_abstract_templates(self):
+        client = self.paas_manager_client.getEnvironmentResourceClient()
+        environments, _ = client.list_abstract_environments()
+        return environments
+
+    def create_env_template(self, template_name, template_description):
+        return self.murano_client.env_templates.create({"name": template_name,
+                                                        "description_text": template_description, "is_public": True})
+
+    def create_app_in_template(self, env_template_id, data):
+        return self.murano_client.env_templates.create_app(env_template_id, data)
+
+    def list_abstract_template_murano(self):
+        return self.murano_client.env_templates.list()
+
+    def list_packages_murano(self):
+        array = []
+        arr =  self.murano_client.packages.list()
+        for i in arr:
+            array.append(i)
+        return array
+
+    def get_murano_endpoint_from_keystone(self, region_name, service_type, endpoint_type):
+        """
+        Get the endpoint of PaaSManager from Keystone Service Catalog
+        :param region_name: Name of the region
+        :param service_type: Type of service (Endpoint name)
+        :param endpoint_type: Type of the URL to look for
+        :return:
+        """
+        endpoint = None
+        for service in self.keystone_client.auth_ref['serviceCatalog']:
+            if service['name'] == service_type:
+                for endpoint in service['endpoints']:
+                    if endpoint['region'] == region_name:
+                        endpoint = endpoint[endpoint_type]
+                        break
+                break
+        return endpoint
+

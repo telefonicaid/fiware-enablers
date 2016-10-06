@@ -79,7 +79,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     ]
                 },
                 "?": {
-                    "type": "io.murano.resources.FiwareMuranoInstance",
+                    "type": "io.murano.resources.LinuxMuranoInstance",
                     "id": str(uuid.uuid4())
                 },
             },
@@ -96,7 +96,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 post_body[att[:-1]] = att[:-1]
 
         environment_name = environment_name + uuid.uuid4().hex[:5]
-        environment = self.create_environment2(name=environment_name)
+        environment = self.create_environment(name=environment_name)
         print("environment")
         print(environment)
         session = self.create_session(environment)
@@ -138,7 +138,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         package_id = manifest["FullName"]
         tags = manifest["Tags"]
         requires = manifest.get("Require")
-
         package = self.get_package(package_id)
 
         if package:
@@ -183,26 +182,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
     def delete_package(cls, package):
         """It deletes the package in murano."""
         cls.murano_client().packages.delete(package.id)
-
-    def create_environment2(cls, name=None):
-        """Creates Murano environment with random name.
-        :param name: Environment name
-        :return: Murano environment
-        """
-        if not name:
-            name = cls.rand_name('MuranoTe')
-        environment = cls.murano_client().environments.create({
-            "regionConfigs": {
-                "Spain2": {
-                    "agentRabbitMq": {
-                        "host": "murano.lab.fiware.org",
-                        "login": "guest",
-                        "password": "guest"
-			        }
-		        }
-	        } , 'name': name, "region": "Spain2"})
-        cls._environments.append(environment)
-        return environment
 
     def get_package(self, package_to_add):
         """It obtains the package from murano."""
