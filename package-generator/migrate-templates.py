@@ -24,33 +24,8 @@
 #
 
 import argparse
-
-
-from model.product_package import ProductPackage
-from model.product import Product
 from model.template import Template
 from util.configuration import Config
-import distutils.util as util2
-import util.utils_file as utils
-import collections
-from os import environ as env
-
-
-
-PRODUCTANDRELEASE_BODY = "productAndReleaseDto"
-BODY_PRODUCT = "product"
-BODY_PRODUCTNAME = "name"
-BODY_PRODUCTVERSION = "version"
-BODY_METADATAS = "metadatas"
-BODY_METADATA_KEY = "key"
-BODY_METADATA_VALUE = "value"
-
-DEPRECATED_PRODUCTS = ["MRCoAP", "marketplace", "SQLDatabaseLibrary",
-                       "mongodbconfig", "mongodbshard", "mongos",
-                       "orion-dbcluster",
-                       "synchronization_fives", "repository", "mediawiki",
-                       "haproxy", "wstore"]
-NO_TOUCH = ["iotagent", "python"]
 
 
 def main(argv=None):
@@ -58,9 +33,7 @@ def main(argv=None):
     Getting parameters
     :param argv:
     """
-    parser = argparse.ArgumentParser(description=
-                                     ('Testing product '
-                                      'installation using paasmanager'))
+    parser = argparse.ArgumentParser(description='Migrating templates')
     parser.add_argument("-u", "--os-username", dest='user',
                         help='valid username', required=True)
     parser.add_argument("-p", "--os-password", dest='password',
@@ -72,26 +45,14 @@ def main(argv=None):
     parser.add_argument("-k", "--os-auth-url", dest="auth_url",
                         default='http://cloud.lab.fiware.org:4731/v2.0',
                         help='url to keystone <host or ip>:<port>/v2.0')
-    parser.add_argument("-g", "--os-upload", dest="upload",
-                        default="False",
-                        help='To upload to github?')
-    parser.add_argument("-ug", "--os-user_github", dest="user_github",
-                        default='None',
-                        help='user github')
-    parser.add_argument("-pg", "--os-password_github", dest="password_github",
-                        default='None',
-                        help='password github')
 
     args = parser.parse_args(argv)
 
     migrate_templates(auth_url=args.auth_url,
-                           tenant_id=args.tenant_id,
-                           user=args.user,
-                           password=args.password,
-                           region_name=args.region_name,
-                           user_github=args.user_github,
-                           password_github=args.password_github,
-                           upload=args.upload)
+                      tenant_id=args.tenant_id,
+                      user=args.user,
+                      password=args.password,
+                      region_name=args.region_name)
 
 
 def migrate_templates(auth_url, tenant_id, user, password, region_name):
@@ -122,7 +83,6 @@ def migrate_templates(auth_url, tenant_id, user, password, region_name):
             template.create_env_template()
             template.add_tiers(tempXML["tierDtos"])
             print template
-
 
 
 if __name__ == "__main__":

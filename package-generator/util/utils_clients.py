@@ -28,7 +28,7 @@ from sdcclient.client import SDCClient
 from paasmanagerclient.client import PaaSManagerClient
 from muranoclient import client
 from keystoneclient.v2_0 import Client as KeystoneClient
-import uuid
+
 
 class util_apis():
     """This class have some utils for accessing to APIS"""
@@ -78,7 +78,7 @@ class util_apis():
         :return: the sdc client
         """
         return PaaSManagerClient(self.user, self. password, self.tenant_id,
-                         self.auth_url, self.region_name)
+                                 self.auth_url, self.region_name)
 
     def _get_murano_client(self):
         """
@@ -87,7 +87,7 @@ class util_apis():
         """
         self.keystone_client = KeystoneClient(username=self.user, password=self.password, tenant_id=self.tenant_id,
                                               auth_url=self.auth_url, region=self.region_name)
-        endpoint = self.get_murano_endpoint_from_keystone(self.region_name, "application-catalog", "publicURL" )
+        endpoint = self.get_murano_endpoint_from_keystone(self.region_name, "application-catalog", "publicURL")
         token = self.keystone_client.auth_ref['token']['id']
         return client.Client(
             version='1', endpoint=endpoint, token=token)
@@ -125,7 +125,7 @@ class util_apis():
     def create_env_template(self, template_name, description):
         return self.murano_client.env_templates.create(
             {"name": template_name, "description_text": description,
-            "is_public": True})
+             "is_public": True})
 
     def create_app_in_template(self, env_template_id, data):
         """
@@ -171,4 +171,3 @@ class util_apis():
                         break
                 break
         return endpoint
-

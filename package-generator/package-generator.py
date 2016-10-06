@@ -54,9 +54,7 @@ def main(argv=None):
     Getting parameters
     :param argv:
     """
-    parser = argparse.ArgumentParser(description=
-                                     ('Testing product '
-                                      'installation using paasmanager'))
+    parser = argparse.ArgumentParser(description='Testing product installation using paasmanager')
     parser.add_argument("-u", "--os-username", dest='user',
                         help='valid username', required=True)
     parser.add_argument("-p", "--os-password", dest='password',
@@ -128,7 +126,6 @@ def get_product(product_json):
     metadatas = {}
     attributes = {}
     if product_json[BODY_PRODUCT].get(BODY_METADATAS):
-    # Checks if there are metadatas in the product
         for metadata_json in product_json[BODY_PRODUCT][BODY_METADATAS]:
             try:
                 metadata_key = metadata_json[BODY_METADATA_KEY]

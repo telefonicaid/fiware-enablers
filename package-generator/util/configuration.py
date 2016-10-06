@@ -93,10 +93,13 @@ class Config():
             params[chapter] = False
         return all_nids
 
-
     def list_packages_murano(self):
+        """
+        It obtains all package from Murano
+        :return: the list with the murano packages.
+        """
         array = []
-        arr =  Config.Clients.murano_client.packages.list()
+        arr = Config.Clients.murano_client.packages.list()
         for i in arr:
             array.append(i)
         return array

@@ -22,6 +22,8 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
+from util.configuration import Config
+
 PRODUCT_IMAGE = "image"
 PRODUCT_INSTALLATOR = "installator"
 PUPPET_INSTALLATOR = "Puppet"
@@ -30,8 +32,6 @@ UDP_PORTS = "udp_open_ports"
 SSH_PORT = "22"
 NID = "nid"
 FILTER_IMAGE = "hi"
-
-from util.configuration import Config
 
 
 class Product():
@@ -70,7 +70,7 @@ class Product():
         try:
             return Config.packages[self.product_name]
         except:
-            print  "The product {0} has not been found in Murano ".format(self.product_name)
+            print "The product {0} has not been found in Murano ".format(self.product_name)
             return None
 
     def get_image_metadata(self):
