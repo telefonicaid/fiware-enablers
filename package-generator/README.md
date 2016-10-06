@@ -47,7 +47,10 @@ Now the system is ready to use. For future sessions, only the step2 is required.
 
 ## Running
 ### Generating Murano packages
-To generate Murano packages, package-generator.py script is used. The following lines are shown by using the -h option
+The script package-generator.py script is used for generating Murano Packages from product uploaded in PaaS Manager and SDC. In addition, once the packages have been
+generated, a new Pull Request is done to the fiware-enabler github repository with the new changes
+
+ The following lines are shown by using the -h option
     usage: package-generator.py [-h] -u USER -p PASSWORD -t TENANT_ID
                             [-r REGION_NAME] [-k AUTH_URL] [-g UPLOAD]
                             [-ug USER_GITHUB] [-pg PASSWORD_GITHUB]
@@ -57,13 +60,13 @@ To generate Murano packages, package-generator.py script is used. The following 
     optional arguments:
     -h, --help            show this help message and exit
     -u USER, --os-username USER
-                        valid username
+                        valid username for a keystone
     -p PASSWORD, --os-password PASSWORD
-                        valid password
+                        valid password for a keystone
     -t TENANT_ID, --os-tenant-id TENANT_ID
-                        user tenant_id
+                        user tenant_id for a keystone
     -r REGION_NAME, --os-region-name REGION_NAME
-                        the name of region
+                        the name of region for a keystone
     -k AUTH_URL, --os-auth-url AUTH_URL
                         url to keystone <host or ip>:<port>/v2.0
     -g UPLOAD, --os-upload UPLOAD
@@ -74,6 +77,8 @@ To generate Murano packages, package-generator.py script is used. The following 
                         password github
 
 ### Generating Murano templates
+This command is used for generating Murano templates from PaaS Manager. With the following command, you can get the help
+for using it.
 
     usage: migrate-templates.py [-h] -u USER -p PASSWORD -t TENANT_ID
                             [-r REGION_NAME] [-k AUTH_URL]
@@ -83,13 +88,13 @@ To generate Murano packages, package-generator.py script is used. The following 
     optional arguments:
         -h, --help            show this help message and exit
         -u USER, --os-username USER
-                        valid username
+                        valid username for a keystone
         -p PASSWORD, --os-password PASSWORD
-                        valid password
+                        valid password  for a keystone
         -t TENANT_ID, --os-tenant-id TENANT_ID
-                        user tenant_id
+                        user tenant_id for a keystone
         -r REGION_NAME, --os-region-name REGION_NAME
-                        the name of region
+                        the name of region for a keystone
         -k AUTH_URL, --os-auth-url AUTH_URL
                         url to keystone <host or ip>:<port>/v2.0
 
@@ -99,12 +104,6 @@ To generate Murano packages, package-generator.py script is used. The following 
 ### Unit tests
 Unit tests are executed with the following command.
     nosetests --with-coverage --cover-package=./ --exe
-
-### End-to-end tests
-End to end test involves the deployment of murano packages (previously generated)..
-[Top](#top)
-
-
 
 ## License
 

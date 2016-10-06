@@ -2,4 +2,4 @@ sed -i -e "s/XXX/${PASSWORD}/" /opt/fiware-enablers/package-generator/tests/acce
 sed -i -e "s/*log*//" /opt/fiware-enablers/package-generator/package-generator.py
 sed -i -e "s/XXX/${PASSWORD}/" /opt/fiware-enablers/package-generator/other.sh
 python setup.py install
-nosetests --with-xunit --xunit-file /opt/test.xml  tests 
+/opt/fiware-enablers/package-generator/other.sh
