@@ -81,15 +81,9 @@ class util_apis():
                          self.auth_url, self.region_name)
 
     def _get_murano_client(self):
-        """Get a glance client. A client is different for each region
-        (although all clients share the same session and it is possible to have
-         simultaneously clients to several regions).
-         Before calling this method, the credential must be provided. The
-         constructor obtain the credential for environment variables if present
-         but also the method set_credential is available.
-         Be aware that calling the method set_credential invalidate the old
-         session if already existed and therefore can affect the old clients.
-        :return: a glance client valid for a region.
+        """
+        It obtains the Murano Client.
+        :return: murano client
         """
         self.keystone_client = KeystoneClient(username=self.user, password=self.password, tenant_id=self.tenant_id,
                                               auth_url=self.auth_url, region=self.region_name)
@@ -120,34 +114,53 @@ class util_apis():
         return allproductreleases
 
     def get_abstract_templates(self):
+        """
+        It obtains the abstract templates in PaaS Manager.
+        :return: the list with the abstract templates.
+        """
         client = self.paas_manager_client.getEnvironmentResourceClient()
         environments, _ = client.list_abstract_environments()
         return environments
 
-    def create_env_template(self, template_name, template_description):
-        return self.murano_client.env_templates.create({"name": template_name,
-                                                        "description_text": template_description, "is_public": True})
+    def create_env_template(self, template_name, description):
+        return self.murano_client.env_templates.create(
+            {"name": template_name, "description_text": description,
+            "is_public": True})
 
     def create_app_in_template(self, env_template_id, data):
+        """
+        It creates an application in a template in Murano.
+        :param env_template_id: the environment template ID.
+        :param data: the application information.
+        :return: the modified template.
+        """
         return self.murano_client.env_templates.create_app(env_template_id, data)
 
     def list_abstract_template_murano(self):
+        """
+        It lists the abstract templates in Murano.
+        :return: the list with the abstract templates.
+        """
         return self.murano_client.env_templates.list()
 
     def list_packages_murano(self):
+        """
+        It lists the packages deployed in Murano.
+        :return: the list with the packages
+        """
         array = []
-        arr =  self.murano_client.packages.list()
+        arr = self.murano_client.packages.list()
         for i in arr:
             array.append(i)
         return array
 
     def get_murano_endpoint_from_keystone(self, region_name, service_type, endpoint_type):
         """
-        Get the endpoint of PaaSManager from Keystone Service Catalog
+        Get the endpoint of Murano from Keystone Service Catalog
         :param region_name: Name of the region
         :param service_type: Type of service (Endpoint name)
         :param endpoint_type: Type of the URL to look for
-        :return:
+        :return: the endpoint
         """
         endpoint = None
         for service in self.keystone_client.auth_ref['serviceCatalog']:

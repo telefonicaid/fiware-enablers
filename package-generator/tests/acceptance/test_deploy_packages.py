@@ -79,7 +79,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     ]
                 },
                 "?": {
-                    "type": "io.murano.resources.LinuxMuranoInstance",
+                    "type": "io.murano.resources.FiwareMuranoInstance",
                     "id": str(uuid.uuid4())
                 },
             },

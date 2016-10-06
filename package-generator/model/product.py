@@ -70,7 +70,7 @@ class Product():
         try:
             return Config.packages[self.product_name]
         except:
-            print  "no_found" + self.product_name
+            print  "The product {0} has not been found in Murano ".format(self.product_name)
             return None
 
     def get_image_metadata(self):
