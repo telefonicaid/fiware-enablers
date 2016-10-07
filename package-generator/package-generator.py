@@ -147,7 +147,8 @@ def get_product(product_json):
                     att_value = att_json[BODY_METADATA_VALUE]
                 att_key = att_key.split("::")[-1]
                 attributes[att_key] = att_value
-    return Product(product_name, product_version, metadatas, attributes)
+    return Product(product_name, product_version, load_data=True,
+                   metadatas=metadatas, attributes=attributes)
 
 
 def update_into_github(user_github, password_github):

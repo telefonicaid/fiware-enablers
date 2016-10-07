@@ -1,10 +1,12 @@
 FROM ubuntu
+ENV GIT_REVISION story/CLAUDIA-6304_migrate_templates
 RUN apt-get update && apt-get -y install python-pip python-dev \
   libmysqlclient-dev libpq-dev \
   libxml2-dev libxslt1-dev git \
   libffi-dev zip python-mysqldb 
 RUN git clone https://github.com/telefonicaid/fiware-enablers /opt/fiware-enablers
 WORKDIR /opt/fiware-enablers/package-generator
+RUN git checkout ${GIT_REVISION}
 RUN pip install nose pytz
 RUN pip install -r requirements.txt
 RUN pip install -r tests-requirements.txt
