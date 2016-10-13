@@ -46,7 +46,7 @@ class Tier():
 
     def add_products_from_xml(self, productReleaseDtos, template_id):
         """
-        It add products to the tier from XML file.
+        It adds products to the tier from XML file.
         :param productReleaseDtos: the XML with the product information
         :param new_template_id: the template ID
         :return:

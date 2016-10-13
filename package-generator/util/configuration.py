@@ -98,7 +98,7 @@ class Config():
         It obtains all package from Murano
         :return: the list with the murano packages.
         """
-        array = []
+        array = list()
         arr = Config.Clients.murano_client.packages.list()
         for i in arr:
             array.append(i)

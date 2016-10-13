@@ -69,10 +69,10 @@ def main(argv=None):
     parser.add_argument("-g", "--os-upload", dest="upload",
                         default="False",
                         help='To upload to github?')
-    parser.add_argument("-ug", "--os-user_github", dest="user_github",
+    parser.add_argument("-U", "--os-user_github", dest="user_github",
                         default='None',
                         help='user github')
-    parser.add_argument("-pg", "--os-password_github", dest="password_github",
+    parser.add_argument("-P", "--os-password_github", dest="password_github",
                         default='None',
                         help='password github')
 

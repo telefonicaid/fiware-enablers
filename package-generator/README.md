@@ -47,7 +47,7 @@ Now the system is ready to use. For future sessions, only the step2 is required.
 
 ## Running
 ### Generating Murano packages
-The script package-generator.py script is used for generating Murano Packages from product uploaded in PaaS Manager and SDC. In addition, once the packages have been
+The package-generator.py script is used for generating Murano Packages from product uploaded in PaaS Manager and SDC. In addition, once the packages have been
 generated, a new Pull Request is done to the fiware-enabler github repository with the new changes
 
  The following lines are shown by using the -h option
@@ -55,7 +55,7 @@ generated, a new Pull Request is done to the fiware-enabler github repository wi
                             [-r REGION_NAME] [-k AUTH_URL] [-g UPLOAD]
                             [-ug USER_GITHUB] [-pg PASSWORD_GITHUB]
 
-    Testing product installation using paasmanager
+    Creating Murano packages from PaaS Manager
 
     optional arguments:
     -h, --help            show this help message and exit
@@ -70,11 +70,11 @@ generated, a new Pull Request is done to the fiware-enabler github repository wi
     -k AUTH_URL, --os-auth-url AUTH_URL
                         url to keystone <host or ip>:<port>/v2.0
     -g UPLOAD, --os-upload UPLOAD
-                        To upload to github?
+                        True/False for uploading to github
     -ug USER_GITHUB, --os-user_github USER_GITHUB
-                        user github
+                        github user
     -pg PASSWORD_GITHUB, --os-password_github PASSWORD_GITHUB
-                        password github
+                        github password
 
 ### Generating Murano templates
 This command is used for generating Murano templates from PaaS Manager. With the following command, you can get the help

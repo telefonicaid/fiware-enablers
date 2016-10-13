@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2014-2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -57,7 +57,7 @@ def main(argv=None):
 
 def migrate_templates(auth_url, tenant_id, user, password, region_name):
     """
-    It migrate the abstract templates from PaaS Manager to Murano
+    It migrates the abstract templates from PaaS Manager to Murano
     :param auth_url: the auth url
     :param tenant_id: the tenant_id
     :param user: the user
