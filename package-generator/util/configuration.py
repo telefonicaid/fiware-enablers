@@ -59,8 +59,10 @@ class Config():
             self.load_config('./settings/muranopackages_urls')
         Config.CONFIG_PACKAGE_NAME = self.load_config('./settings/package_names')
         Config.NID = self.get_all_nids()
+
         Config.Clients = util_apis(auth_url, user, password, tenant_id,
                                    region_name)
+        Config.packages = self.list_packages_murano()
 
     def load_config(self, file):
         """
@@ -90,3 +92,14 @@ class Config():
             all_nids.update(nids)
             params[chapter] = False
         return all_nids
+
+    def list_packages_murano(self):
+        """
+        It obtains all package from Murano
+        :return: the list with the murano packages.
+        """
+        array = list()
+        arr = Config.Clients.murano_client.packages.list()
+        for i in arr:
+            array.append(i)
+        return array

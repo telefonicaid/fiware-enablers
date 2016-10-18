@@ -350,7 +350,7 @@ class ProductPackage():
             for key in self.product.attributes:
                 atts_str = atts_str + (" " * 2) + key + ":\n" +\
                     (" " * 4) + "Contract: $.string()\n" + \
-                    (" " * 4) + "Default: \"" + self.product.attributes[key] +"\"\n"
+                    (" " * 4) + "Default: \"" + self.product.attributes[key] + "\"\n"
         return atts_str
 
     def _get_ports(self, protocol):
@@ -395,8 +395,7 @@ class ProductPackage():
                 return cookbooks
 
             for cookbook_child in cookbook.cookbook_childs:
-                if (not self._exists(cookbook_child.name, cookbooks)
-                        and cookbook_child.url):
+                if not self._exists(cookbook_child.name, cookbooks) and cookbook_child.url:
                     cookbooks.append(cookbook_child)
                 if len(cookbook_child.cookbook_childs) != 0:
                     cookbooks_in = cookbook_child.get_all_cookbooks_child()
@@ -484,7 +483,3 @@ class ProductPackage():
                                                         classes[classe])
                     break
         return package_classes_file
-
-
-
-

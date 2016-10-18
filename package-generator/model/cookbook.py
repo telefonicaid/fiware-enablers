@@ -222,4 +222,3 @@ class Cookbook:
         if berksfile and ("source" in berksfile or "site" in berksfile):
             return True
         return False
-

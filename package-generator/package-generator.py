@@ -54,9 +54,7 @@ def main(argv=None):
     Getting parameters
     :param argv:
     """
-    parser = argparse.ArgumentParser(description=
-                                     ('Testing product '
-                                      'installation using paasmanager'))
+    parser = argparse.ArgumentParser(description='Testing product installation using paasmanager')
     parser.add_argument("-u", "--os-username", dest='user',
                         help='valid username', required=True)
     parser.add_argument("-p", "--os-password", dest='password',
@@ -71,10 +69,10 @@ def main(argv=None):
     parser.add_argument("-g", "--os-upload", dest="upload",
                         default="False",
                         help='To upload to github?')
-    parser.add_argument("-ug", "--os-user_github", dest="user_github",
+    parser.add_argument("-U", "--os-user_github", dest="user_github",
                         default='None',
                         help='user github')
-    parser.add_argument("-pg", "--os-password_github", dest="password_github",
+    parser.add_argument("-P", "--os-password_github", dest="password_github",
                         default='None',
                         help='password github')
 
@@ -128,7 +126,6 @@ def get_product(product_json):
     metadatas = {}
     attributes = {}
     if product_json[BODY_PRODUCT].get(BODY_METADATAS):
-    # Checks if there are metadatas in the product
         for metadata_json in product_json[BODY_PRODUCT][BODY_METADATAS]:
             try:
                 metadata_key = metadata_json[BODY_METADATA_KEY]
@@ -150,7 +147,8 @@ def get_product(product_json):
                     att_value = att_json[BODY_METADATA_VALUE]
                 att_key = att_key.split("::")[-1]
                 attributes[att_key] = att_value
-    return Product(product_name, product_version, metadatas, attributes)
+    return Product(product_name, product_version, load_data=True,
+                   metadatas=metadatas, attributes=attributes)
 
 
 def update_into_github(user_github, password_github):

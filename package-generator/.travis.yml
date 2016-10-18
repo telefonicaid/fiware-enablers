@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install -r test-requirements.txt
+  - pip install coveralls
+  - pip install pep8
+
+# command to run tests
+script:
+  - pep8 --max-line-length=120 .
+  - nosetests --with-coverage --cover-package=./ --exe
+
+after_success:
+  coveralls

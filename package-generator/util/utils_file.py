@@ -10,7 +10,7 @@
 #
 # You may obtain a copy of the License at:
 #
-#        http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -46,7 +46,7 @@ def replace_word(infile, old_word, new_word):
     :return: nothing
     """
     if not os.path.isfile(infile):
-        print ("Error on replace_word, not a regular file: "+infile)
+        print ("Error on replace_word, not a regular file: " + infile)
         sys.exit(1)
 
     f1 = open(infile, 'r').read()
@@ -62,9 +62,7 @@ def is_git_repository(url):
     :param url: the url to check if it is a git repo
     :return: True/False
     """
-    return (url.startswith(("git://",
-                            "git+http://", "git+https:/"))
-            or url.endswith('.git'))
+    return url.startswith(("git://", "git+http://", "git+https:/")) or url.endswith('.git')
 
 
 def get_name_folder(url):
@@ -199,7 +197,7 @@ def create_branch(folder):
     :return: the branch name
     """
     repo = git.repo.Repo(folder)
-    str_branch = "update_packages"+str(time.time())
+    str_branch = "update_packages" + str(time.time())
 
     # Create branch in repo
     new = repo.create_head(str_branch)
@@ -208,7 +206,7 @@ def create_branch(folder):
 
     for folder in files:
         # add it to the index
-        repo.index.add(["murano-apps/"+folder])
+        repo.index.add(["murano-apps/" + folder])
 
     repo.index.commit("Murano Packages update. "
                       "Ready to be merged")
