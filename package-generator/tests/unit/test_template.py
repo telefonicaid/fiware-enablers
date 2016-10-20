@@ -23,8 +23,8 @@
 # contact with opensource@tid.es
 #
 import unittest
-from model.template import Template
-from util.configuration import Config
+from packagegenerator.model.template import Template
+from packagegenerator.util.configuration import Config
 import collections
 import mock
 
@@ -47,7 +47,7 @@ class TestTemplate(unittest.TestCase):
         self.assertEquals(template.template_description, TEMPLATE_DESCRIPTION)
         self.assertIsNone(template.tiers)
 
-    @mock.patch('util.utils_clients.util_apis')
+    @mock.patch('packagegenerator.util.utils_clients.util_apis')
     def test_add_tier(self, mock_client):
         """ test adding a tier to the template """
 

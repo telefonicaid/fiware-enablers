@@ -26,11 +26,11 @@
 import argparse
 
 
-from model.product_package import ProductPackage
-from model.product import Product
-from util.configuration import Config
+from packagegenerator.model.product_package import ProductPackage
+from packagegenerator.model.product import Product
+from packagegenerator.util.configuration import Config
 import distutils.util as util2
-import util.utils_file as utils
+import packagegenerator.util.utils_file as utils
 
 
 PRODUCTANDRELEASE_BODY = "productAndReleaseDto"

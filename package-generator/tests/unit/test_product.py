@@ -23,9 +23,9 @@
 # contact with opensource@tid.es
 #
 import unittest
-from model.product import Product
-from util.configuration import Config
-from util import utils_file
+from packagegenerator.model.product import Product
+from packagegenerator.util.configuration import Config
+from packagegenerator.util import utils_file
 import ConfigParser
 import mock
 
@@ -62,7 +62,7 @@ class TestProduct(unittest.TestCase):
         metadatas["key1"] = "value1"
         metadatas["key2"] = "value2"
 
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True, metadatas)
         self.assertEquals(product.product_name, PRODUCT_NAME)
         self.assertEquals(product.nid, NID)
         self.assertEquals(product.is_enabler(), True)
@@ -72,13 +72,13 @@ class TestProduct(unittest.TestCase):
 
     def test_no_nid(self):
         """ test a product without a nid """
-        product = Product(PRODUCT_NAME_OTHER, PRODUCT_VERSION)
+        product = Product(PRODUCT_NAME_OTHER, PRODUCT_VERSION, True)
         self.assertEquals(product.product_name, PRODUCT_NAME_OTHER)
         self.assertEquals(product.nid, None)
         self.assertEquals(product.is_enabler(), False)
         self.assertEquals(product.product_version, PRODUCT_VERSION)
 
-    @mock.patch('util.utils_clients.util_apis')
+    @mock.patch('packagegenerator.util.utils_clients.util_apis')
     def test_image_metadata(self, mock_image):
         """test the functionalities to image metadata"""
         IMAGE_NAME = "name1"
@@ -88,7 +88,7 @@ class TestProduct(unittest.TestCase):
         metadatas = {}
         metadatas["image"] = IMAGE_ID
 
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True, metadatas)
         self.assertIsNotNone(product.get_image_metadata())
         self.assertIsNotNone(product.images, [IMAGE_NAME])
         self.assertEquals(product.get_image_metadata(), IMAGE_ID)
@@ -102,19 +102,19 @@ class TestProduct(unittest.TestCase):
         """test obtaining the image which does not exist"""
         metadatas = {}
         metadatas["installator"] = "puppet"
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True, metadatas)
         self.assertTrue(product.is_puppet_installator())
 
     def test_check_installator(self):
         """test obtaining the image which does not exist"""
         metadatas = {}
         metadatas["installator"] = "chef"
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True, metadatas)
         self.assertEquals(product.installator, "Chef")
 
     def test_check_no_installator(self):
         """test obtaining the image which does not exist"""
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True)
         self.assertIsNone(product.installator)
 
     def test_ports(self):
@@ -123,16 +123,16 @@ class TestProduct(unittest.TestCase):
         metadatas["open_ports"] = "1"
         metadatas["udp_open_ports"] = "1"
 
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True, metadatas)
         self.assertEquals(len(product.get_tcp_ports()), 2)
         self.assertEquals(len(product.get_udp_ports()), 1)
 
-    @mock.patch('util.utils_clients.util_apis')
+    @mock.patch('packagegenerator.util.utils_clients.util_apis')
     def test_obtain_images(self, mock_image):
         """test the functionalities to get product images"""
         mock_image.get_image_name.return_value = "nameID"
         Config.Clients = mock_image
         metadatas = {}
         metadatas["image"] = "ID"
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION, metadatas)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True, metadatas)
         self.assertEquals(product.images, ["nameID"])

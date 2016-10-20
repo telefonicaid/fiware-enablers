@@ -24,8 +24,8 @@
 #
 
 import argparse
-from model.template import Template
-from util.configuration import Config
+from packagegenerator.model.template import Template
+from packagegenerator.util.configuration import Config
 
 
 def main(argv=None):

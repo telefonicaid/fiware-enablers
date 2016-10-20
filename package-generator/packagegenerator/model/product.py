@@ -22,7 +22,7 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from util.configuration import Config
+from packagegenerator.util.configuration import Config
 
 PRODUCT_IMAGE = "image"
 PRODUCT_INSTALLATOR = "installator"
@@ -74,7 +74,7 @@ class Product():
         :return: the image name
         """
         image = None
-        if PRODUCT_IMAGE in self.metadatas.keys():
+        if self.metadatas and PRODUCT_IMAGE in self.metadatas.keys():
             value = self.metadatas.get(PRODUCT_IMAGE)
             if value is not None and FILTER_IMAGE not in value:
                 image = value
@@ -163,7 +163,7 @@ class Product():
         :return: the installator
         """
         installator = None
-        if PRODUCT_INSTALLATOR in self.metadatas.keys():
+        if self.metadatas and PRODUCT_INSTALLATOR in self.metadatas.keys():
             value = self.metadatas.get(PRODUCT_INSTALLATOR)
             installator = value[0].upper() + value[1:]
         return installator

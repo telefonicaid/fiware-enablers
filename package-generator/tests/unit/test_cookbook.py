@@ -23,10 +23,10 @@
 # contact with opensource@tid.es
 #
 import unittest
-from model.cookbook import Cookbook
+from packagegenerator.model.cookbook import Cookbook
 import ConfigParser
 import mock
-from util.configuration import Config
+from packagegenerator.util.configuration import Config
 import ConfigParser
 
 COOKBOOK_NAME = "product"
@@ -59,7 +59,7 @@ class TestCookbook(unittest.TestCase):
     @mock.patch('os.path.isdir')
     @mock.patch('os.mkdir')
     @mock.patch('os.makedirs')
-    @mock.patch('util.configuration.Config')
+    @mock.patch('packagegenerator.util.configuration.Config')
     def setUp(self, mock_conf, mock_path, mock_mkdir, mock_makedir):
         config_cookbook = ConfigParser.RawConfigParser()
         config_cookbook.add_section("main")

@@ -25,8 +25,8 @@
 import shutil
 import time
 import os
-from util import utils_file as utils
-from model.cookbook import Cookbook
+from packagegenerator.util import utils_file as utils
+from packagegenerator.model.cookbook import Cookbook
 
 PACKAGES_FOLDER = "./../murano-apps"
 PACKAGES_FOLDER_GE = os.path.join(PACKAGES_FOLDER, "murano-app-GE")

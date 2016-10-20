@@ -23,8 +23,8 @@
 # contact with opensource@tid.es
 #
 
-from util.configuration import Config
-from model.product import Product
+from packagegenerator.util.configuration import Config
+from packagegenerator.model.product import Product
 import uuid
 
 

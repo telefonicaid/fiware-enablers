@@ -58,7 +58,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         """
         post_body = {
             "instance": {
-                "flavor": self.flavor,
+                "flavor": "m1.medium",
                 "image": self.linux,
                 "keyname": self.keyname,
                 "assignFloatingIp": True,
@@ -125,13 +125,22 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
-        if is_GE == "GE":
-            package_folder = os.path.join(self.murano_apps_folder,
-                                          "murano-app-GE",
-                                          self.murano_package)
+       # if is_GE == "GE":
+       #     package_folder = os.path.join(self.murano_apps_folder,
+       #                                   "murano-app-GE",
+       #                                   self.murano_package)
+       # else:
+       #     package_folder = os.path.join(self.murano_apps_folder,
+       #                                   "murano-app-noGE",
+       #                                   self.murano_package)
+
+
+        if package_str=="ExampleChef":
+            pass
         else:
-            package_folder = os.path.join(self.murano_apps_folder,
-                                          "murano-app-noGE",
+            return
+
+        package_folder = os.path.join(self.murano_apps_folder,
                                           self.murano_package)
 
         manifest = self.read_manifest(package_folder)
@@ -227,6 +236,10 @@ def _test_pairs():
     MURANO_APP_DISCARDED = ["SQLDatabaseLibrary"]
     murano_apps_folder = CONF.murano.murano_apps_folder
     folder = os.path.join(murano_apps_folder, "murano-app-GE")
+
+    yield DeployPackagesTest.deploy_package, "ExampleChef", "noGE"
+
+
     murano_packages = [f for f in listdir(folder) if
                        isdir(join(folder, f))]
     for murano_package in murano_packages:

@@ -23,9 +23,9 @@
 # contact with opensource@tid.es
 #
 import unittest
-from model.product_package import ProductPackage
-from model.product import Product
-from util.configuration import Config
+from packagegenerator.model.product_package import ProductPackage
+from packagegenerator.model.product import Product
+from packagegenerator.util.configuration import Config
 import mock
 import ConfigParser
 
@@ -95,7 +95,7 @@ class TestProductPackage(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=metadata_product_no_child).return_value
         ]
-        product = Product(PRODUCT_NAME, PRODUCT_VERSION)
+        product = Product(PRODUCT_NAME, PRODUCT_VERSION, True)
         product_package = ProductPackage(product)
         self.assertEquals(product_package.get_product().product_name,
                           PRODUCT_NAME)
@@ -117,7 +117,7 @@ class TestProductPackage(unittest.TestCase):
             mock.mock_open(read_data=metadata_product_no_child).return_value,
             mock.mock_open(read_data=MANIFEST).return_value
         ]
-        product = Product(PRODUCT_MURANO_NAME, PRODUCT_VERSION)
+        product = Product(PRODUCT_MURANO_NAME, PRODUCT_VERSION, True)
         product_package = ProductPackage(product)
         self.assertEquals(product_package.get_product().product_name,
                           PRODUCT_MURANO_NAME)
