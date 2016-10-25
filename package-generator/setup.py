@@ -6,7 +6,10 @@ from os.path import join as pjoin
 install_reqs = parse_requirements("requirements.txt", session=False)
 # > requirements_list is a list of requirement; e.g. ['requests==2.6.0', 'Fabric==1.8.3']
 requirements_list = [str(ir.req) for ir in install_reqs]
+requirements = parse_requirements("requirements.txt", session=False)
 
+print [(ir.req, ir.link) for ir in requirements]   
+ 
 
 setup(
   name='package_generator',
