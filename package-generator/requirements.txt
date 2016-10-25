@@ -1,5 +1,5 @@
 pytz
-fiware-glancesync
+https://github.com/telefonicaid/fiware-glancesync/archive/v1.7.0.zip
 python-paasmanagerclient
 python-sdcclient
 
