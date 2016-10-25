@@ -125,22 +125,13 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
-       # if is_GE == "GE":
-       #     package_folder = os.path.join(self.murano_apps_folder,
-       #                                   "murano-app-GE",
-       #                                   self.murano_package)
-       # else:
-       #     package_folder = os.path.join(self.murano_apps_folder,
-       #                                   "murano-app-noGE",
-       #                                   self.murano_package)
-
-
-        if package_str=="ExampleChef":
-            pass
+        if is_GE == "GE":
+            package_folder = os.path.join(self.murano_apps_folder,
+                                          "murano-app-GE",
+                                          self.murano_package)
         else:
-            return
-
-        package_folder = os.path.join(self.murano_apps_folder,
+            package_folder = os.path.join(self.murano_apps_folder,
+                                          "murano-app-noGE",
                                           self.murano_package)
 
         manifest = self.read_manifest(package_folder)
