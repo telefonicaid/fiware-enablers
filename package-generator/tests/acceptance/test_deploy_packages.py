@@ -58,7 +58,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         """
         post_body = {
             "instance": {
-                "flavor": "m1.medium",
+                "flavor": self.flavor,
                 "image": self.linux,
                 "keyname": self.keyname,
                 "assignFloatingIp": True,

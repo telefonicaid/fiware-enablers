@@ -5,6 +5,6 @@ Name: orion
 Description: |
   Murano package for FIWARE orion GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef, images=base_centos_6.20160601;base_centos_6]
+Tags: [FIWARE, GEs, chef, images=base_centos_6]
 Classes:
  io.murano.conflang.chef.orion: orion.yaml

@@ -5,6 +5,6 @@ Name: cepheus
 Description: |
   Murano package for FIWARE cepheus GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04.20160601]
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
 Classes:
  io.murano.conflang.chef.cepheus: cepheus.yaml
