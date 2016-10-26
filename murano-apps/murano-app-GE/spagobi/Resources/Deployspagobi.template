@@ -5,7 +5,6 @@ Name: Deploy spagobi
 Parameters:
   port: $port
 
-
 Body: |
   return executeRecipe(args).stdout
 

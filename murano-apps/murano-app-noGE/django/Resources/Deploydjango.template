@@ -19,7 +19,6 @@ Scripts:
         - build-essential : https://github.com/chef-cookbooks/build-essential.git
         - seven_zip : https://github.com/daptiv/seven_zip.git
         - windows : https://github.com/chef-cookbooks/windows.git
-        - chef_handler : https://github.com/chef-cookbooks/chef_handler.git
         - mingw : https://github.com/chef-cookbooks/mingw.git
         - compat_resource : https://github.com/chef-cookbooks/compat_resource.git
         - yum-epel : https://github.com/chef-cookbooks/yum-epel.git

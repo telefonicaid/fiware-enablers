@@ -5,6 +5,6 @@ Name: Stream_oriented_kurento
 Description: |
   Murano package for FIWARE Stream_oriented_kurento GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04.20160601]
 Classes:
  io.murano.conflang.chef.Stream_oriented_kurento: Stream_oriented_kurento.yaml

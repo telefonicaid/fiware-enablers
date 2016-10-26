@@ -5,6 +5,6 @@ Name: cloud_rendering
 Description: |
   Murano package for FIWARE cloud_rendering GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04.20160601]
 Classes:
  io.murano.conflang.chef.cloud_rendering: cloud_rendering.yaml

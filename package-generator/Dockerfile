@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-ENV GIT_REVISION story/CLAUDIA-6304_migrate_templates
+ENV GIT_REVISION develop
 RUN apt-get update && apt-get -y install python-pip python-dev \
   libmysqlclient-dev wget libpq-dev \
   libxml2-dev libxslt1-dev git \
