@@ -1,0 +1,23 @@
+FormatVersion: 2.2.0
+Version: 1.0.0
+Name: Deploy spagobi
+
+Parameters:
+  port: $port
+
+
+Body: |
+  return executeRecipe(args).stdout
+
+Scripts:
+  executeRecipe:
+    Type: Chef
+    Version: 1.0.0
+    EntryPoint: spagobi::1.0.3_install
+    Files:
+        - spagobi : https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/GESoftware/spagobi
+
+    Options:
+      captureStdout: true
+      captureStderr: true
+      useBerkshelf: true
