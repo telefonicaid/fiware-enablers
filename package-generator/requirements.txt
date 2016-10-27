@@ -1,21 +1,16 @@
 pytz
-https://github.com/telefonicaid/fiware-glancesync/archive/v1.7.0.zip
 python-paasmanagerclient
 python-sdcclient
 
 GitPython>=1.0.1 # BSD License (3 clause)
 PyGithub
-pbr<2.0,>=1.6
--e git+https://github.com/openstack/python-muranoclient#egg=Package
-git+https://github.com/openstack/murano
-python-keystoneclient==1.8.0
-python-glanceclient==1.1.0
-python-muranoclient
+-e git+https://github.com/openstack/murano@stable/mitaka#egg=murano
+https://github.com/telefonicaid/fiware-glancesync/archive/v1.7.0.zip
+python-keystoneclient>=1.8.0 
+python-glanceclient==2.5.0
 python-heatclient>=0.9.0
 oslo.config>=2.3.0
-oslo.serialization>=1.6.0
+oslo.serialization<1.5.0,>=1.4.0
 oslo.utils>=2.0.0
-requests==2.9.1
+requests>=2.10.0
 docopt
-
-

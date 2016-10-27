@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-ENV GIT_REVISION develop
+ENV GIT_REVISION story/CLAUDIA-6304_migrate_templates
 RUN apt-get update && apt-get -y install python-pip python-dev \
   libmysqlclient-dev wget libpq-dev \
   libxml2-dev libxslt1-dev git \
@@ -13,6 +13,11 @@ RUN make install
 RUN git clone https://github.com/telefonicaid/fiware-enablers /opt/fiware-enablers
 WORKDIR /opt/fiware-enablers/package-generator
 RUN git checkout ${GIT_REVISION}
+RUN cat requirements.txt
+ENV GLANCESYNC_SETTINGS_FILE=/etc/fiware.d/etc/fiware-glancesync.cfg
+ENV GLANCESYNC_LOGGING_SETTINGS_FILE=/etc/fiware.d/etc/fiware-glancesync-logging.cfg
+COPY fiware-glancesync.cfg /etc/fiware.d/etc/fiware-glancesync.cfg
+COPY fiware-glancesync-logging.cfg /etc/fiware.d/etc/fiware-glancesync-logging.cfg
 RUN pip install nose pytz
 RUN pip install -r requirements.txt
 RUN pip install -r tests-requirements.txt

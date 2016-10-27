@@ -227,6 +227,10 @@ def _test_pairs():
     MURANO_APP_DISCARDED = ["SQLDatabaseLibrary"]
     murano_apps_folder = CONF.murano.murano_apps_folder
     folder = os.path.join(murano_apps_folder, "murano-app-GE")
+
+    yield DeployPackagesTest.deploy_package, "ExampleChef", "noGE"
+
+
     murano_packages = [f for f in listdir(folder) if
                        isdir(join(folder, f))]
     for murano_package in murano_packages:

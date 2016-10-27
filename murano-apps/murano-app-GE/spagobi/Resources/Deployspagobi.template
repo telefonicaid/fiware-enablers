@@ -20,4 +20,3 @@ Scripts:
       captureStdout: true
       captureStderr: true
       useBerkshelf: true
-      

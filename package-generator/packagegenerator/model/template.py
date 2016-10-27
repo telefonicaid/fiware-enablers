@@ -23,8 +23,8 @@
 # contact with opensource@tid.es
 #
 
-from util.configuration import Config
-from model.tier import Tier
+from packagegenerator.util.configuration import Config
+from packagegenerator.model.tier import Tier
 
 
 class Template():

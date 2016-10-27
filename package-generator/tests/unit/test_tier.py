@@ -23,9 +23,9 @@
 # contact with opensource@tid.es
 #
 import unittest
-from model.product import Product
-from model.tier import Tier
-from util.configuration import Config
+from packagegenerator.model.product import Product
+from packagegenerator.model.tier import Tier
+from packagegenerator.util.configuration import Config
 import collections
 import mock
 
@@ -50,7 +50,7 @@ class TestTier(unittest.TestCase):
         self.assertEquals(tier.image, IMAGE)
         self.assertIsNone(tier.products)
 
-    @mock.patch('util.utils_clients.util_apis')
+    @mock.patch('packagegenerator.util.utils_clients.util_apis')
     def test_add_product(self, mock_client):
         """ test adding a product to the tier """
         productRelease = collections.OrderedDict([(u'productName', PRODUCT1),
@@ -81,7 +81,7 @@ class TestTier(unittest.TestCase):
         self.assertEquals(len(tier.products), 1)
         self.assertEquals(tier.products[0].product_name, PRODUCT1)
 
-    @mock.patch('util.utils_clients.util_apis')
+    @mock.patch('packagegenerator.util.utils_clients.util_apis')
     def test_add_products(self, mock_client):
         """ test adding two products to the tier"""
         productRelease = [collections.OrderedDict([(u'productName', PRODUCT1), (u'version', VERSION)]),
@@ -109,7 +109,7 @@ class TestTier(unittest.TestCase):
         self.assertIsNotNone(tier.products)
         self.assertEquals(len(tier.products), 2)
 
-    @mock.patch('util.utils_clients.util_apis')
+    @mock.patch('packagegenerator.util.utils_clients.util_apis')
     def test_to_json(self, mock_client):
         """ test transform a tier into a json """
         product = Product(TIER_NAME, FLAVOUR)

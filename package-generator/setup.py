@@ -22,21 +22,22 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 
-from setuptools import setup
-from setuptools import find_packages
-
+from setuptools import setup, find_packages
 from pip.req import parse_requirements
+from os.path import join as pjoin
 
-REQUIREMENTS_FILE = "requirements.txt"
-# Get requirements list from requirements.txt file
-# > parse_requirements() returns generator of pip.req.InstallRequirement objects
-install_reqs = parse_requirements(REQUIREMENTS_FILE, session=False)
+# parse_requirements() returns generator of pip.req.InstallRequirement objects
+install_reqs = parse_requirements("requirements.txt", session=False)
 # > requirements_list is a list of requirement; e.g. ['requests==2.6.0', 'Fabric==1.8.3']
 requirements_list = [str(ir.req) for ir in install_reqs]
 
-setup(name='package-generator',
-      version='0.0.1',
-      description='Package Generator',
-      url='https://github.com/telefonicaid/fiware-enablers/package-generator',
-      packages=find_packages(),
-      install_requires=requirements_list)
+setup(
+  name='package_generator',
+  install_requires=requirements_list,
+  packages=find_packages(),
+  version="0.0.3",
+  license='Apache 2.0',
+  url='https://github.com/telefonicaid/fiware-enablers/package-generator',
+  classifiers=[
+        "License :: OSI Approved :: Apache Software License", ],
+)
