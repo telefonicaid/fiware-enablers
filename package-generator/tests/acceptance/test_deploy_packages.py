@@ -105,10 +105,9 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.deployment_success_check(environment, port)
 
     def create_environment_region(self, name=None, region=None):
-        """Creates Murano environment with random name.
-
-
+        """Creates Murano environment for a particular region.
         :param name: Environment name
+        :param region: the region
         :return: Murano environment
         """
         if not name:
