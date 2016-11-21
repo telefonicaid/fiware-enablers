@@ -14,8 +14,6 @@ Scripts:
     Type: Application
     Version: 1.0.0
     EntryPoint: deployApp.sh
-    Files:
-      - <common.sh>
     Options:
       captureStdout: true
       captureStderr: true

@@ -10,8 +10,6 @@ function include(){
         exit 1
     fi
 }
-include "common.sh"
-
 
 bash installer.sh -p sys -i "java-devel"
 
