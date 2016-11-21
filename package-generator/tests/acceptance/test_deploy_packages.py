@@ -52,16 +52,8 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         except Exception as e:
             raise e
 
-    def _get_service(self, environment_name, package_name, port, atts=None, vol=None):
 
-        post_volume = { "openstackId": "ID",
-                        "?": {
-                            "type": "io.murano.resources.FiwareMuranoInstance",
-                            "id": str(uuid.uuid4())
-                        }
-                }
-
-
+    def _get_service(self, environment_name, package_name, port, murano_instance, atts=None, vol=None):
 
         post_body = {
             "instance": {
@@ -88,7 +80,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     ]
                 },
                 "?": {
-                    "type": "io.murano.resources.FiwareMuranoInstance",
+                    "type": murano_instance,
                     "id": str(uuid.uuid4())
                 },
             },
@@ -126,7 +118,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         return post_body
 
-    def _test_deploy(self, environment_name, package_name, port, atts):
+    def _test_deploy(self, environment_name, package_name, port, atts, region, murano_instance):
         """
         It deploys an enviornment.
         :param environment_name:  environment name
@@ -134,14 +126,30 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         :param port: port to be opened
         :return:
         """
-        post_body = self._get_service(environment_name, package_name, port, atts)
+        post_body = self._get_service(environment_name, package_name, port, murano_instance, atts)
         environment_name = environment_name + uuid.uuid4().hex[:5]
-        environment = self.create_environment(name=environment_name)
+        environment = self.create_environment_region(name=environment_name, region=region)
         session = self.create_session(environment)
         self.add_service(environment, post_body, session)
         self.deploy_environment(environment, session)
         self.wait_for_environment_deploy(environment)
         self.deployment_success_check(environment, port)
+
+    def create_environment_region(self, name=None, region=None):
+        """Creates Murano environment for a particular region.
+        :param name: Environment name
+        :param region: the region
+        :return: Murano environment
+        """
+        if not name:
+            name = self.rand_name('MuranoTe')
+
+        args = {"name": name}
+        if region:
+            args["region"] = region
+        environment = self.murano_client().environments.create(args)
+        self._environments.append(environment)
+        return environment
 
     def read_manifest(self, product_path):
         manifest_file = product_path + "/manifest.yaml"
@@ -153,7 +161,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         return self.config.get('main', murano_app)
 
     @mock.patch('murano.tests.functional.engine.config')
-    def deploy_package(self, package_str, is_GE, mock_config):
+    def deploy_package(self, package_str, is_GE, region, murano_instance, mock_config):
         """It obtains the murano packages created and deploy then"""
         mock_config.load_config = load_config()
         self.linux = core.CONF.murano.linux_image
@@ -173,8 +181,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         if package_str == "Demo":
             self.deploy_demo()
-            return
-        else:
             return
 
         manifest = self.read_manifest(package_folder)
@@ -200,7 +206,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 else:
                     continue
             self.linux = image
-            self._test_deploy(self.murano_package, package_id, 22, atts)
+            self._test_deploy(self.murano_package, package_id, 22, atts, region, murano_instance)
             self.purge_environments()
 
     def delete_package(cls, package):
@@ -269,11 +275,11 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
 
-        apache_demo = self._get_service("Apache", "io.murano.apps.apache.ApacheHttpServer", 22)
+        apache_demo = self._get_service("Apache", "io.murano.apps.apache.ApacheHttpServer", 22, "io.murano.resources.FiwareMuranoInstance")
         self.add_service(environment, apache_demo, session)
         apache_demo_id= apache_demo["?"]["id"]
 
-        mysql_demo = self._get_service("MySQL", "io.murano.databases.MySql", 22)
+        mysql_demo = self._get_service("MySQL", "io.murano.databases.MySql", 22, "io.murano.resources.FiwareMuranoInstance")
         self.add_service(environment, mysql_demo, session)
         mysql_demo_id = mysql_demo["?"]["id"]
 
@@ -374,8 +380,8 @@ def load_config():
 def _add_tests(generator):
     def class_decorator(cls):
         """Add tests to `cls` generated by `generator()`."""
-        for f, input, input2 in generator():
-            def test(self, i=input, i2=input2, f=f): return f(self, i, i2)
+        for f, input, input2, input3, input4 in generator():
+            def test(self, i=input, i2=input2, i3=input3, i4=input4, f=f): return f(self, i, i2, i3, i4)
             test.__name__ = "test_%s(%r)" % (f.__name__, input)
             setattr(cls, test.__name__, test)
         return cls
@@ -388,7 +394,8 @@ def _test_pairs():
     murano_apps_folder = CONF.murano.murano_apps_folder
     folder = os.path.join(murano_apps_folder, "murano-app-GE")
 
-    yield DeployPackagesTest.deploy_package, "Demo", "noGE"
+    yield DeployPackagesTest.deploy_package, "Demo", "noGE", "Spain2", \
+              "io.murano.resources.FiwareMuranoInstance"
 
 
     murano_packages = [f for f in listdir(folder) if
@@ -396,7 +403,8 @@ def _test_pairs():
     for murano_package in murano_packages:
         if murano_package in MURANO_APP_DISCARDED:
             continue
-        yield DeployPackagesTest.deploy_package, murano_package, "GE"
+        yield DeployPackagesTest.deploy_package, murano_package, "GE", "Spain2", \
+              "io.murano.resources.FiwareMuranoInstance"
 
     folder = os.path.join(murano_apps_folder, "murano-app-noGE")
     murano_packages = [f for f in listdir(folder) if
@@ -404,12 +412,15 @@ def _test_pairs():
     for murano_package in murano_packages:
         if murano_package in MURANO_APP_DISCARDED:
             continue
-        yield DeployPackagesTest.deploy_package, murano_package, "noGE"
+        yield DeployPackagesTest.deploy_package, murano_package, "noGE", "Spain2", \
+              "io.murano.resources.FiwareMuranoInstance"
 
+
+    yield DeployPackagesTest.deploy_package, "Tomcat", "noGE", "Zurich2", \
+          "io.murano.resources.LinuxMuranoInstance"
 
 
 DeployPackagesTest = _add_tests(_test_pairs)(DeployPackagesTest)
-
 
 def load_config2_murano_apps(file):
         """
