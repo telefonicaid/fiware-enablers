@@ -1,0 +1,61 @@
+Namespaces:
+  =: io.murano.conflang.chef
+  std: io.murano
+  res: io.murano.resources
+  sys: io.murano.system
+  apps: io.murano.apps
+  tc: io.murano.apps.apache
+  data: io.murano.databases
+Name: Demo
+
+Extends: std:Application
+
+Properties:
+  name:
+    Contract: $.string().notNull()
+  apache:
+    Contract: $.class(tc:ApacheHttpServer).notNull()
+  database:
+    Contract: $.class(data:MySql).notNull()
+  dbName:
+    Contract: $.string().notNull()
+  dbUser:
+    Contract: $.string().notNull()
+  dbPassword:
+    Contract: $.string().notNull()
+
+Workflow:
+  initialize:
+    Body:
+      - $.environment: $.find(std:Environment).require()
+
+  deploy:
+    Body:
+      - If: !yaql "not bool($.getAttr(deployed))"
+        Then:
+          - $this.find(std:Environment).reporter.report($this, 'Ensuring Apache is deployed.')
+          - $.apache.deploy()
+          - $resources: new(sys:Resources)
+          # Deploy app over Tomcat
+          - $template: $resources.yaml('DeployWikipedia.template')
+          - $this.find(std:Environment).reporter.report($this, 'Setting up the application on Apache.')
+          - $.apache.instance.agent.call($template, $resources)
+          # Configure access to PostgreSql
+          - $this.find(std:Environment).reporter.report($this, 'Ensuring Database is deployed.')
+          - $.database.createDatabase($.dbName)
+          - $this.find(std:Environment).reporter.report($this, 'Configure access to MySQL.')
+          - $template: $resources.yaml('ConfigureAccessToDB.template').bind(dict(
+                database => $.dbName,
+                username => $.dbUser,
+                password => $.dbPassword,
+                host => $.database.instance.ipAddresses[0]
+              ))
+          - $.apache.instance.agent.call($template, $resources)
+          - $this.find(std:Environment).reporter.report($this, 'Application is installed')
+          - If: $.apache.instance.assignFloatingIp
+            Then:
+              - $host: $.apache.instance.floatingIpAddress
+            Else:
+              - $host: $.apache.instance.ipAddresses[0]
+          - $this.find(std:Environment).reporter.report($this, format('Apache is available at http://{0}', $host))
+          - $.setAttr(deployed, true)
