@@ -2,6 +2,7 @@ package-generator:
   image: package-generator
   environment:
    - PASSWORD
+   - ADMIN_PASSWORD
    - OS_USERNAME
    - OS_PASSWORD
    - OS_TENANT_ID
