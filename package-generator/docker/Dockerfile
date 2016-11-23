@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-ENV GIT_REVISION demo
+ENV GIT_REVISION develop
 RUN apt-get update && apt-get -y install python-pip python-dev \
   libmysqlclient-dev wget libpq-dev \
   libxml2-dev libxslt1-dev git \
