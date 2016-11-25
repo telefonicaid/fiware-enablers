@@ -96,10 +96,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
             for att in atts:
                 post_body[att] = att
 
-       # if vol:
-       #    post_body["instance"]["volumes"] = volume_id
-
-
         return post_body
 
     def _get_service_no_instance(self, environment_name, package_name, port, atts=None):
@@ -170,6 +166,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
+        if package_str == "Demo":
+            self.deploy_demo()
+            return
+
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,
                                           "murano-app-GE",
@@ -179,9 +179,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-        if package_str == "Demo":
-            self.deploy_demo()
-            return
+
 
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
@@ -205,6 +203,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     image = "base_ubuntu_14.04"
                 else:
                     continue
+
             self.linux = image
             self._test_deploy(self.murano_package, package_id, 22, atts, region, murano_instance)
             self.purge_environments()
@@ -416,7 +415,7 @@ def _test_pairs():
               "io.murano.resources.FiwareMuranoInstance"
 
 
-    yield DeployPackagesTest.deploy_package, "Tomcat", "noGE", "Zurich2", \
+    yield DeployPackagesTest.deploy_package, "Tomcat", "noGE", "Spain2", \
           "io.murano.resources.LinuxMuranoInstance"
 
 

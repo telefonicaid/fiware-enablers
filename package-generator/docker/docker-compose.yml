@@ -5,3 +5,4 @@ package-generator:
    - OS_USERNAME
    - OS_PASSWORD
    - OS_TENANT_ID
+   - ADMIN_PASSWORD

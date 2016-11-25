@@ -18,6 +18,7 @@ Templates:
         type: io.murano.resources.ExistingNeutronNetwork
       internalNetworkName: $.instanceConfiguration.network[0]
       internalSubnetworkName: $.instanceConfiguration.network[1]
+      externalNetworkName: public-ext-net-01
 
 Application:
   ?:

@@ -53,7 +53,6 @@ Forms:
           required: false
         - name: osImage
           type: image
-          imageType: linux
           label: Instance image
           description: >-
             Select a valid image for the application. Image should already be prepared and
