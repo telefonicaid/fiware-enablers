@@ -179,8 +179,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-        return
-        if package_str == "Demo":
+            if package_str == "Demo":
             self.deploy_demo()
             return
 
