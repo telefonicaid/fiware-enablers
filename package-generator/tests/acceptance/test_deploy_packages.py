@@ -166,9 +166,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
-        if package_str == "Demo":
-            self.deploy_demo()
-            return
 
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,
@@ -179,7 +176,9 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-
+        if package_str == "Demo":
+            self.deploy_demo()
+            return
 
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
