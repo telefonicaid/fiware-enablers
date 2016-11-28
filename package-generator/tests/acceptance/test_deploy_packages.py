@@ -184,6 +184,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         images = ["base_ubuntu_14.04"]
         atts = {}
 
+        if package_str == "Demo":
+            self.deploy_demo()
+        return
+
         for tag in tags:
             if "images" in tag:
                 tag = tag[7:len(tag)]
