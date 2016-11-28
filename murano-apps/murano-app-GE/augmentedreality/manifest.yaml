@@ -5,6 +5,6 @@ Name: augmentedreality
 Description: |
   Murano package for FIWARE augmentedreality GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef]
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_12.04]
 Classes:
  io.murano.conflang.chef.augmentedreality: augmentedreality.yaml

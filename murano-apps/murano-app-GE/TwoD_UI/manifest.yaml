@@ -5,6 +5,6 @@ Name: TwoD_UI
 Description: |
   Murano package for FIWARE TwoD_UI GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef]
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
 Classes:
  io.murano.conflang.chef.TwoD_UI: TwoD_UI.yaml

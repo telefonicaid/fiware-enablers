@@ -186,7 +186,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
 
         if package_str == "Demo":
             self.deploy_demo()
-        return
+            return
 
         for tag in tags:
             if "images" in tag:

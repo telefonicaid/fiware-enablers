@@ -5,6 +5,6 @@ Name: RealVirtualInteractionGE
 Description: |
   Murano package for FIWARE RealVirtualInteractionGE GEi.
 Author: 'TID'
-Tags: [FIWARE, GEs, chef]
+Tags: [FIWARE, GEs, chef, images=base_ubuntu_14.04]
 Classes:
  io.murano.conflang.chef.RealVirtualInteractionGE: RealVirtualInteractionGE.yaml
