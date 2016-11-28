@@ -101,7 +101,7 @@ Templates:
   customJoinNet:
   - '?':
       type: io.murano.resources.ExistingNeutronNetwork
-    externalNetworkName: public-ext-net-01
+    externalNetworkName: "public-ext-net-01"
     internalNetworkName: $.instanceConfiguration.network[0]
     internalSubnetworkName: $.instanceConfiguration.network[1]
 Version: 2.2

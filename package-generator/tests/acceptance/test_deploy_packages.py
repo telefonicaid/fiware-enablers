@@ -176,10 +176,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-        if package_str == "Demo":
-            self.deploy_demo()
-            return
-
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
         tags = manifest["Tags"]
@@ -203,9 +199,9 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                 else:
                     continue
 
-            self.linux = image
-            self._test_deploy(self.murano_package, package_id, 22, atts, region, murano_instance)
-            self.purge_environments()
+        self.linux = image
+        self._test_deploy(self.murano_package, package_id, 22, atts, region, murano_instance)
+        self.purge_environments()
 
     def delete_package(cls, package):
         """It deletes the package in murano."""
@@ -234,8 +230,11 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     folder_required = os.path.join(self.murano_apps_folder,
                                                    "murano-app-noGE",
                                                    self.get_murano_name(require))
-                    self.upload_app_admin(folder_required,
+                    try:
+                        self.upload_app_admin(folder_required,
                                     self.get_murano_name(require), {"is_public": True, "tags": ["tag"]})
+                    except Exception as e:
+                        print("Error to upload the dependence {0}".format(e.message))
 
     @mock.patch('murano.tests.functional.engine.config')
     def deploy_demo(self, mock_config):
@@ -414,7 +413,7 @@ def _test_pairs():
               "io.murano.resources.FiwareMuranoInstance"
 
 
-    yield DeployPackagesTest.deploy_package, "Tomcat", "noGE", "Spain2", \
+    yield DeployPackagesTest.deploy_package, "Tomcat", "noGE", "Zurich2", \
           "io.murano.resources.LinuxMuranoInstance"
 
 

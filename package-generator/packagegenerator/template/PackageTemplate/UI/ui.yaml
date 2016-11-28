@@ -22,8 +22,8 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.php
-
+    type: io.murano.conflang.{GE_installator}.{GE_name}
+{GE_attributes}
   instance:
     ?:
       type: io.murano.resources.FiwareMuranoInstance
@@ -39,7 +39,7 @@ Application:
       customNetworks: switch($.instanceConfiguration.network[0], $=null=>list(), $!=null=>$customJoinNet)
 
 Forms:
-  
+  {GE_attributes_resource}
   - instanceConfiguration:
       fields:
         - name: title
