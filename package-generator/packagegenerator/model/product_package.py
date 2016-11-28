@@ -289,7 +289,7 @@ class ProductPackage():
         utils.replace_word(self.package_ui, REPLACE_GE_NAME,
                            self.product.get_cookbook_name(self.product.product_name))
         utils.replace_word(self.package_ui, REPLACE_GE_INSTALLATOR,
-                           self.product.installator)
+                           self.product.installator.lower())
 
         utils.replace_word(self.package_ui, REPLACE_GE_ATTS,
                            self._get_attributes_ui1())

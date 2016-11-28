@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Puppet.iotbroker
+    type: io.murano.conflang.puppet.iotbroker
 
   instance:
     ?:

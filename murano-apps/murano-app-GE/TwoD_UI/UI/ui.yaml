@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.2d_ui
+    type: io.murano.conflang.chef.2d_ui
 
   instance:
     ?:

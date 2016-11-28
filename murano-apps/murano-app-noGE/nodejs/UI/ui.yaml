@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.nodejs
+    type: io.murano.conflang.chef.nodejs
 
   instance:
     ?:

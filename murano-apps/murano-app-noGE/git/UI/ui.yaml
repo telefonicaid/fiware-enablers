@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.git
+    type: io.murano.conflang.chef.git
 
   instance:
     ?:

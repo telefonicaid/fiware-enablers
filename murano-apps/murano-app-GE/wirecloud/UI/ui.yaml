@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.wirecloud
+    type: io.murano.conflang.chef.wirecloud
 
   instance:
     ?:

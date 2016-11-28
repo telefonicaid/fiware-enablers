@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.poi_dp
+    type: io.murano.conflang.chef.poi_dp
 
   instance:
     ?:

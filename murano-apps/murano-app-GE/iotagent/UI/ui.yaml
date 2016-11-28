@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Puppet.iotagent
+    type: io.murano.conflang.puppet.iotagent
   query_context_path: $.appConfiguration.query_context_path
   iotagent_server_name: $.appConfiguration.iotagent_server_name
   iota_protocols: $.appConfiguration.iota_protocols

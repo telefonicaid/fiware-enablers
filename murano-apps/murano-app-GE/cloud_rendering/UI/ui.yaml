@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.cloud_rendering
+    type: io.murano.conflang.chef.cloud_rendering
 
   instance:
     ?:

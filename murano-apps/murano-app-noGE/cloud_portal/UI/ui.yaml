@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.cloud_portal
+    type: io.murano.conflang.chef.cloud_portal
 
   instance:
     ?:

@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.spagobi
+    type: io.murano.conflang.chef.spagobi
 
   instance:
     ?:

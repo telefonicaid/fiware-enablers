@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.django
+    type: io.murano.conflang.chef.django
 
   instance:
     ?:

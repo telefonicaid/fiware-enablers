@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.synchronization
+    type: io.murano.conflang.chef.synchronization
 
   instance:
     ?:

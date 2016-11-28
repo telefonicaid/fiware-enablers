@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Puppet.cep
+    type: io.murano.conflang.puppet.cep
 
   instance:
     ?:

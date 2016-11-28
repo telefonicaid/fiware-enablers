@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.GIS
+    type: io.murano.conflang.chef.GIS
 
   instance:
     ?:

@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.augmentedreality
+    type: io.murano.conflang.chef.augmentedreality
 
   instance:
     ?:

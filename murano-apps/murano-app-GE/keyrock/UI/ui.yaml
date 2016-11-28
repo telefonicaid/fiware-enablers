@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.keyrock
+    type: io.murano.conflang.chef.keyrock
 
   instance:
     ?:

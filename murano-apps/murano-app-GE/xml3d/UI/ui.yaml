@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.xml3d
+    type: io.murano.conflang.chef.xml3d
 
   instance:
     ?:

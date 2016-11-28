@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.Stream_oriented_kurento
+    type: io.murano.conflang.chef.Stream_oriented_kurento
 
   instance:
     ?:

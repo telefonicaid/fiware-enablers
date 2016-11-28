@@ -22,7 +22,7 @@ Templates:
 
 Application:
   ?:
-    type: io.murano.conflang.Chef.virtualcharacters
+    type: io.murano.conflang.chef.virtualcharacters
 
   instance:
     ?:
