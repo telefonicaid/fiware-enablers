@@ -163,9 +163,14 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
         product = get_product(product_xml)
         if product.product_name in DEPRECATED_PRODUCTS:
             continue
+        print product.product_name
         product.get_image_metadata()
-        package_murano = ProductPackage(product)
-        package_murano.generate_package()
+        try:
+            package_murano = ProductPackage(product)
+            package_murano.generate_package()
+        except Exception as e:
+            print "Product {0} error {1}".format(product.product_name, e.message)
+
 
     if util2.strtobool(upload):
         update_into_github(user_github, password_github)

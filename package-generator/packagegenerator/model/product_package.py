@@ -23,17 +23,21 @@
 # contact with opensource@tid.es
 #
 import shutil
-import time
 import os
-from util import utils_file as utils
-from model.cookbook import Cookbook
 
-PACKAGES_FOLDER = "./../murano-apps"
-PACKAGES_FOLDER_GE = os.path.join(PACKAGES_FOLDER, "murano-app-GE")
-PACKAGES_FOLDER_NO_GE = os.path.join(PACKAGES_FOLDER, "murano-app-noGE")
+from packagegenerator.util import utils_file as utils
+from packagegenerator.model.cookbook import Cookbook
+from os import listdir
+from os.path import isdir, join
+
+
+PACKAGES_FOLDER = "./../../murano-apps"
+PACKAGES_FOLDER_GE = join(PACKAGES_FOLDER, "murano-app-GE")
+PACKAGES_FOLDER_NO_GE = join(PACKAGES_FOLDER, "murano-app-noGE")
 
 PACKAGE_TEMPLATE_FOLDER = "template/PackageTemplate"
 PACKAGE_TEMPLATE_CLASS = PACKAGE_TEMPLATE_FOLDER + "/Classes/GE_name.yaml"
+PACKAGE_TEMPLATE_UI = PACKAGE_TEMPLATE_FOLDER + "/UI/ui.yaml"
 PACKAGE_TEMPLATE_MANIFEST = PACKAGE_TEMPLATE_FOLDER + "/manifest.yaml"
 PACKAGE_TEMPLATE_PLAN = (PACKAGE_TEMPLATE_FOLDER +
                          "/Resources/DeployExample.template")
@@ -50,6 +54,7 @@ REPLACE_GE_PORTS = "{GE_ports}"
 REPLACE_GE_NID = "{GE_nid}"
 REPLACE_BERKSFILE = "{GE_berksfile}"
 COOKBOOK_FOLDER = "cookbooks/"
+PACKAGE_UI = "UI/"
 MURANO_APPS = COOKBOOK_FOLDER + "murano-apps/"
 MURANO_APPS_URL = "https://github.com/openstack/murano-apps.git"
 
@@ -66,24 +71,33 @@ class ProductPackage():
         self.product = product
         if product.is_enabler():
             self.package_folder =\
-                os.path.join(PACKAGES_FOLDER_GE, product.product_name)
+                join(PACKAGES_FOLDER_GE, product.product_name)
         else:
-            self.package_folder = \
-                os.path.join(PACKAGES_FOLDER_NO_GE, product.product_name)
+            self.package_folder = join(PACKAGES_FOLDER_NO_GE, product.product_name)
         self.package_manifest = \
-            os.path.join(self.package_folder, "manifest.yaml")
+            join(self.package_folder, "manifest.yaml")
         if self.product.is_murano_app:
             self._download_package_murano()
 
-        self.package_classes = os.path.join(self.package_folder, "Classes")
+        self.package_classes = join(self.package_folder, "Classes")
         self.package_classes_file = self.get_class_name_file()
-        self.package_resources = os.path.join(self.package_folder, "Resources")
-        self.package_template = os.path.join(self.package_resources,
+        self.package_resources = join(self.package_folder, "Resources")
+        self.package_template = join(self.package_resources,
                                              "Deploy{0}.template".format(product.product_name))
+        self.package_uis = join(self.package_folder, "UI")
+        self.package_ui = join(self.package_uis, "ui.yaml")
         self.is_berksfile = False
         self.cookbooks = self.get_all_cookbooks()
         if not self.product.is_murano_app and self.cookbooks:
             self._generate_package_folder()
+
+    def _get_package_folder(self, folder):
+        only_dirs = [f for f in listdir(folder) if isdir(join(folder, f))]
+        if "Classes" not in only_dirs:
+            versions = filter(lambda v: "v" in v, only_dirs)
+            if versions and len(versions) > 1:
+                return join(folder, versions[0])
+        return join(folder)
 
     def get_product(self):
         """
@@ -111,6 +125,8 @@ class ProductPackage():
             os.makedirs(self.package_classes)
         if not os.path.exists(self.package_resources):
             os.makedirs(self.package_resources)
+        if not os.path.exists(self.package_uis):
+            os.makedirs(self.package_uis)
         self._copy_files_from_templates()
 
     def _check_folder_exists(self):
@@ -145,11 +161,13 @@ class ProductPackage():
         self._check_folder_exists()
         if not os.path.isdir(MURANO_APPS):
             utils.download_git_repo(MURANO_APPS_URL, MURANO_APPS)
-        folder_out = os.path.join(PACKAGES_FOLDER_NO_GE, folder)
+
+        folder_out = join(PACKAGES_FOLDER_NO_GE, folder)
         folder_changed = utils.get_murano_app_name(folder)
         if folder_changed:
             folder = folder_changed
-        folder_in = os.path.join(MURANO_APPS, folder, "package")
+        folder_in = self._get_package_folder(join(MURANO_APPS, folder, "package"))
+
         if not os.path.exists(folder_out):
             shutil.copytree(folder_in, folder_out)
 
@@ -162,6 +180,7 @@ class ProductPackage():
             shutil.copy(PACKAGE_TEMPLATE_CLASS, self.package_classes_file)
             shutil.copy(PACKAGE_TEMPLATE_MANIFEST, self.package_manifest)
             shutil.copy(PACKAGE_TEMPLATE_PLAN, self.package_template)
+            shutil.copy(PACKAGE_TEMPLATE_UI, self.package_ui)
         except:
             raise
 
@@ -263,6 +282,21 @@ class ProductPackage():
         utils.replace_word(self.package_template, REPLACE_BERKSFILE,
                            self._get_berksfile_str())
 
+    def generate_ui(self):
+        """
+        It generates the package Excecution Plan.
+        :return: nothing
+        """
+        utils.replace_word(self.package_ui, REPLACE_GE_NAME,
+                           self.product.get_cookbook_name(self.product.product_name))
+        utils.replace_word(self.package_ui, REPLACE_GE_INSTALLATOR,
+                           self.product.installator.lower())
+
+        utils.replace_word(self.package_ui, REPLACE_GE_ATTS,
+                           self._get_attributes_ui1())
+        utils.replace_word(self.package_ui, REPLACE_GE_ATTS_RESOURCE,
+                           self._get_attributes_ui2())
+
     def _get_images_str(self):
         """
         It obtains the string with the image information
@@ -307,6 +341,41 @@ class ProductPackage():
         if self.product.attributes:
             for key in self.product.attributes:
                 atts_str = atts_str + (" " * 2) + key + ": $" + key + "\n"
+        return atts_str
+
+
+    def _get_attributes_ui1(self):
+        """
+        It obtains the string with the attribute information for the template
+        :return: the string
+        """
+        atts_str = ''
+        if self.product.attributes:
+            for key in self.product.attributes:
+                if "port" in key:
+                    continue
+                else:
+                    atts_str = atts_str + (" " * 2) + "{0}: $.appConfiguration.{1}\n".format(key, key)
+        return atts_str
+
+    def _get_attributes_ui2(self):
+        """
+        It obtains the string with the attribute information for the template
+        :return: the string
+        """
+        atts_str = ''
+        if self.product.attributes:
+            atts_str = atts_str + " - appConfiguration:\n" \
+                 (" " * 6) + "fields: \n"
+            for key in self.product.attributes:
+                if "port" in key:
+                    continue
+                else:
+                    atts_str = atts_str + (" " * 8) + "- name: {0}\n".format(key) +\
+                        (" " * 9) + "type: string\n" + \
+                        (" " * 9) + "description: {0}\n".format(key) \
+                        (" " * 9) + "required: false"
+
         return atts_str
 
     def _get_berksfile_str(self):
@@ -436,11 +505,13 @@ class ProductPackage():
             self.read_dependences()
             self.update_attributes()
             self.update_manifest_no_ge()
+            self.update_networks()
         else:
             if self.cookbooks:
                 self.generate_manifest()
                 self.generate_class()
                 self.generate_template()
+                self.generate_ui()
 
     def read_dependences(self):
         """
@@ -470,16 +541,24 @@ class ProductPackage():
                     attributes[property] = value
             self.product.attributes.update(attributes)
 
+    def update_networks(self):
+        class_yaml = utils.read_yaml_local_file(self.package_ui)
+        templates = class_yaml.get("Templates")
+        if templates:
+            nets = templates.get("customJoinNet")
+            nets[0]['externalNetworkName'] = "public-ext-net-01"
+        utils.write_local_yaml(self.package_ui, class_yaml)
+
     def get_class_name_file(self):
         package_classes_file = \
-            os.path.join(self.package_classes,
+            join(self.package_classes,
                          "{0}.yaml".format(self.product.product_name))
         if self.product.is_murano_app:
             manifest_yaml = utils.read_yaml_local_file(self.package_manifest)
             classes = manifest_yaml.get("Classes")
             if classes:
                 for classe in classes:
-                    package_classes_file = os.path.join(self.package_classes,
-                                                        classes[classe])
+                    package_classes_file = join(self.package_classes,
+                                                classes[classe])
                     break
         return package_classes_file

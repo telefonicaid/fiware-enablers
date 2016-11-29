@@ -1,19 +1,31 @@
-{Author: 'Mirantis, Inc', Classes: {io.murano.apps.apache.ApacheHttpServer: ApacheHttpServer.yaml},
-  Description: 'The Apache HTTP Server Project is an effort to develop and maintain
-    an
+Author: Mirantis, Inc
+Classes:
+  com.example.apache.ApacheHttpServer: ApacheHttpServer.yaml
+Description: 'The Apache HTTP Server Project is an effort to develop and maintain
+  an
 
-    open-source HTTP server for modern operating systems including UNIX and
+  open-source HTTP server for modern operating systems including UNIX and
 
-    Windows NT. The goal of this project is to provide a secure, efficient and
+  Windows NT. The goal of this project is to provide a secure, efficient and
 
-    extensible server that provides HTTP services in sync with the current HTTP
+  extensible server that provides HTTP services in sync with the current HTTP
 
-    standards.
+  standards.
 
-    Apache httpd has been the most popular web server on the Internet since
+  Apache httpd has been the most popular web server on the Internet since
 
-    April 1996, and celebrated its 17th birthday as a project this February.
+  April 1996, and celebrated its 17th birthday as a project this February.
 
-    ', Format: 1.0, FullName: io.murano.apps.apache.ApacheHttpServer, Name: Apache
-    HTTP Server, Tags: [HTTP, Server, WebServer, HTML, Apache, 'attributes=enablePHP:;',
-    FIWARE_GE], Type: Application}
+  '
+Format: 1.3
+FullName: com.example.apache.ApacheHttpServer
+Name: Apache HTTP Server
+Tags:
+- HTTP
+- Server
+- WebServer
+- HTML
+- Apache
+- attributes=enablePHP:;
+- FIWARE_GE
+Type: Application
