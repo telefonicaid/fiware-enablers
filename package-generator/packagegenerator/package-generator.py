@@ -24,13 +24,13 @@
 #
 
 import argparse
+import json
 
-
-from packagegenerator.model.product_package import ProductPackage
-from packagegenerator.model.product import Product
-from packagegenerator.util.configuration import Config
+from model.product_package import ProductPackage
+from model.product import Product
+from util.configuration import Config
 import distutils.util as util2
-import packagegenerator.util.utils_file as utils
+import util.utils_file as utils
 
 
 PRODUCTANDRELEASE_BODY = "productAndReleaseDto"
@@ -55,6 +55,8 @@ def main(argv=None):
     :param argv:
     """
     parser = argparse.ArgumentParser(description='Testing product installation using paasmanager')
+    parser.add_argument("-a", "--action", dest='action', default='genarate_all_packages',
+                        help='the action (generate_package or generate_all_packages', required=True)
     parser.add_argument("-u", "--os-username", dest='user',
                         help='valid username', required=True)
     parser.add_argument("-p", "--os-password", dest='password',
@@ -75,10 +77,16 @@ def main(argv=None):
     parser.add_argument("-P", "--os-password_github", dest="password_github",
                         default='None',
                         help='password github')
+    parser.add_argument("-d", "--package_description", dest="package_description",
+                        default='product_example.json',
+                        help='package_description')
 
     args = parser.parse_args()
 
-    create_murano_packages(auth_url=args.auth_url,
+    action = args.action
+
+    if action == "genarate_all_packages":
+        create_murano_packages(auth_url=args.auth_url,
                            tenant_id=args.tenant_id,
                            user=args.user,
                            password=args.password,
@@ -86,6 +94,52 @@ def main(argv=None):
                            user_github=args.user_github,
                            password_github=args.password_github,
                            upload=args.upload)
+    elif action == "generate_package":
+        create_murano_package(auth_url=args.auth_url,
+                           tenant_id=args.tenant_id,
+                           user=args.user,
+                           password=args.password,
+                           region_name=args.region_name,
+                           user_github=args.user_github,
+                           password_github=args.password_github,
+                           upload=args.upload,
+                           package_description=args.package_description)
+
+
+def create_murano_package(auth_url, tenant_id, user, password, region_name,
+                          user_github, password_github, upload, package_description):
+    Config(auth_url, user, password, tenant_id, region_name)
+    if package_description:
+        product = get_product_json(package_description)
+        package_murano = ProductPackage(product)
+        package_murano.generate_package()
+    if util2.strtobool(upload):
+        update_into_github(user_github, password_github)
+
+def get_product_json(package_description):
+    if not package_description:
+        print("Package description empty")
+        exit()
+    with open(package_description) as data_file:
+        product_json = json.load(data_file)
+
+    if "name" not in product_json:
+        print("name not in product description")
+        exit()
+    if "version" not in product_json:
+        print("version not in product description")
+        exit()
+    if "metadatas" not in product_json:
+        print("metadata not in product description")
+        exit()
+    if "attributes" not in product_json:
+        print("attributes not in product description")
+        exit()
+
+    product = Product(product_json["name"], product_json["version"], load_data=True,
+                   metadatas=product_json["metadatas"], attributes=product_json["attributes"])
+    return product
+
 
 
 def create_murano_packages(auth_url, tenant_id, user, password, region_name,

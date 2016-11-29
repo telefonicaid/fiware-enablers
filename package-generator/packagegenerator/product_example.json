@@ -1,0 +1,14 @@
+{
+	"name": "my_product",
+	"version": "my_version",
+	"metadatas": {
+		"open_ports": "value1",
+		"image": "value1",
+		"nid": "nid",
+		"installator": "chef"
+	},
+	"attributes": {
+		"database": "value1",
+		"password": "value2"
+	}
+}

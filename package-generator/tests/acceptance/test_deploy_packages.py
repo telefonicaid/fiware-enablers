@@ -176,6 +176,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
+        if package_str == "Demo":
+            self.deploy_demo()
+            return
+
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
         tags = manifest["Tags"]
