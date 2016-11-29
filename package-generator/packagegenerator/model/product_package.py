@@ -363,17 +363,16 @@ class ProductPackage():
         It obtains the string with the attribute information for the template
         :return: the string
         """
-        atts_str = ''
+        atts_str = ""
         if self.product.attributes:
-            atts_str = atts_str + " - appConfiguration:\n" \
-                 (" " * 6) + "fields: \n"
+            atts_str = atts_str + " - appConfiguration:\n" + (" " * 6) + "fields: \n"
             for key in self.product.attributes:
                 if "port" in key:
                     continue
                 else:
-                    atts_str = atts_str + (" " * 8) + "- name: {0}\n".format(key) +\
+                    atts_str = atts_str + (" " * 8) + "- name: {0}\n".format(key) + \
                         (" " * 9) + "type: string\n" + \
-                        (" " * 9) + "description: {0}\n".format(key) \
+                        (" " * 9) + "description: {0}\n".format(key) + \
                         (" " * 9) + "required: false"
 
         return atts_str

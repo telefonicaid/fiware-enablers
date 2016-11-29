@@ -20,8 +20,9 @@
 ## Introduction
 
 The package generator is a tool for migrating from PaaS Manager to Murano. It involves mainly two functionalities:
-- generate murano package from PaaS Manager products.
+- generate Murano package from PaaS Manager products.
 - generate Murano environment templates from PaaS Manager blueprint templates.
+- generate a Murano package from a json with the information
 
 ## Build and install
 The following software must be installed (e.g. using apt-get on Debian and Ubuntu,
@@ -47,18 +48,22 @@ Now the system is ready to use. For future sessions, only the step2 is required.
 
 ## Running
 ### Generating Murano packages
-The package-generator.py script is used for generating Murano Packages from product uploaded in PaaS Manager and SDC. In addition, once the packages have been
-generated, a new Pull Request is done to the fiware-enabler github repository with the new changes
+The package-generator.py script is used for generating Murano Packages from product uploaded in PaaS Manager and SDC. Once the packages have been
+generated, a new Pull Request is done to the fiware-enabler github repository with the new changes. In addition, this script can be used also for
+generating a concrete Murano package specifing its description
 
  The following lines are shown by using the -h option
-    usage: package-generator.py [-h] -u USER -p PASSWORD -t TENANT_ID
+    usage: package-generator.py [-h] -a ACTION -u USER -p PASSWORD -t TENANT_ID
                             [-r REGION_NAME] [-k AUTH_URL] [-g UPLOAD]
-                            [-ug USER_GITHUB] [-pg PASSWORD_GITHUB]
+                            [-U USER_GITHUB] [-P PASSWORD_GITHUB] [-d PRODUCT_DESCRITION]
 
     Creating Murano packages from PaaS Manager
 
     optional arguments:
     -h, --help            show this help message and exit
+    -a ACTION, --action, the action to be executed (generate_package or genarate_all_packages). Generate
+    package action which create a concrete package from a description and generate_all_packages action
+    will syncronize information from PaaS Manager and SDC.
     -u USER, --os-username USER
                         valid username for a keystone
     -p PASSWORD, --os-password PASSWORD
@@ -71,10 +76,33 @@ generated, a new Pull Request is done to the fiware-enabler github repository wi
                         url to keystone <host or ip>:<port>/v2.0
     -g UPLOAD, --os-upload UPLOAD
                         True/False for uploading to github
-    -ug USER_GITHUB, --os-user_github USER_GITHUB
+    -U USER_GITHUB, --os-user_github USER_GITHUB
                         github user
-    -pg PASSWORD_GITHUB, --os-password_github PASSWORD_GITHUB
+    -P PASSWORD_GITHUB, --os-password_github PASSWORD_GITHUB
                         github password
+    -d PRODUCT_DESCRIPTION, --description, a file containing the product description (for example product_example.json)
+
+#### Generate a package
+To generate a concreate package, we can use:
+
+    package-generator.py  -a generate_package -d product_example.json -u myuser -p mypassword -t mytenant
+
+where product_example.json contains the production description information including product name, version, metadata
+and attributes as followed.
+    {
+	    "name": "my_product",
+	    "version": "my_version",
+	    "metadatas": {
+		    "open_ports": "value1",
+		    "image": "value1",
+		    "nid": "nid",
+		    "installator": "chef"
+	    },
+	    "attributes": {
+		    "database": "value1",
+		    "password": "value2"
+	    }
+    }
 
 ### Generating Murano templates
 This command is used for generating Murano templates from PaaS Manager. With the following command, you can get the help
