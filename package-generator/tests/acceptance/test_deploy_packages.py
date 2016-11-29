@@ -96,10 +96,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
             for att in atts:
                 post_body[att] = att
 
-       # if vol:
-       #    post_body["instance"]["volumes"] = volume_id
-
-
         return post_body
 
     def _get_service_no_instance(self, environment_name, package_name, port, atts=None):
@@ -170,6 +166,7 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self.instance_type = core.CONF.murano.instance_type
         self.murano_apps_folder = core.CONF.murano.murano_apps_folder
         self.murano_package = package_str
+
         if is_GE == "GE":
             package_folder = os.path.join(self.murano_apps_folder,
                                           "murano-app-GE",
@@ -179,10 +176,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-            if package_str == "Demo":
-                self.deploy_demo()
-            return
-
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
         tags = manifest["Tags"]
@@ -190,6 +183,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         self._upload_app(package_id, package_folder, tags, requires)
         images = ["base_ubuntu_14.04"]
         atts = {}
+
+        if package_str == "Demo":
+            self.deploy_demo()
+            return
 
         for tag in tags:
             if "images" in tag:
@@ -205,9 +202,10 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     image = "base_ubuntu_14.04"
                 else:
                     continue
-            self.linux = image
-            self._test_deploy(self.murano_package, package_id, 22, atts, region, murano_instance)
-            self.purge_environments()
+
+        self.linux = image
+        self._test_deploy(self.murano_package, package_id, 22, atts, region, murano_instance)
+        self.purge_environments()
 
     def delete_package(cls, package):
         """It deletes the package in murano."""
@@ -236,8 +234,11 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                     folder_required = os.path.join(self.murano_apps_folder,
                                                    "murano-app-noGE",
                                                    self.get_murano_name(require))
-                    self.upload_app_admin(folder_required,
+                    try:
+                        self.upload_app_admin(folder_required,
                                     self.get_murano_name(require), {"is_public": True, "tags": ["tag"]})
+                    except Exception as e:
+                        print("Error to upload the dependence {0}".format(e.message))
 
     @mock.patch('murano.tests.functional.engine.config')
     def deploy_demo(self, mock_config):

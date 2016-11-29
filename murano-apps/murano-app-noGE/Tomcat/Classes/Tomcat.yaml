@@ -11,11 +11,11 @@
 #  under the License.
 
 Namespaces:
-  =: io.murano.apps.apache
+  =: com.example.apache
   std: io.murano
   res: io.murano.resources
   sys: io.murano.system
-
+  conf: io.murano.configuration
 
 Name: Tomcat
 
@@ -26,7 +26,7 @@ Properties:
     Contract: $.class(res:Instance).notNull()
 
 Methods:
-  initialize:
+  .init:
     Body:
       - $._environment: $.find(std:Environment).require()
 
@@ -50,15 +50,15 @@ Methods:
                 External: true
           - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
           - $.instance.deploy()
-          - $resources: new(sys:Resources)
           # Deploy Apache Tomcat
-          - $template: $resources.yaml('DeployTomcat.template')
           - $._environment.reporter.report($this, 'Instance is created. Deploying Tomcat')
-          - $.instance.agent.call($template, $resources)
+          - $file: sys:Resources.string('deployTomcat.sh')
+          - conf:Linux.runCommand($.instance.agent, $file, helpText => 'Deploy Tomcat')
+
           - If: $.instance.assignFloatingIp
             Then:
               - $address: $.instance.floatingIpAddress
             Else:
-              - $address: $.instance.ipAddresses[0]
+              - $address: $.instance.ipAddresses.first()
           - $._environment.reporter.report($this, 'Tomcat is available at http://{0}:{1}'.format($address, 8080))
           - $.setAttr(deployed, true)

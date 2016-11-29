@@ -147,7 +147,7 @@ def write_local_yaml(out_file, yaml_text):
     :return: nothing
     """
     with open(out_file, 'w+') as fwrite:
-        data = yaml.dump(yaml_text, default_flow_style=True)
+        data = yaml.dump(yaml_text, default_flow_style=False)
         fwrite.write(data)
         fwrite.close()
 

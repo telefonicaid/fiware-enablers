@@ -18,7 +18,6 @@ ENV GLANCESYNC_SETTINGS_FILE=/etc/fiware.d/etc/fiware-glancesync.cfg
 ENV GLANCESYNC_LOGGING_SETTINGS_FILE=/etc/fiware.d/etc/fiware-glancesync-logging.cfg
 COPY fiware-glancesync.cfg /etc/fiware.d/etc/fiware-glancesync.cfg
 COPY fiware-glancesync-logging.cfg /etc/fiware.d/etc/fiware-glancesync-logging.cfg
-RUN pip install nose pytz
 RUN pip install -r requirements.txt
 RUN pip install -r tests-requirements.txt
 COPY other.sh  /opt/fiware-enablers/package-generator/other.sh
