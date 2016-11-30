@@ -27,7 +27,6 @@ import os
 
 from packagegenerator.util import utils_file as utils
 from packagegenerator.model.cookbook import Cookbook
-from os import listdir
 from os.path import isdir, join
 
 
@@ -92,7 +91,7 @@ class ProductPackage():
             self._generate_package_folder()
 
     def _get_package_folder(self, folder):
-        only_dirs = [f for f in listdir(folder) if isdir(join(folder, f))]
+        only_dirs = [f for f in os.listdir(folder) if isdir(join(folder, f))]
         if "Classes" not in only_dirs:
             versions = filter(lambda v: "v" in v, only_dirs)
             if versions and len(versions) > 1:
