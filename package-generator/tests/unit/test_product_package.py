@@ -104,11 +104,13 @@ class TestProductPackage(unittest.TestCase):
 
     @mock.patch('shutil.copy')
     @mock.patch('os.path.exists')
+    @mock.patch('os.listdir')
     @mock.patch('__builtin__.open', create=True)
-    def test_product_murano_package(self, mock_open,  mock_exists, mock_copy):
+    def test_product_murano_package(self, mock_open, mock_listdir,  mock_exists, mock_copy):
         """test the object is correctly built"""
         mock_exists.return_value = True
         mock_copy.return_value = None
+        mock_listdir.return_value = []
         self.mock_open = mock_open
         self.mock_open.side_effect = [
             mock.mock_open(read_data=MANIFEST).return_value,
