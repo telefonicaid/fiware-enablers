@@ -22,8 +22,8 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from util import utils_file as utils
-from util.configuration import Config
+from packagegenerator.util import utils_file as utils
+from packagegenerator.util.configuration import Config
 import json
 
 URL_FORGE = "https://forge.fiware.org/scmrepos/svn/testbed/trunk/" \

@@ -14,7 +14,7 @@ Scripts:
     Version: 1.0.0
     EntryPoint: python::default
     Files:
-        - python : https://github.com/poise/python.git
+        - python : https://github.com/hmunfru/python.git
 
     Options:
       captureStdout: true

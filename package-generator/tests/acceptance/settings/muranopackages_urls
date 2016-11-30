@@ -5,7 +5,7 @@ postgresql: PostgreSQL
 mongodb: MongoDB
 apache2: ApacheHTTPServer
 io.murano.applications: io.murano.applications
-com.example.databases: com.example.databases
+com.example.databases: SQLDatabaseLibrary
 io.murano.databases: SQLDatabaseLibrary
 io.murano.databases.MySql: MySQL
 io.murano.apps.apache.ApacheHttpServer: ApacheHTTPServer

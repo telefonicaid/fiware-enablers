@@ -30,7 +30,7 @@ from os import listdir
 from os.path import join, isdir
 import time
 import git
-from configuration import Config
+from packagegenerator.util.configuration import Config
 import yaml
 
 

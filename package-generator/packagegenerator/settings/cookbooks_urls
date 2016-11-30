@@ -12,7 +12,7 @@ mysql: https://forge.fiware.org/scmrepos/svn/testbed/trunk/cookbooks/BaseSoftwar
 iptables:
 logrotate: https://github.com/cookbooks/logrotate.git
 pacman:
-python: https://github.com/poise/python.git
+python: https://github.com/hmunfru/python.git
 yum: https://github.com/chef-cookbooks/yum.git
 mongodb: https://github.com/edelight/chef-mongodb.git
 poise-python: https://github.com/poise/poise-python.git

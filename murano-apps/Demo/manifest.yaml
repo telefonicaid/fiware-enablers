@@ -9,5 +9,5 @@ Tags: [Test, Demo, attributes=name;dbName;dbUser;dbPassword]
 Classes:
  io.murano.conflang.chef.Demo: Demo.yaml
 Require:
- io.murano.databases.MySql:
- io.murano.apps.apache.ApacheHttpServer:
+ com.example.databases.MySql:
+ com.example.apache.ApacheHttpServer:

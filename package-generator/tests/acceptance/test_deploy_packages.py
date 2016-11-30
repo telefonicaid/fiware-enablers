@@ -176,10 +176,6 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
                                           "murano-app-noGE",
                                           self.murano_package)
 
-        if package_str == "Demo":
-            self.deploy_demo()
-            return
-
         manifest = self.read_manifest(package_folder)
         package_id = manifest["FullName"]
         tags = manifest["Tags"]
@@ -280,11 +276,11 @@ class DeployPackagesTest(core.MuranoTestsCore, unittest.TestCase):
         environment = self.create_environment(name=environment_name)
         session = self.create_session(environment)
 
-        apache_demo = self._get_service("Apache", "io.murano.apps.apache.ApacheHttpServer", 22, "io.murano.resources.FiwareMuranoInstance")
+        apache_demo = self._get_service("Apache", "com.example.apache.ApacheHttpServer", 22, "io.murano.resources.FiwareMuranoInstance")
         self.add_service(environment, apache_demo, session)
         apache_demo_id= apache_demo["?"]["id"]
 
-        mysql_demo = self._get_service("MySQL", "io.murano.databases.MySql", 22, "io.murano.resources.FiwareMuranoInstance")
+        mysql_demo = self._get_service("MySQL", "com.example.databases.MySql", 22, "io.murano.resources.FiwareMuranoInstance")
         self.add_service(environment, mysql_demo, session)
         mysql_demo_id = mysql_demo["?"]["id"]
 

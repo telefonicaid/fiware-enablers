@@ -26,7 +26,7 @@
 import ConfigParser
 from fiwareglancesync.scripts.getnids.getnid import NID
 from fiwareglancesync.scripts.getnids import getnid
-from util.utils_clients import util_apis
+from packagegenerator.util.utils_clients import util_apis
 
 
 class Config():

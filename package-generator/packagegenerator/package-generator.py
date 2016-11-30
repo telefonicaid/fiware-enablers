@@ -28,7 +28,7 @@ import json
 
 from model.product_package import ProductPackage
 from model.product import Product
-from util.configuration import Config
+from packagegenerator.util.configuration import Config
 import distutils.util as util2
 import util.utils_file as utils
 
@@ -55,7 +55,7 @@ def main(argv=None):
     :param argv:
     """
     parser = argparse.ArgumentParser(description='Testing product installation using paasmanager')
-    parser.add_argument("-a", "--action", dest='action', default='genarate_all_packages',
+    parser.add_argument("-a", "--action", dest='action', default='generate_all_packages',
                         help='the action (generate_package or generate_all_packages', required=True)
     parser.add_argument("-u", "--os-username", dest='user',
                         help='valid username', required=True)
@@ -85,7 +85,7 @@ def main(argv=None):
 
     action = args.action
 
-    if action == "genarate_all_packages":
+    if action == "generate_all_packages":
         create_murano_packages(auth_url=args.auth_url,
                            tenant_id=args.tenant_id,
                            user=args.user,
@@ -104,6 +104,9 @@ def main(argv=None):
                            password_github=args.password_github,
                            upload=args.upload,
                            package_description=args.package_description)
+    else:
+        print("Wrong action: {0}. Use generate_all_packages or generate_package")
+        exit()
 
 
 def create_murano_package(auth_url, tenant_id, user, password, region_name,
@@ -164,6 +167,8 @@ def create_murano_packages(auth_url, tenant_id, user, password, region_name,
         if product.product_name in DEPRECATED_PRODUCTS:
             continue
         print product.product_name
+        if not product.product_name == "PostgreSQL":
+            continue
         product.get_image_metadata()
         try:
             package_murano = ProductPackage(product)

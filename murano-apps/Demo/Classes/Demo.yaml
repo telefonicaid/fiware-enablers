@@ -4,8 +4,8 @@ Namespaces:
   res: io.murano.resources
   sys: io.murano.system
   apps: io.murano.apps
-  tc: io.murano.apps.apache
-  data: io.murano.databases
+  tc: com.example.apache
+  data: com.example.databases
 Name: Demo
 
 Extends: std:Application
